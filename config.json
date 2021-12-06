@@ -1,0 +1,28 @@
+{
+  "base_url": "https://stoneawesome.com",
+  "site_title": "StoneAwesome",
+  "site_description": "The stories behind some amazing stone.",
+  "site_keywords": [
+    {
+      "keyword": "stone"
+    },
+    {
+      "keyword": "marble"
+    },
+    {
+      "keyword": "granite"
+    },
+    {
+      "keyword": "beautiful"
+    },
+    {
+      "keyword": "awesome"
+    },
+    {
+      "keyword": "inspiration"
+    }
+  ],
+  "posts_per_page": 5,
+  "twitter_account": "@stoneawesome",
+  "github_account": "StoneAwesome"
+}
