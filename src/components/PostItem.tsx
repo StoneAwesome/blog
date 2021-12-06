@@ -18,7 +18,7 @@ export default function PostItem({ post }: Props) {
       <header className={"mt-5 mb-3"}>
         <Link href={url}>
           <a className={"text-decoration-none"}>
-            <h1 className={"post-title fw-500"}>{post.title}</h1>
+            <h1>{post.title}</h1>
           </a>
         </Link>
         <div className={"d-flex align-items-center mb-4 text-muted author-info"}>

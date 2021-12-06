@@ -7,7 +7,6 @@ import BasicMeta from "./meta/BasicMeta";
 import JsonLdMeta from "./meta/JsonLdMeta";
 import OpenGraphMeta from "./meta/OpenGraphMeta";
 import TwitterCardMeta from "./meta/TwitterCardMeta";
-import { SocialList } from "./SocialList";
 import TagButton from "./TagButton";
 import { getAuthor } from "../lib/authors";
 import { getTag } from "../lib/tags";
@@ -55,7 +54,7 @@ export default function PostLayout({
         <div className={"posts-container"}>
           <article>
             <header className={"mb-3"}>
-              <h1 className={"post-title fw-500"}>{title}</h1>
+              <h1>{title}</h1>
               <div className={"d-flex align-items-center mb-4 text-muted author-info"}>
                 <Author author={getAuthor(author)} />
                 <div className={"d-flex align-items-center ms-3"}>
