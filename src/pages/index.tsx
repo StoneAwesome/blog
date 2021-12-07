@@ -4,9 +4,14 @@ import BasicMeta from "../components/meta/BasicMeta";
 import OpenGraphMeta from "../components/meta/OpenGraphMeta";
 import TwitterCardMeta from "../components/meta/TwitterCardMeta";
 import PostList from "../components/PostList";
-import { createPostList, PostListProps } from "../lib/posts";
+import { createPostList } from "../lib/posts";
+import { InferGetStaticPropsType } from "next";
 
-export default function Index({ posts, tags, pagination }: PostListProps) {
+export default function Index({
+  posts,
+  tags,
+  pagination,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <Layout>
       <BasicMeta url={"/"} />

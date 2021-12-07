@@ -5,7 +5,7 @@ import type { PreviewTemplateComponentProps, CmsFieldMap } from "netlify-cms-cor
 import { remark } from "remark";
 import html from "remark-html";
 import { parseISO } from "date-fns";
-import { Props } from "./posts/[post]";
+import { Props } from "./posts/[slug]";
 export type AdminPageProps = {};
 
 const AdminPage: React.FC<AdminPageProps> = (props) => {

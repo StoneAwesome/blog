@@ -1,6 +1,10 @@
 import { GetStaticProps, GetStaticPaths } from "next";
 import { MdxRemote } from "next-mdx-remote/types";
-import { createMDXSource, fetchInstagramContent, grabInstagramMatterFromSource } from "../../lib/instagram";
+import {
+  createMDXSource,
+  fetchInstagramContent,
+  grabInstagramMatterFromSource,
+} from "../../lib/instagram";
 import fs from "fs";
 import { hydrateSource } from "../../lib/mdx-helper";
 import InstagramLayout from "../../components/InstagramLayout";
@@ -9,7 +13,7 @@ import InstagramAPI, { InstagramMedia } from "../../lib/instagram-service";
 export type Props = {
   title: string;
   dateString: string;
-  instagram_id: string;
+  slug: string;
   tags: string[];
   post: InstagramMedia;
   source: MdxRemote.Source;
@@ -21,7 +25,14 @@ const slugToPostContent = ((instagramContents) => {
   return hash;
 })(fetchInstagramContent());
 
-export default function Instagram({ title, dateString, tags, source, instagram_id, post }: Props) {
+export default function Instagram({
+  title,
+  dateString,
+  tags,
+  source,
+  slug: instagram_id,
+  post,
+}: Props) {
   const content = hydrateSource(source);
   return (
     <InstagramLayout
@@ -30,7 +41,7 @@ export default function Instagram({ title, dateString, tags, source, instagram_i
       instagram_id={instagram_id}
       tags={tags}
       post={post}
-      author={post.username}
+      slug={instagram_id}
     >
       {content}
     </InstagramLayout>
@@ -63,7 +74,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 
   const props: Props = {
     title: data.title,
-    instagram_id: data.instagram_id,
+    slug: data.instagram_id,
     dateString: data.date,
     tags: data.tags,
     source: mdxSource,
