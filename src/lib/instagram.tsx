@@ -91,7 +91,7 @@ export type PostListProps = {
     pages: number;
   };
 };
-export const createPostList: GetStaticProps<PostListProps, { page: string }> = async ({
+export const createInstagramList: GetStaticProps<PostListProps, { page: string }> = async ({
   params,
 }) => {
   const page = parseInt((params?.page as string) || "1");
