@@ -18,13 +18,12 @@ export default function PostItem({ post }: Props) {
           </a>
         </Link>
         <div className={"d-flex align-items-center mb-4 text-muted author-info"}>
-          
           <div className={"d-flex align-items-center ms-3"}>
             <Date date={parseISO(post.date)} />
           </div>
         </div>
       </header>
-      {/* {post. && post.image ? (
+      {/* {post && post.image ? (
         <div>
           <Link href={url}>
             <a>
