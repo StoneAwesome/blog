@@ -108,7 +108,6 @@ class InstagramAPI {
 
   private async getChildren(id: string): Promise<InstagramMedia[]> {
     const url = this.buildUri(`${id}/children`, ...MEDIA_PROPERTIES.filter((p) => p !== "caption"));
-    console.log("Kid URL", url);
     return await parsePagedResult(url);
   }
 

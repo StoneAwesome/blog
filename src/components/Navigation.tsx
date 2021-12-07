@@ -8,7 +8,7 @@ export default function Navigation() {
       <div className="text-center pt-5 bottom-shadow pb-3">
         <div className="container">
           <a href="/" aria-label="StoneAwesome">
-            <img src={"/logo/logo-horizontal.svg"} className={"img-fluid"} />
+            <img src={"/logo/logo-horizontal.svg"} className={"img-fluid"} alt={"StoneAwesome Logo"} />
             {/* <h1 className="f2">The Bootstrap Blog</h1> */}
           </a>
           <p className="lead  mt-4 text-center">
