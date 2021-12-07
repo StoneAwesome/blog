@@ -23,8 +23,9 @@ type Props = {
 export default function PostLayout(props: Props) {
   const { title, date, slug, author, tags, description = "", children } = props;
   const hasTags = tags && tags.length > 0;
-  const keywords = hasTags ? tags.map((it) => getTag(it).name) : [];
+  const keywords = hasTags && tags.map ? tags.map((it) => getTag(it).name) : [];
   const authorName = getAuthor(author).name;
+
   return (
     <Layout>
       <BasicMeta
@@ -65,7 +66,7 @@ export const PostBody: React.FC<Props> = ({ title, author, date, children, tags 
             </div>
           </header>
           <div>{children}</div>
-          {hasTags && (
+          {hasTags && tags.map && (
             <div className={"d-flex flex-wrap border-top py-2"}>
               {tags.map((it, i) => (
                 <div key={i} className={"mx-2 my-1"}>
