@@ -5,13 +5,11 @@ import { parseISO } from "date-fns";
 import React from "react";
 import { getAuthor } from "../lib/authors";
 import Author from "./Author";
-import { hydrateSource } from "../lib/mdx-helper";
 
 type Props = {
   post: Readonly<PostContent>;
 };
 export default function PostItem({ post }: Props) {
-  const details = post.sourceSnippet ? hydrateSource(post.sourceSnippet) : null;
   const url = `/posts/${post.slug}`;
   return (
     <div>

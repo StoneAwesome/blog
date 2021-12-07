@@ -88,6 +88,48 @@ collections:
                 widget: "string"
                 hint: "Tag name for displaying on the site"
 
+  - name: "instagram"
+    label: "Instagram"
+    folder: "content/instagram/"
+    extension: "mdx"
+    format: "frontmatter"
+    create: true
+    slug: "{{instagram_id}}"
+    identifier_field: instagram_id
+    summary: "{{title}}"
+    fields:
+      - label: "Title"
+        name: "title"
+        widget: "string"
+      - label: "Instagram Id"
+        name: "instagram_id"
+        widget: "string"
+      - label: "Publish Date"
+        name: "date"
+        widget: "datetime"
+        format: "YYYY-MM-DD"
+        dateFormat: "YYYY-MM-DD"
+        timeFormat: false
+      - label: Tags
+        label_singular: "Tag"
+        name: "tags"
+        widget: list
+        summary: "{{fields.tag}}"
+        field:
+          label: Tag
+          name: tag
+          widget: relation
+          collection: "meta"
+          file: "tags"
+          searchFields:
+            - "tags.*.name"
+          displayFields:
+            - "tags.*.name"
+          valueField: "tags.*.slug"
+      - label: "Body"
+        name: "body"
+        widget: "markdown"
+  
   - name: "posts"
     label: "Posts"
     folder: "content/posts/"
