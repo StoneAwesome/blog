@@ -4,10 +4,10 @@ import yaml from "js-yaml";
 import renderToString from "next-mdx-remote/render-to-string";
 import { MDX_Components } from "./mdx-helper";
 import { CollectionHelper, ICollectionBase } from "./collection-helper";
+import InstagramAPI from "./instagram-service";
 
 export interface InstagramContent extends ICollectionBase {
   title: string;
-  instagram_id: string;
   fullPath: string;
 }
 
@@ -15,13 +15,29 @@ const instagramHelper = new CollectionHelper<InstagramContent>(
   path.join(process.cwd(), "content/instagram")
 );
 
-export const fetchInstagramContent = instagramHelper.fetchCollectionContent;
+// export function fetchInstagramContent() {
+//   return instagramHelper.fetchCollectionContent();
+// }
 
-export const countInstagramPosts = instagramHelper.countPosts;
+export const fetchInstagramContent = () => instagramHelper.fetchCollectionContent();
+
+export function countInstagramPosts(tag?: string) {
+  return instagramHelper.countPosts(tag);
+}
 
 export const listInstagramContent = instagramHelper.fetchCollectionContent;
 
-export const createInstagramList = instagramHelper.createGetStaticPropsForPage;
+export const createInstagramList = (ctx) => instagramHelper.createGetStaticPropsForPage(ctx);
+
+export const getInstagramItemProps = () =>
+  instagramHelper.getEnhancedStaticPropsForItem(async (i) => {
+    const instagramService = new InstagramAPI();
+    const post = await instagramService.getPost(i.slug);
+    return {
+      ...i,
+      post,
+    };
+  });
 
 export function grabInstagramMatterFromSource(source: string) {
   return matter(source, {

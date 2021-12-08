@@ -19,8 +19,7 @@ export interface ICollectionBase {
 
 type ICollectionSource<T extends ICollectionBase = ICollectionBase> = T & {
   source: MdxRemote.Source;
-}
-
+};
 
 export type CollectionListProps<T extends ICollectionBase> = {
   posts: T[];
@@ -60,7 +59,9 @@ export class CollectionHelper<T extends ICollectionBase> {
 
         // Validate slug string
         if (matterData.slug !== slug) {
-          throw new Error("slug field not match with the path of its content source");
+          throw new Error(
+            `slug ${slug} field not match with the path of its content source ${matterData.slug}`
+          );
         }
 
         return matterData;
@@ -119,29 +120,60 @@ export class CollectionHelper<T extends ICollectionBase> {
     };
   };
 
-  getStaticPropsForItem: GetStaticProps<ICollectionSource<T>> = async ({ params }) => {
-    this.fetchCollectionContent();
-    const slug = params.slug as string;
-    const fullPath = this.cacheDictionary[slug]?.fullPath;
+  // getStaticPropsForItem: GetStaticProps<ICollectionSource<T>> = async ({ params }) => {
 
-    if (!fullPath) {
+  //   this.fetchCollectionContent();
+  //   const slug = params.slug as string;
+  //   const fullPath = this.cacheDictionary[slug]?.fullPath;
+
+  //   if (!fullPath) {
+  //     return {
+  //       notFound: true,
+  //     };
+  //   }
+  //   const source = fs.readFileSync(fullPath, "utf8");
+  //   const { content, data } = grabMatterFromSource<T>(source);
+  //   const mdxSource = await createMDXSource(content, data);
+
+  //   return {
+  //     props: {
+  //       ...data,
+  //       source: mdxSource,
+  //     },
+  //   };
+  // };
+
+  getStaticPropsForItem: GetStaticProps<ICollectionSource<T>> =
+    this.getEnhancedStaticPropsForItem<T>(async (x) => x);
+
+  getEnhancedStaticPropsForItem<TEnhanced extends T>(enhancer: (item: T) => Promise<TEnhanced>) {
+    const func: GetStaticProps<ICollectionSource<TEnhanced>> = async ({ params }) => {
+      this.fetchCollectionContent();
+      const slug = params.slug as string;
+      const fullPath = this.cacheDictionary[slug]?.fullPath;
+
+      if (!fullPath) {
+        return {
+          notFound: true,
+        };
+      }
+      const source = fs.readFileSync(fullPath, "utf8");
+      const { content, data } = grabMatterFromSource<T>(source);
+      const mdxSource = await createMDXSource(content, data);
+
+      const enhancedData = await enhancer(data);
+
       return {
-        notFound: true,
+        props: {
+          ...enhancedData,
+          source: mdxSource,
+        },
       };
-    }
-    const source = fs.readFileSync(fullPath, "utf8");
-    const { content, data } = grabMatterFromSource<T>(source);
-    const mdxSource = await createMDXSource(content, data);
-    
-    return {
-      props: {
-        ...data,
-        source: mdxSource
-      },
     };
-  };
-}
 
+    return func;
+  }
+}
 
 async function createMDXSource(content: string, data: { [x: string]: any }) {
   const mdxSource = await renderToString(content, { components: MDX_Components, scope: data });
@@ -152,9 +184,9 @@ function grabMatterFromSource<T>(source: string) {
   const result = matter(source, {
     engines: { yaml: (s) => yaml.load(s, { schema: yaml.JSON_SCHEMA }) as object },
   });
-  
-  return ({
+
+  return {
     content: result.content,
-    data: result.data as T
-  });
+    data: result.data as T,
+  };
 }

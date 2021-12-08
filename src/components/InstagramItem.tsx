@@ -8,7 +8,7 @@ type Props = {
   post: Readonly<InstagramContent>;
 };
 export default function PostItem({ post }: Props) {
-  const url = `/instagram/${post.instagram_id}`;
+  const url = `/instagram/${post.slug}`;
   return (
     <div>
       <header className={"mt-5 mb-3"}>
