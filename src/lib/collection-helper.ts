@@ -197,7 +197,7 @@ function grabMatterFromSource<T>(source: string) {
   const result = matter(source, {
     engines: { yaml: (s) => yaml.load(s, { schema: yaml.JSON_SCHEMA }) as object },
   });
-
+  
   return {
     content: result.content,
     data: result.data as T,

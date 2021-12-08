@@ -6,13 +6,9 @@ import renderToString from "next-mdx-remote/render-to-string";
 
 type InstagramPageProps = InferGetStaticPropsType<typeof getStaticProps>;
 
-export default function Instagram({ title, tags, source, slug, date, post }: InstagramPageProps) {
-  const content = hydrateSource(source);
-  return (
-    <InstagramLayout title={title} date={date} tags={tags} post={post} slug={slug}>
-      {content}
-    </InstagramLayout>
-  );
+export default function Instagram(props: InstagramPageProps) {
+  const content = hydrateSource(props.source);
+  return <InstagramLayout {...props}>{content}</InstagramLayout>;
 }
 
 export const getStaticPaths = createInstagramItemPaths("instagram");

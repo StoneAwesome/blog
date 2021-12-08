@@ -13,6 +13,9 @@ import Script from "next/script";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 import ImageGallery from "react-image-gallery";
+import { getStaticProps } from "@pages/posts/[slug]";
+import Link from "next/link";
+import InstagramMaterialLink from "./instagram-material-link";
 type Props = Omit<InstagramContent, "fullPath"> & {
   post: InstagramMedia | null;
   children: React.ReactNode;
@@ -47,12 +50,42 @@ export default function InstagramLayout(props: Props) {
   );
 }
 
-export const InstagramBody: React.FC<Props> = ({ title, date, children, tags, post }) => {
+export const InstagramBody: React.FC<Props> = ({ title, date, children, tags, material, post }) => {
   return (
     <div className={"container"}>
       <div className={"posts-container"}>
+        <div className={"card"}>
+          <div className={"card-header"}>
+            <header>
+              <h1 className={"d-flex justify-content-between"}>
+                {title}
+                {post && (
+                  <a href={post.permalink} target={"_blank"}>
+                    <FontAwesomeIcon icon={faInstagram} fixedWidth />
+                  </a>
+                )}
+              </h1>
+              <DateView date={parseISO(date)} />
+            </header>
+          </div>
+          {material && (
+            <div className={"card-header bg-white d-flex align-items-start"}>
+              <b className={"me-2"}>{`Stone${material.length > 1 ? "s" : ""}`}</b>
+              <div className={"d-flex gap-3"}>
+                {material.map((m) => (
+                  <InstagramMaterialLink material={m} key={m} />
+                ))}
+              </div>
+            </div>
+          )}
+          <div className={"card-body"}>
+            <div>{children}</div>
+
+            {post && <InstagramViewer post={post} />}
+          </div>
+        </div>
         <article>
-          <header className={"mb-3"}>
+          {/* <header className={"mb-3"}>
             <h1 className={"d-flex justify-content-between"}>
               {title}
               {post && (
@@ -62,11 +95,12 @@ export const InstagramBody: React.FC<Props> = ({ title, date, children, tags, po
               )}
             </h1>
             <DateView date={parseISO(date)} />
-          </header>
+          </header> */}
 
+          {/* <code>{JSON.stringify({ material }, null, 2)}</code>
           <div>{children}</div>
 
-          {post && <InstagramViewer post={post} />}
+          {post && <InstagramViewer post={post} />} */}
 
           {/* <SimpleInstagramEmbed url={post.permalink} /> */}
         </article>

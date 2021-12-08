@@ -1,25 +1,28 @@
+.blog-link {
+  @extend .text-dark;
+  @extend .border-bottom;
+  @extend .border-primary;
+  @extend .rounded-top;
+  text-decoration: none;
+  background-color: tint-color($primary, 90%);
+  color: color-contrast(tint-color($primary, 90%));
+  &:not(.btn) {
+    padding: 0 0.25rem;
+  }
+  &:hover {
+    background-color: tint-color($primary, 80%);
+    color: color-contrast(tint-color($primary, 80%));
+  }
+}
 .posts-container {
-  @extend .px-3;
+  @extend .px-md-3;
   @extend .mx-auto;
   @extend .my-5;
   max-width: 760px;
 
   p {
     a {
-      @extend .text-dark;
-      @extend .border-bottom;
-      @extend .border-primary;
-      @extend .rounded-top;
-      text-decoration: none;
-      background-color: tint-color($primary, 90%);
-      color: color-contrast(tint-color($primary, 90%));
-      &:not(.btn) {
-        padding: 0 0.25rem;
-      }
-      &:hover {
-        background-color: tint-color($primary, 80%);
-        color: color-contrast(tint-color($primary, 80%));
-      }
+      @extend .blog-link;
     }
   }
 }

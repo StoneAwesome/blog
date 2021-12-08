@@ -110,6 +110,11 @@ collections:
         format: "YYYY-MM-DD"
         dateFormat: "YYYY-MM-DD"
         timeFormat: false
+      - label: "Material"
+        name: "material"
+        widget: select
+        multiple: true
+        options: ["marble", "granite", "porcelain"]
       - label: Tags
         label_singular: "Tag"
         name: "tags"

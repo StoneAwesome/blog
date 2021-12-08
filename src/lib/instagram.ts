@@ -4,8 +4,7 @@ import { CollectionHelper, ICollectionBase, RTS } from "./collection-helper";
 import InstagramAPI from "./instagram-service";
 
 export interface InstagramContent extends ICollectionBase {
-  title: string;
-  fullPath: string;
+  material?: string[];
 }
 
 const instagramHelper = new CollectionHelper<InstagramContent>(
