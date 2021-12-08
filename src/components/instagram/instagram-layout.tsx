@@ -14,19 +14,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 
 type Props = Omit<InstagramContent, "fullPath"> & {
-  post: InstagramMedia;
+  post: InstagramMedia | null;
   children: React.ReactNode;
 };
 export default function InstagramLayout(props: Props) {
-  const {
-    title,
-    date,
-    slug,
-    post: { caption: description = "" },
-    tags,
-  } = props;
+  const { title, date, slug, post, tags } = props;
   const hasTags = tags && tags.length > 0;
   const keywords = hasTags && tags.map ? tags.map((it) => getTag(it).name) : [];
+
+  const description = post?.caption || "";
 
   return (
     <Layout>
@@ -59,16 +55,18 @@ export const InstagramBody: React.FC<Props> = ({ title, date, children, tags, po
           <header className={"mb-3"}>
             <h1 className={"d-flex justify-content-between"}>
               {title}
-              <a href={post.permalink} target={"_blank"}>
-                <FontAwesomeIcon icon={faInstagram} fixedWidth />
-              </a>
+              {post && (
+                <a href={post.permalink} target={"_blank"}>
+                  <FontAwesomeIcon icon={faInstagram} fixedWidth />
+                </a>
+              )}
             </h1>
             <DateView date={parseISO(date)} />
           </header>
 
           <div>{children}</div>
 
-          <InstagramViewer post={post} />
+          {post && <InstagramViewer post={post} />}
 
           {/* <SimpleInstagramEmbed url={post.permalink} /> */}
         </article>
@@ -78,7 +76,7 @@ export const InstagramBody: React.FC<Props> = ({ title, date, children, tags, po
 };
 
 const InstagramViewer: React.FC<{ post: InstagramMedia }> = ({ post }) => {
-  if (post.media_type === "CAROUSEL_ALBUM" && post.children.length > 0) {
+  if (post.media_type === "CAROUSEL_ALBUM" && post.children && post.children.length > 0) {
     return (
       <div className={"d-flex flex-column"}>
         {post.children.map((p) => (

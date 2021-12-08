@@ -14,7 +14,7 @@ type Props = {
   title: string;
   date: Date;
   slug: string;
-  tags: string[];
+  tags?: string[];
   author: string;
   description?: string;
   children: React.ReactNode;

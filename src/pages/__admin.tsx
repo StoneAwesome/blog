@@ -127,7 +127,7 @@ const Article: React.FC<PreviewTemplateComponentProps> = (props) => {
   const d = safeGet(props.entry);
   const details = d("body", "");
 
-  const [data, set_data] = React.useState(null);
+  const [data, set_data] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     remark()

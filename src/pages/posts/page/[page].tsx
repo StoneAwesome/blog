@@ -1,4 +1,3 @@
-import { GetStaticPaths, GetStaticProps } from "next";
 import Layout from "@components/main-layout";
 import BasicMeta from "@components/meta/BasicMeta";
 import OpenGraphMeta from "@components/meta/OpenGraphMeta";
@@ -29,6 +28,6 @@ export default function Page({ posts, tags, pagination, page }: Props) {
   );
 }
 
-export const getStaticProps: GetStaticProps = createPostList;
+export const getStaticProps = createPostList;
 
-export const getStaticPaths: GetStaticPaths = createPostListPaths();
+export const getStaticPaths = createPostListPaths();

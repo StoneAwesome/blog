@@ -32,15 +32,22 @@ export type CollectionListProps<T extends ICollectionBase> = {
   };
 };
 
+interface IDictionary<T> {
+  [key: string]: T;
+}
 export class CollectionHelper<T extends ICollectionBase> {
   private cache: T[];
-  private cacheDictionary: { [slug: string]: T };
+  private cacheDictionary: IDictionary<T>;
 
-  constructor(private directory: string) {}
+  constructor(private directory: string) {
+    const result = this.initializeCache();
+    this.cache = result.cache;
+    this.cacheDictionary = result.dictionary;
+  }
 
-  fetchCollectionContent(): T[] {
-    if (this.cache) {
-      return this.cache;
+  private initializeCache() {
+    if (this.cache && this.cacheDictionary) {
+      return { cache: this.cache, dictionary: this.cacheDictionary };
     }
     // Get file names under /posts
     const fileNames = fs.readdirSync(this.directory);
@@ -69,15 +76,22 @@ export class CollectionHelper<T extends ICollectionBase> {
       });
 
     // Sort posts by date
-    this.cache = allPostsData.sort((a, b) => {
+    const cache = allPostsData.sort((a, b) => {
       if (a.date < b.date) {
         return 1;
       } else {
         return -1;
       }
     });
-    this.cacheDictionary = {};
-    this.cache.forEach((i) => (this.cacheDictionary[i.slug] = i));
+    const dictionary: IDictionary<T> = {};
+    cache.forEach((i) => (dictionary[i.slug] = i));
+    return {
+      cache,
+      dictionary,
+    };
+  }
+
+  fetchCollectionContent(): T[] {
     return this.cache;
   }
 
@@ -148,7 +162,7 @@ export class CollectionHelper<T extends ICollectionBase> {
   ) {
     const func: GetStaticProps<ICollectionSource<TEnhanced>> = async ({ params }) => {
       this.fetchCollectionContent();
-      const slug = params.slug as string;
+      const slug = params?.slug as string;
       const fullPath = this.cacheDictionary[slug]?.fullPath;
 
       if (!fullPath) {

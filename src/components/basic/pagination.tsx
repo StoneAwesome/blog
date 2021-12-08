@@ -17,11 +17,11 @@ export default function Pagination({ current, pages, link }: Props) {
         <div key={i} className={`page-item ${it.page === current ? "active" : ""}`}>
           {it.excerpt ? (
             "..."
-          ) : (
+          ) : it.page !== null ? (
             <Link href={link.href(it.page)} as={link.as(it.page)}>
               <a className={`page-link`}>{it.page}</a>
             </Link>
-          )}
+          ) : null}
         </div>
       ))}
     </div>

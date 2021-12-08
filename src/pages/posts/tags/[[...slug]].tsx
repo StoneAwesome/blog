@@ -31,7 +31,7 @@ export default function Index({ posts, tag, pagination, page }: Props) {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const queries = params.slug as string[];
+  const queries = params?.slug as string[];
   const [slug, page] = [queries[0], queries[1]];
   const posts = listPostContent(page ? parseInt(page as string) : 1, config.posts_per_page, slug);
   const tag = getTag(slug);

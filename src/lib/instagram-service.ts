@@ -90,7 +90,7 @@ class InstagramAPI {
     return await parsePagedResult(url);
   }
 
-  async getPost(id: string): Promise<InstagramMedia> {
+  async getPost(id: string): Promise<InstagramMedia | null> {
     const url = this.buildUri(id, ...MEDIA_PROPERTIES);
     try {
       const result = await fetch(url);

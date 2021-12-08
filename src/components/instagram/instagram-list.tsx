@@ -30,7 +30,7 @@ export default function InstagramList({ posts, tags, pagination }: Props) {
               pages={pagination.pages}
               link={{
                 href: (page) => (page === 1 ? "/instagram" : "/instagram/page/[page]"),
-                as: (page) => (page === 1 ? null : "/instagram/page/" + page),
+                as: (page) => (page === 1 ? "" : "/instagram/page/" + page),
               }}
             />
           )}
