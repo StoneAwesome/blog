@@ -20,15 +20,15 @@ export default function NavHeader() {
           <p className="lead  mt-4 text-center">{config.site_description}</p>
         </div>
       </div>
-      <nav className="border-bottom pt-2 pb-3 pb-md-2">
+      <nav className="border-bottom">
         <div className="container d-flex align-items-md-center py-2">
           <nav className="nav mx-auto">
             <Link href="/posts">
               <a className={LINK_CLASS}>{"Blog"}</a>
             </Link>
-            <Link href="/tags">
+            {/* <Link href="/tags">
               <a className={LINK_CLASS}>{"Tags"}</a>
-            </Link>
+            </Link> */}
             <Link href="/instagram">
               <a className={LINK_CLASS}>
                 <FontAwesomeIcon icon={faInstagram} fixedWidth className={"me-2"} />
