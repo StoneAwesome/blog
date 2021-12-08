@@ -1,9 +1,8 @@
 import React from "react";
-import InstagramItem from "./InstagramItem";
-import TagLink from "./TagLink";
-import Pagination from "./Pagination";
-import type { TagContent } from "../lib/tags";
-import type { InstagramContent } from "../lib/instagram";
+import InstagramItem from "./instagram-item";
+import Pagination from "@components/basic/pagination";
+import type { TagContent } from "@lib/tags";
+import type { InstagramContent } from "@lib/instagram";
 
 type Props = {
   posts: InstagramContent[];
@@ -35,13 +34,6 @@ export default function InstagramList({ posts, tags, pagination }: Props) {
               }}
             />
           )}
-        </div>
-        <div className={"d-flex flex-wrap mt-3"}>
-          {tags.map((it, i) => (
-            <div key={i} className={"my-1 mx-2"}>
-              <TagLink tag={it} />
-            </div>
-          ))}
         </div>
       </div>
     </div>

@@ -1,17 +1,17 @@
 import Script from "next/script";
 import * as React from "react";
-import { PostBody } from "../components/PostLayout";
+import { PostBody } from "@components/post/post-layout";
 import type { PreviewTemplateComponentProps, CmsWidgetControlProps } from "netlify-cms-core";
 import { remark } from "remark";
 import html from "remark-html";
 import { parseISO } from "date-fns";
 import { PostPageProps } from "./posts/[slug]";
 import useSWR from "swr";
-import InstagramAPI from "../lib/instagram-service";
+import InstagramAPI from "@lib/instagram-service";
 import { useCollapsePanel } from "../hooks/use-collapse-panel";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExternalLink } from "@fortawesome/pro-duotone-svg-icons";
-import DateView from "../components/date-view";
+import DateView from "@components/basic/date-view";
 export type AdminPageProps = {};
 
 const AdminPage: React.FC<AdminPageProps> = (props) => {

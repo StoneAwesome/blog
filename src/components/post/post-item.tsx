@@ -1,10 +1,10 @@
-import type { PostContent } from "../lib/posts";
-import DateView from "./date-view";
+import type { PostContent } from "@lib/posts";
+import DateView from "@components/basic/date-view";
 import Link from "next/link";
 import { parseISO } from "date-fns";
 import React from "react";
-import { getAuthor } from "../lib/authors";
-import Author from "./Author";
+import { getAuthor } from "@lib/authors";
+import Author from "@components/post/post-author";
 
 type Props = {
   post: Readonly<PostContent>;

@@ -1,4 +1,4 @@
-import { generatePagination } from "../lib/pagination";
+import { generatePagination } from "@lib/pagination";
 
 test("excerpt starting and ending page numbers", () => {
   const pagination = generatePagination(5, 8);

@@ -1,15 +1,14 @@
 import React from "react";
-import Author from "./Author";
-import Copyright from "./Copyright";
-import DateView from "./date-view";
-import Layout from "./Layout";
-import BasicMeta from "./meta/BasicMeta";
-import JsonLdMeta from "./meta/JsonLdMeta";
-import OpenGraphMeta from "./meta/OpenGraphMeta";
-import TwitterCardMeta from "./meta/TwitterCardMeta";
-import TagButton from "./TagButton";
-import { getAuthor } from "../lib/authors";
-import { getTag } from "../lib/tags";
+import Author from "@components/post/post-author";
+import DateView from "@components/basic/date-view";
+import Layout from "@components/main-layout";
+import BasicMeta from "@components/meta/BasicMeta";
+import JsonLdMeta from "@components/meta/JsonLdMeta";
+import OpenGraphMeta from "@components/meta/OpenGraphMeta";
+import TwitterCardMeta from "@components/meta/TwitterCardMeta";
+import TagButton from "@components/post/tag-button";
+import { getAuthor } from "@lib/authors";
+import { getTag } from "@lib/tags";
 
 type Props = {
   title: string;
@@ -77,10 +76,6 @@ export const PostBody: React.FC<Props> = ({ title, author, date, children, tags 
           )}
         </article>
       </div>
-
-      <footer>
-        <Copyright />
-      </footer>
     </div>
   );
 };

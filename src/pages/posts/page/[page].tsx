@@ -1,11 +1,11 @@
 import { GetStaticPaths, GetStaticProps } from "next";
-import Layout from "../../../components/Layout";
-import BasicMeta from "../../../components/meta/BasicMeta";
-import OpenGraphMeta from "../../../components/meta/OpenGraphMeta";
-import TwitterCardMeta from "../../../components/meta/TwitterCardMeta";
-import PostList from "../../../components/PostList";
-import { createPostList, createPostListPaths, PostContent } from "../../../lib/posts";
-import { TagContent } from "../../../lib/tags";
+import Layout from "@components/main-layout";
+import BasicMeta from "@components/meta/BasicMeta";
+import OpenGraphMeta from "@components/meta/OpenGraphMeta";
+import TwitterCardMeta from "@components/meta/TwitterCardMeta";
+import PostList from "@components/post/post-list";
+import { createPostList, createPostListPaths, PostContent } from "@lib/posts";
+import { TagContent } from "@lib/tags";
 
 type Props = {
   posts: Readonly<PostContent>[];

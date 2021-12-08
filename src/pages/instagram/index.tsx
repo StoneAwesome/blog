@@ -1,10 +1,10 @@
-import Layout from "../../components/Layout";
-import BasicMeta from "../../components/meta/BasicMeta";
-import OpenGraphMeta from "../../components/meta/OpenGraphMeta";
-import TwitterCardMeta from "../../components/meta/TwitterCardMeta";
-import InstagramList from "../../components/InstagramList";
-import { createInstagramList, InstagramContent } from "../../lib/instagram";
-import { TagContent } from "../../lib/tags";
+import Layout from "@components/main-layout";
+import BasicMeta from "@components/meta/BasicMeta";
+import OpenGraphMeta from "@components/meta/OpenGraphMeta";
+import TwitterCardMeta from "@components/meta/TwitterCardMeta";
+import InstagramList from "@components/instagram/instagram-list";
+import { createInstagramList, InstagramContent } from "@lib/instagram";
+import { TagContent } from "@lib/tags";
 
 type InstagramListProps = {
   posts: InstagramContent[];

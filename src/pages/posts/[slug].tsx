@@ -1,7 +1,7 @@
-import { getStaticPathsForPosts, getStaticPropsForItem } from "../../lib/posts";
+import { getStaticPathsForPosts, getStaticPropsForItem } from "@lib/posts";
 import { parseISO } from "date-fns";
-import PostLayout from "../../components/PostLayout";
-import { hydrateSource } from "../../lib/mdx-helper";
+import PostLayout from "@components/post/post-layout";
+import { hydrateSource } from "@lib/mdx-helper";
 import { InferGetStaticPropsType } from "next";
 import renderToString from "next-mdx-remote/render-to-string";
 

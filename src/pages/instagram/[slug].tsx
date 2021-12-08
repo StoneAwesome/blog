@@ -1,6 +1,6 @@
-import { createInstagramItemPaths, getInstagramItemProps } from "../../lib/instagram";
-import { hydrateSource } from "../../lib/mdx-helper";
-import InstagramLayout from "../../components/InstagramLayout";
+import { createInstagramItemPaths, getInstagramItemProps } from "@lib/instagram";
+import { hydrateSource } from "@lib/mdx-helper";
+import InstagramLayout from "@components/instagram/instagram-layout";
 import { InferGetStaticPropsType } from "next";
 import renderToString from "next-mdx-remote/render-to-string";
 

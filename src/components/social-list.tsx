@@ -1,5 +1,5 @@
 import React from "react";
-import config from "../lib/config";
+import config from "@lib/config";
 import { FontAwesomeIcon, FontAwesomeIconProps } from "@fortawesome/react-fontawesome";
 import { faGithub, faInstagram, faPinterest, faTwitter } from "@fortawesome/free-brands-svg-icons";
 

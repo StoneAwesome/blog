@@ -1,8 +1,8 @@
-import DateView from "./date-view";
+import DateView from "../basic/date-view";
 import Link from "next/link";
 import { parseISO } from "date-fns";
 import React from "react";
-import type { InstagramContent } from "../lib/instagram";
+import type { InstagramContent } from "@lib/instagram";
 
 type Props = {
   post: Readonly<InstagramContent>;
