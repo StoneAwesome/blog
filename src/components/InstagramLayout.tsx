@@ -1,21 +1,17 @@
 import React from "react";
-import Author from "./Author";
 import Date from "./Date";
 import Layout from "./Layout";
 import BasicMeta from "./meta/BasicMeta";
 import JsonLdMeta from "./meta/JsonLdMeta";
 import OpenGraphMeta from "./meta/OpenGraphMeta";
 import TwitterCardMeta from "./meta/TwitterCardMeta";
-import TagButton from "./TagButton";
-import { getAuthor } from "../lib/authors";
 import { getTag } from "../lib/tags";
 import { InstagramContent } from "../lib/instagram";
 import { parseISO } from "date-fns";
 import { InstagramMedia } from "../lib/instagram-service";
-import InstagramEmbed from "react-instagram-embed";
 import Script from "next/script";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faInstagramSquare } from "@fortawesome/free-brands-svg-icons";
+import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 
 type Props = Omit<InstagramContent, "fullPath"> & {
   post: InstagramMedia;
@@ -25,8 +21,7 @@ export default function InstagramLayout(props: Props) {
   const {
     title,
     date,
-    instagram_id: slug,
-    author,
+    slug,
     post: { caption: description = "" },
     tags,
   } = props;
@@ -48,7 +43,7 @@ export default function InstagramLayout(props: Props) {
         title={title}
         keywords={keywords}
         date={parseISO(date)}
-        author={author}
+        author={"@StoneAwesomeHQ"}
         description={description}
       />
       <InstagramBody {...props} />
@@ -56,24 +51,19 @@ export default function InstagramLayout(props: Props) {
   );
 }
 
-export const InstagramBody: React.FC<Props> = ({ title, author, date, children, tags, post }) => {
+export const InstagramBody: React.FC<Props> = ({ title, date, children, tags, post }) => {
   return (
     <div className={"container"}>
       <div className={"posts-container"}>
         <article>
           <header className={"mb-3"}>
-            <h1>
+            <h1 className={"d-flex justify-content-between"}>
               {title}
               <a href={post.permalink} target={"_blank"}>
-                <FontAwesomeIcon icon={faInstagramSquare} fixedWidth />
+                <FontAwesomeIcon icon={faInstagram} fixedWidth />
               </a>
             </h1>
-            <div className={"d-flex align-items-center mb-4 text-muted author-info"}>
-              {author}
-              <div className={"d-flex align-items-center ms-3"}>
-                <Date date={parseISO(date)} />
-              </div>
-            </div>
+            <Date date={parseISO(date)} />
           </header>
 
           <div>{children}</div>
