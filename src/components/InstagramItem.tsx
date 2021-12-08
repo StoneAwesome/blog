@@ -1,4 +1,4 @@
-import Date from "./Date";
+import DateView from "./date-view";
 import Link from "next/link";
 import { parseISO } from "date-fns";
 import React from "react";
@@ -19,7 +19,7 @@ export default function PostItem({ post }: Props) {
         </Link>
         <div className={"d-flex align-items-center mb-4 text-muted author-info"}>
           <div className={"d-flex align-items-center ms-3"}>
-            <Date date={parseISO(post.date)} />
+            <DateView date={parseISO(post.date)} />
           </div>
         </div>
       </header>

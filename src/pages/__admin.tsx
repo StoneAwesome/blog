@@ -1,16 +1,23 @@
 import Script from "next/script";
 import * as React from "react";
 import { PostBody } from "../components/PostLayout";
-import type { PreviewTemplateComponentProps } from "netlify-cms-core";
+import type { PreviewTemplateComponentProps, CmsWidgetControlProps } from "netlify-cms-core";
 import { remark } from "remark";
 import html from "remark-html";
 import { parseISO } from "date-fns";
 import { PostPageProps } from "./posts/[slug]";
+import useSWR from "swr";
+import InstagramAPI from "../lib/instagram-service";
+import { useCollapsePanel } from "../hooks/use-collapse-panel";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExternalLink } from "@fortawesome/pro-duotone-svg-icons";
+import DateView from "../components/date-view";
 export type AdminPageProps = {};
 
 const AdminPage: React.FC<AdminPageProps> = (props) => {
   React.useEffect(() => {
     (async () => {
+      import("bootstrap");
       const CMS = (await import("netlify-cms-app")).default;
       CMS.init();
       const allCss = document.head.getElementsByTagName("style");
@@ -33,23 +40,77 @@ const AdminPage: React.FC<AdminPageProps> = (props) => {
       }
 
       CMS.registerPreviewTemplate("posts", Article);
-      CMS.registerWidget(
-        "instagram",
-        (p) => <div>{"My Widget"}</div>,
-        (previewProps) => (
-          <div>
-            <code>
-              <pre>{JSON.stringify(previewProps.field)}</pre>
-            </code>
-          </div>
-        )
-      );
+      CMS.registerWidget("instagram", InstagramSelector);
     })();
   }, []);
 
   return (
     <div>
       <Script src={"https://identity.netlify.com/v1/netlify-identity-widget.js"} />
+    </div>
+  );
+};
+
+const InstagramSelector: React.FC<CmsWidgetControlProps<string>> = (props) => {
+  const { data = [] } = useSWR(`RECENT_INSTAGRAM_POSTS`, async () => {
+    const instagramClient = new InstagramAPI();
+    return await instagramClient.getRecentPosts();
+  });
+
+  const { onClick, panelRef, isCollapsed } = useCollapsePanel(true);
+
+  const selected = data ? data.find((d) => d.id === props.value) : null;
+
+  return (
+    <div className={"pt-2 d-flex flex-column gap-2"}>
+      {isCollapsed && (
+        <button className={"btn btn-primary"} onClick={onClick}>
+          {"Select Post"}
+        </button>
+      )}
+
+      <div>
+        {selected && isCollapsed ? (
+          <div className={"d-flex gap-2"}>
+            <img
+              src={selected.thumbnail_url || selected.media_url}
+              className={"img-thumbnail"}
+              style={{ width: "18rem" }}
+            />
+            <div>
+              <a href={selected.permalink} target={"_blank"}>
+                {"View on Instagram"}
+                <FontAwesomeIcon icon={faExternalLink} className={"ms-2"} />
+              </a>
+              <div>
+                <DateView date={parseISO(selected.timestamp)} />
+              </div>
+              <p>{selected.caption}</p>
+            </div>
+          </div>
+        ) : null}
+      </div>
+
+      <div className={"collapse"} ref={panelRef}>
+        <div className={"row border py-1"}>
+          {data.map((d) => (
+            <div className={"col-4"}>
+              <div
+                className={`card my-1  ${d.id === props.value ? "border-primary" : ""}`}
+                onClick={() => {
+                  props.onChange(d.id);
+                  onClick();
+                }}
+              >
+                <img src={d.thumbnail_url || d.media_url} className={"card-img-top"} />
+                <div className={"card-body border-top"}>
+                  <p className={"card-text"}>{`${d.caption?.substr(0, 255)}...`}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

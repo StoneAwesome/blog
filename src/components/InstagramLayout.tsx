@@ -1,5 +1,5 @@
 import React from "react";
-import Date from "./Date";
+import DateView from "./date-view";
 import Layout from "./Layout";
 import BasicMeta from "./meta/BasicMeta";
 import JsonLdMeta from "./meta/JsonLdMeta";
@@ -63,7 +63,7 @@ export const InstagramBody: React.FC<Props> = ({ title, date, children, tags, po
                 <FontAwesomeIcon icon={faInstagram} fixedWidth />
               </a>
             </h1>
-            <Date date={parseISO(date)} />
+            <DateView date={parseISO(date)} />
           </header>
 
           <div>{children}</div>

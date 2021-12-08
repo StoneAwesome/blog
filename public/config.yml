@@ -94,8 +94,8 @@ collections:
     extension: "mdx"
     format: "frontmatter"
     create: true
-    slug: "{{instagram_id}}"
-    identifier_field: instagram_id
+    slug: "{{slug}}"
+    identifier_field: slug
     summary: "{{title}}"
     fields:
       - label: "Title"

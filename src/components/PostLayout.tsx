@@ -1,7 +1,7 @@
 import React from "react";
 import Author from "./Author";
 import Copyright from "./Copyright";
-import Date from "./Date";
+import DateView from "./date-view";
 import Layout from "./Layout";
 import BasicMeta from "./meta/BasicMeta";
 import JsonLdMeta from "./meta/JsonLdMeta";
@@ -61,7 +61,7 @@ export const PostBody: React.FC<Props> = ({ title, author, date, children, tags 
             <div className={"d-flex align-items-center mb-4 text-muted author-info"}>
               {author && <Author author={getAuthor(author)} />}
               <div className={"d-flex align-items-center ms-3"}>
-                <Date date={date} />
+                <DateView date={date} />
               </div>
             </div>
           </header>

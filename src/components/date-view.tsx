@@ -5,7 +5,7 @@ import { format, formatISO } from "date-fns";
 type Props = {
   date: Date;
 };
-export default function Date({ date }: Props) {
+export default function DateView({ date }: Props) {
   return (
     <div className={"d-flex align-items-center"}>
       <FontAwesomeIcon icon={faCalendarDay} fixedWidth className={"me-2"} />
