@@ -2,12 +2,14 @@ import fs from "fs";
 import matter from "gray-matter";
 import path from "path";
 import yaml from "js-yaml";
-import renderToString from "next-mdx-remote/render-to-string";
 import { MDX_Components } from "./mdx-helper";
 import { listTags, TagContent } from "./tags";
 import config from "./config";
 import { GetStaticPaths, GetStaticProps } from "next";
 import type { MdxRemote } from "next-mdx-remote/types";
+import type renderToString from "next-mdx-remote/render-to-string";
+
+export type RTS = typeof renderToString;
 
 export interface ICollectionBase {
   date: string;
@@ -37,7 +39,6 @@ export class CollectionHelper<T extends ICollectionBase> {
   constructor(private directory: string) {}
 
   fetchCollectionContent(): T[] {
-    //-- Todo how we remove the need for the this because of the lexicographical scoping.
     if (this.cache) {
       return this.cache;
     }
@@ -137,11 +138,14 @@ export class CollectionHelper<T extends ICollectionBase> {
     return result;
   }
 
-  
-  getStaticPropsForItem: GetStaticProps<ICollectionSource<T>> =
-    this.getEnhancedStaticPropsForItem<T>(async (x) => x);
+  getStaticPropsForItem(rts: RTS): GetStaticProps<ICollectionSource<T>> {
+    return this.getEnhancedStaticPropsForItem(rts, async (x) => x);
+  }
 
-  getEnhancedStaticPropsForItem<TEnhanced extends T>(enhancer: (item: T) => Promise<TEnhanced>) {
+  getEnhancedStaticPropsForItem<TEnhanced extends T>(
+    rts: RTS,
+    enhancer: (item: T) => Promise<TEnhanced>
+  ) {
     const func: GetStaticProps<ICollectionSource<TEnhanced>> = async ({ params }) => {
       this.fetchCollectionContent();
       const slug = params.slug as string;
@@ -154,7 +158,7 @@ export class CollectionHelper<T extends ICollectionBase> {
       }
       const source = fs.readFileSync(fullPath, "utf8");
       const { content, data } = grabMatterFromSource<T>(source);
-      const mdxSource = await createMDXSource(content, data);
+      const mdxSource = await createMDXSource(content, data, rts);
 
       const enhancedData = await enhancer(data);
 
@@ -170,8 +174,8 @@ export class CollectionHelper<T extends ICollectionBase> {
   }
 }
 
-async function createMDXSource(content: string, data: { [x: string]: any }) {
-  const mdxSource = await renderToString(content, { components: MDX_Components, scope: data });
+async function createMDXSource(content: string, data: { [x: string]: any }, rts: RTS) {
+  const mdxSource = await rts(content, { components: MDX_Components, scope: data });
   return mdxSource;
 }
 

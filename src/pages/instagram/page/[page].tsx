@@ -1,15 +1,12 @@
-import { GetStaticPaths, GetStaticProps } from "next";
 import Layout from "../../../components/Layout";
 import BasicMeta from "../../../components/meta/BasicMeta";
 import OpenGraphMeta from "../../../components/meta/OpenGraphMeta";
 import TwitterCardMeta from "../../../components/meta/TwitterCardMeta";
 import InstagramList from "../../../components/InstagramList";
-import {
-  createInstagramList,
-  createInstagramItemPaths,
-  InstagramContent,
-} from "../../../lib/instagram";
+import { createInstagramList, createInstagramPathsForPages } from "../../../lib/instagram";
+import type { InstagramContent } from "../../../lib/instagram";
 import { TagContent } from "../../../lib/tags";
+import { GetStaticPaths } from "next";
 
 type Props = {
   posts: Readonly<InstagramContent>[];
@@ -33,6 +30,6 @@ export default function Page({ posts, tags, pagination, page }: Props) {
   );
 }
 
-export const getStaticProps: GetStaticProps = createInstagramList;
+export const getStaticProps = createInstagramList;
 
-export const getStaticPaths: GetStaticPaths = createInstagramItemPaths("instagram");
+export const getStaticPaths = createInstagramPathsForPages();

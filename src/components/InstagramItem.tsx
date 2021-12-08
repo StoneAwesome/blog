@@ -2,7 +2,7 @@ import Date from "./Date";
 import Link from "next/link";
 import { parseISO } from "date-fns";
 import React from "react";
-import { InstagramContent } from "../lib/instagram";
+import type { InstagramContent } from "../lib/instagram";
 
 type Props = {
   post: Readonly<InstagramContent>;

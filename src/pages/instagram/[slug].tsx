@@ -1,10 +1,8 @@
-import {
-  createInstagramItemPaths,
-  getInstagramItemProps,
-} from "../../lib/instagram";
+import { createInstagramItemPaths, getInstagramItemProps } from "../../lib/instagram";
 import { hydrateSource } from "../../lib/mdx-helper";
 import InstagramLayout from "../../components/InstagramLayout";
 import { InferGetStaticPropsType } from "next";
+import renderToString from "next-mdx-remote/render-to-string";
 
 export default function Instagram({
   title,
@@ -24,4 +22,4 @@ export default function Instagram({
 
 export const getStaticPaths = createInstagramItemPaths("instagram");
 
-export const getStaticProps = getInstagramItemProps();
+export const getStaticProps = getInstagramItemProps(renderToString);

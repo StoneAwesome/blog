@@ -6,7 +6,7 @@ import JsonLdMeta from "./meta/JsonLdMeta";
 import OpenGraphMeta from "./meta/OpenGraphMeta";
 import TwitterCardMeta from "./meta/TwitterCardMeta";
 import { getTag } from "../lib/tags";
-import { InstagramContent } from "../lib/instagram";
+import type { InstagramContent } from "../lib/instagram";
 import { parseISO } from "date-fns";
 import { InstagramMedia } from "../lib/instagram-service";
 import Script from "next/script";

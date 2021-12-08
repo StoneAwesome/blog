@@ -2,8 +2,8 @@ import React from "react";
 import InstagramItem from "./InstagramItem";
 import TagLink from "./TagLink";
 import Pagination from "./Pagination";
-import { TagContent } from "../lib/tags";
-import { InstagramContent } from "../lib/instagram";
+import type { TagContent } from "../lib/tags";
+import type { InstagramContent } from "../lib/instagram";
 
 type Props = {
   posts: InstagramContent[];

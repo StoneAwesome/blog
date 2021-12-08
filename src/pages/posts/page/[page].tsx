@@ -4,8 +4,7 @@ import BasicMeta from "../../../components/meta/BasicMeta";
 import OpenGraphMeta from "../../../components/meta/OpenGraphMeta";
 import TwitterCardMeta from "../../../components/meta/TwitterCardMeta";
 import PostList from "../../../components/PostList";
-import config from "../../../lib/config";
-import { countPosts, createPostList, createPostListPaths, PostContent } from "../../../lib/posts";
+import { createPostList, createPostListPaths, PostContent } from "../../../lib/posts";
 import { TagContent } from "../../../lib/tags";
 
 type Props = {

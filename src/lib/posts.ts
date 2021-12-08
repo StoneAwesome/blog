@@ -1,7 +1,5 @@
 import path from "path";
-import { CollectionHelper, ICollectionBase } from "./collection-helper";
-import { GetStaticPropsContext, PreviewData } from "next";
-import { ParsedUrlQuery } from "querystring";
+import { CollectionHelper, ICollectionBase, RTS } from "./collection-helper";
 
 export interface PostContent extends ICollectionBase {
   author?: string;
@@ -18,17 +16,15 @@ const postHelper = new CollectionHelper<PostContent>(path.join(process.cwd(), "c
 
 export const fetchPostContent = () => postHelper.fetchCollectionContent();
 
-export const countPosts = (tag?: string) => postHelper.countPosts(tag);
+export const countPosts = (tag?: string) => 2;// postHelper.countPosts(tag);
 
 export const listPostContent = (page: number, limit: number, tag?: string) =>
   postHelper.listContent(page, limit, tag);
 
-
 export const createPostList = (ctx) => postHelper.createGetStaticPropsForPage(ctx);
 
-export const createPostListPaths = postHelper.getStaticPathsForPages;
+export const createPostListPaths = () => postHelper.getStaticPathsForPages();
 
 export const getStaticPathsForPosts = postHelper.getStaticPathsForItems("posts");
 
-export const getStaticPropsForItem = (p: GetStaticPropsContext<ParsedUrlQuery, PreviewData>) =>
-  postHelper.getStaticPropsForItem(p);
+export const getStaticPropsForItem = (rts: RTS) => postHelper.getStaticPropsForItem(rts);

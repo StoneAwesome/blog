@@ -1,6 +1,6 @@
-import { GetStaticPathsContext, GetStaticPropsContext, PreviewData } from "next";
+import { GetStaticPropsContext, PreviewData } from "next";
 import path from "path";
-import { CollectionHelper, ICollectionBase } from "./collection-helper";
+import { CollectionHelper, ICollectionBase, RTS } from "./collection-helper";
 import InstagramAPI from "./instagram-service";
 
 export interface InstagramContent extends ICollectionBase {
@@ -14,15 +14,15 @@ const instagramHelper = new CollectionHelper<InstagramContent>(
 
 export const fetchInstagramContent = () => instagramHelper.fetchCollectionContent();
 
-export const countInstagramPosts = (tag?: string) => instagramHelper.countPosts(tag);
-
 export const createInstagramList = (ctx: GetStaticPropsContext<{ page: string }, PreviewData>) =>
   instagramHelper.createGetStaticPropsForPage(ctx);
 
-export const createInstagramItemPaths = (path: string) => instagramHelper.getStaticPathsForItems(path);
+export const createInstagramItemPaths = (path: string) =>
+  instagramHelper.getStaticPathsForItems(path);
+export const createInstagramPathsForPages = () => instagramHelper.getStaticPathsForPages();
 
-export const getInstagramItemProps = () =>
-  instagramHelper.getEnhancedStaticPropsForItem(async (i) => {
+export const getInstagramItemProps = (rts: RTS) =>
+  instagramHelper.getEnhancedStaticPropsForItem(rts, async (i) => {
     const instagramService = new InstagramAPI();
     const post = await instagramService.getPost(i.slug);
     return {

@@ -33,6 +33,17 @@ const AdminPage: React.FC<AdminPageProps> = (props) => {
       }
 
       CMS.registerPreviewTemplate("posts", Article);
+      CMS.registerWidget(
+        "instagram",
+        (p) => <div>{"My Widget"}</div>,
+        (previewProps) => (
+          <div>
+            <code>
+              <pre>{JSON.stringify(previewProps.field)}</pre>
+            </code>
+          </div>
+        )
+      );
     })();
   }, []);
 
