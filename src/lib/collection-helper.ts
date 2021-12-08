@@ -112,37 +112,32 @@ export class CollectionHelper<T extends ICollectionBase> {
     };
   };
 
-  getStaticPaths: GetStaticPaths = async () => {
-    const paths = this.fetchCollectionContent().map((it) => "/posts/" + it.slug);
-    return {
-      paths,
-      fallback: false,
+  getStaticPathsForItems(path: string) {
+    const result: GetStaticPaths = async () => {
+      const paths = this.fetchCollectionContent().map((it) => `/${path}/${it.slug}`);
+      return {
+        paths,
+        fallback: false,
+      };
     };
-  };
+    return result;
+  }
 
-  // getStaticPropsForItem: GetStaticProps<ICollectionSource<T>> = async ({ params }) => {
+  getStaticPathsForPages() {
+    const result: GetStaticPaths = async () => {
+      const pages = Math.ceil(this.countPosts() / config.posts_per_page);
+      const paths = Array.from(Array(pages - 1).keys()).map((it) => ({
+        params: { page: (it + 2).toString() },
+      }));
+      return {
+        paths: paths,
+        fallback: false,
+      };
+    };
+    return result;
+  }
 
-  //   this.fetchCollectionContent();
-  //   const slug = params.slug as string;
-  //   const fullPath = this.cacheDictionary[slug]?.fullPath;
-
-  //   if (!fullPath) {
-  //     return {
-  //       notFound: true,
-  //     };
-  //   }
-  //   const source = fs.readFileSync(fullPath, "utf8");
-  //   const { content, data } = grabMatterFromSource<T>(source);
-  //   const mdxSource = await createMDXSource(content, data);
-
-  //   return {
-  //     props: {
-  //       ...data,
-  //       source: mdxSource,
-  //     },
-  //   };
-  // };
-
+  
   getStaticPropsForItem: GetStaticProps<ICollectionSource<T>> =
     this.getEnhancedStaticPropsForItem<T>(async (x) => x);
 

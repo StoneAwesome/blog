@@ -1,11 +1,11 @@
 import Script from "next/script";
 import * as React from "react";
-import PostLayout, { PostBody } from "../components/PostLayout";
-import type { PreviewTemplateComponentProps, CmsFieldMap } from "netlify-cms-core";
+import { PostBody } from "../components/PostLayout";
+import type { PreviewTemplateComponentProps } from "netlify-cms-core";
 import { remark } from "remark";
 import html from "remark-html";
 import { parseISO } from "date-fns";
-import { Props } from "./posts/[slug]";
+import { PostPageProps } from "./posts/[slug]";
 export type AdminPageProps = {};
 
 const AdminPage: React.FC<AdminPageProps> = (props) => {
@@ -44,7 +44,7 @@ const AdminPage: React.FC<AdminPageProps> = (props) => {
 };
 
 function safeGet(entry: PreviewTemplateComponentProps["entry"]) {
-  return <T,>(key: keyof Props | "body", emptyValue: T) => {
+  return <T,>(key: keyof PostPageProps | "body", emptyValue: T) => {
     const value = entry.getIn(["data", key]);
 
     return value || emptyValue;
@@ -71,7 +71,7 @@ const Article: React.FC<PreviewTemplateComponentProps> = (props) => {
 
   return (
     <PostBody
-      date={parseISO(d("dateString", "1900-01-01"))}
+      date={parseISO(d("date", "1900-01-01"))}
       slug={d("slug", "")}
       tags={d("tags", [])}
       title={d("title", "")}

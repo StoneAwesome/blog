@@ -1,6 +1,4 @@
-import matter from "gray-matter";
 import path from "path";
-import yaml from "js-yaml";
 import { CollectionHelper, ICollectionBase } from "./collection-helper";
 import { GetStaticPropsContext, PreviewData } from "next";
 import { ParsedUrlQuery } from "querystring";
@@ -20,16 +18,17 @@ const postHelper = new CollectionHelper<PostContent>(path.join(process.cwd(), "c
 
 export const fetchPostContent = () => postHelper.fetchCollectionContent();
 
-export const countPosts = postHelper.countPosts;
+export const countPosts = (tag?: string) => postHelper.countPosts(tag);
 
-export const listPostContent = postHelper.listContent;
+export const listPostContent = (page: number, limit: number, tag?: string) =>
+  postHelper.listContent(page, limit, tag);
 
-export function grabPostMatterFromSource(source: string) {
-  return matter(source, {
-    engines: { yaml: (s) => yaml.load(s, { schema: yaml.JSON_SCHEMA }) as object },
-  });
-}
-export const createPostList = postHelper.createGetStaticPropsForPage;
+
+export const createPostList = (ctx) => postHelper.createGetStaticPropsForPage(ctx);
+
+export const createPostListPaths = postHelper.getStaticPathsForPages;
+
+export const getStaticPathsForPosts = postHelper.getStaticPathsForItems("posts");
 
 export const getStaticPropsForItem = (p: GetStaticPropsContext<ParsedUrlQuery, PreviewData>) =>
   postHelper.getStaticPropsForItem(p);

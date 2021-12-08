@@ -5,7 +5,7 @@ import OpenGraphMeta from "../../../components/meta/OpenGraphMeta";
 import TwitterCardMeta from "../../../components/meta/TwitterCardMeta";
 import PostList from "../../../components/PostList";
 import config from "../../../lib/config";
-import { countPosts, createPostList, PostContent } from "../../../lib/posts";
+import { countPosts, createPostList, createPostListPaths, PostContent } from "../../../lib/posts";
 import { TagContent } from "../../../lib/tags";
 
 type Props = {
@@ -32,13 +32,4 @@ export default function Page({ posts, tags, pagination, page }: Props) {
 
 export const getStaticProps: GetStaticProps = createPostList;
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const pages = Math.ceil(countPosts() / config.posts_per_page);
-  const paths = Array.from(Array(pages - 1).keys()).map((it) => ({
-    params: { page: (it + 2).toString() },
-  }));
-  return {
-    paths: paths,
-    fallback: false,
-  };
-};
+export const getStaticPaths: GetStaticPaths = createPostListPaths();

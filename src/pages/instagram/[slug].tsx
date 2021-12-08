@@ -1,4 +1,7 @@
-import { fetchInstagramContent, getInstagramItemProps } from "../../lib/instagram";
+import {
+  createInstagramItemPaths,
+  getInstagramItemProps,
+} from "../../lib/instagram";
 import { hydrateSource } from "../../lib/mdx-helper";
 import InstagramLayout from "../../components/InstagramLayout";
 import { InferGetStaticPropsType } from "next";
@@ -19,12 +22,6 @@ export default function Instagram({
   );
 }
 
-export const getStaticPaths = async () => {
-  const paths = fetchInstagramContent().map((it) => "/instagram/" + it.slug);
-  return {
-    paths,
-    fallback: false,
-  };
-};
+export const getStaticPaths = createInstagramItemPaths("instagram");
 
 export const getStaticProps = getInstagramItemProps();
