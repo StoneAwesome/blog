@@ -12,7 +12,7 @@ import { InstagramMedia } from "@lib/instagram-service";
 import Script from "next/script";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
-
+import ImageGallery from "react-image-gallery";
 type Props = Omit<InstagramContent, "fullPath"> & {
   post: InstagramMedia | null;
   children: React.ReactNode;
@@ -78,12 +78,11 @@ export const InstagramBody: React.FC<Props> = ({ title, date, children, tags, po
 const InstagramViewer: React.FC<{ post: InstagramMedia }> = ({ post }) => {
   if (post.media_type === "CAROUSEL_ALBUM" && post.children && post.children.length > 0) {
     return (
-      <div className={"d-flex flex-column"}>
-        {post.children.map((p) => (
-          <div key={p.id} className={"mb-3"}>
-            <img className={"img-fluid rounded"} src={p.media_url} />
-          </div>
-        ))}
+      <div>
+        <ImageGallery
+          items={post.children.map((c) => ({ original: c.media_url }))}
+          showPlayButton={false}
+        />
       </div>
     );
   } else if (post.media_type === "IMAGE") {

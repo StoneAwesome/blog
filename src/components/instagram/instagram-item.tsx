@@ -3,12 +3,18 @@ import Link from "next/link";
 import { parseISO } from "date-fns";
 import React from "react";
 import type { InstagramContent } from "@lib/instagram";
+import useSWR from "swr";
+import InstagramAPI from "@lib/instagram-service";
+
 
 type Props = {
   post: Readonly<InstagramContent>;
 };
+
+const api = new InstagramAPI();
 export default function PostItem({ post }: Props) {
   const url = `/instagram/${post.slug}`;
+  const { data } = useSWR(`INSTAGRAM_MEDIA_${post.slug}`, () => api.getPost(post.slug));
   return (
     <div>
       <header className={"mt-5 mb-3"}>
@@ -17,22 +23,21 @@ export default function PostItem({ post }: Props) {
             <h1>{post.title}</h1>
           </a>
         </Link>
-        <div className={"d-flex align-items-center mb-4 text-muted author-info"}>
-          <div className={"d-flex align-items-center ms-3"}>
-            <DateView date={parseISO(post.date)} />
-          </div>
-        </div>
+        <DateView date={parseISO(post.date)} />
       </header>
-      {/* {post && post.image ? (
+      {data ? (
         <div>
           <Link href={url}>
             <a>
-              <img className={"img-fluid rounded mb-3"} src={post.} alt={post.title} />
+              <img
+                className={"img-fluid rounded mb-3"}
+                src={data.thumbnail_url || data.media_url}
+                alt={post.title}
+              />
             </a>
           </Link>
-          <p>{post.description}</p>
         </div>
-      ) : null} */}
+      ) : null}
     </div>
   );
 }

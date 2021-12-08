@@ -43,6 +43,9 @@
 @import "~bootstrap/scss/utilities/api";
 @import "~@fortawesome/fontawesome-svg-core/styles.css";
 @import "post.scss";
+$ig-blue: $info;
+@import "~react-image-gallery/styles/scss/image-gallery.scss";
+
 
 .bottom-shadow {
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05), inset 0 -1px 0 rgba(0, 0, 0, 0.15);

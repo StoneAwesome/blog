@@ -4,14 +4,9 @@ import InstagramLayout from "@components/instagram/instagram-layout";
 import { InferGetStaticPropsType } from "next";
 import renderToString from "next-mdx-remote/render-to-string";
 
-export default function Instagram({
-  title,
-  tags,
-  source,
-  slug,
-  date,
-  post,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
+type InstagramPageProps = InferGetStaticPropsType<typeof getStaticProps>;
+
+export default function Instagram({ title, tags, source, slug, date, post }: InstagramPageProps) {
   const content = hydrateSource(source);
   return (
     <InstagramLayout title={title} date={date} tags={tags} post={post} slug={slug}>
