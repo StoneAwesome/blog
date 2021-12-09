@@ -8,6 +8,7 @@ import config from "./config";
 import { GetStaticPaths, GetStaticProps } from "next";
 import type { MdxRemote } from "next-mdx-remote/types";
 import type renderToString from "next-mdx-remote/render-to-string";
+import { setToArray, toDictionary } from "./array-utils";
 
 export type RTS = typeof renderToString;
 
@@ -32,17 +33,26 @@ export type CollectionListProps<T extends ICollectionBase> = {
   };
 };
 
-interface IDictionary<T> {
-  [key: string]: T;
-}
 export class CollectionHelper<T extends ICollectionBase> {
   private cache: T[];
-  private cacheDictionary: IDictionary<T>;
+  private cacheDictionary: NodeJS.Dict<T>;
+  private hasRanInitializationOverride?: boolean;
 
-  constructor(private directory: string) {
+  constructor(
+    private directory: string,
+    private overrideInitialization?: (
+      mdxItems: T[],
+      fnGenerator: (slug: string) => string
+    ) => Promise<T[]>
+  ) {
     const result = this.initializeCache();
     this.cache = result.cache;
     this.cacheDictionary = result.dictionary;
+    this.hasRanInitializationOverride = overrideInitialization ? false : true;
+  }
+
+  private createFullPathFromSlug(slug: string) {
+    return `${path.join(this.directory, slug)}.mdx`;
   }
 
   private initializeCache() {
@@ -83,39 +93,43 @@ export class CollectionHelper<T extends ICollectionBase> {
         return -1;
       }
     });
-    const dictionary: IDictionary<T> = {};
-    cache.forEach((i) => (dictionary[i.slug] = i));
     return {
       cache,
-      dictionary,
+      dictionary: toDictionary(cache, (c) => c.slug),
     };
   }
 
-  fetchCollectionContent(): T[] {
+  async fetchCollectionContent(): Promise<T[]> {
+    if (!this.hasRanInitializationOverride && this.overrideInitialization) {
+      this.cache = await this.overrideInitialization(this.cache, this.createFullPathFromSlug);
+      this.cacheDictionary = toDictionary(this.cache, (c) => c.slug);
+    }
     return this.cache;
   }
 
-  listContent(page: number, limit: number, tag?: string) {
+  async listContent(page: number, limit: number, tag?: string) {
     page = !page || page < 1 ? 1 : page;
-    return this.fetchCollectionContent()
+    const content = await this.fetchCollectionContent();
+    return content
       .filter((it) => !tag || (it.tags && it.tags.includes(tag)))
       .slice((page - 1) * limit, page * limit);
   }
 
-  countPosts(tag?: string): number {
-    return this.fetchCollectionContent().filter((it) => !tag || (it.tags && it.tags.includes(tag)))
-      .length;
+  async countPosts(tag?: string): Promise<number> {
+    const posts = await this.fetchCollectionContent();
+    return posts.filter((it) => !tag || (it.tags && it.tags.includes(tag))).length;
   }
 
   createGetStaticPropsForPage: GetStaticProps<CollectionListProps<T>, { page: string }> = async ({
     params,
   }) => {
     const page = parseInt((params?.page as string) || "1");
-    const posts = this.listContent(page, config.posts_per_page);
+    const posts = await this.listContent(page, config.posts_per_page);
     const tags = listTags();
+    const total = await this.countPosts();
     const pagination = {
       current: page,
-      pages: Math.ceil(this.countPosts() / config.posts_per_page),
+      pages: Math.ceil(total / config.posts_per_page),
     };
 
     return {
@@ -127,9 +141,18 @@ export class CollectionHelper<T extends ICollectionBase> {
     };
   };
 
-  getStaticPathsForItems(path: string) {
+  getStaticPathsForItems(path: string, getAdditionalRoutes?: () => Promise<string[]>) {
     const result: GetStaticPaths = async () => {
-      const paths = this.fetchCollectionContent().map((it) => `/${path}/${it.slug}`);
+      const content = await this.fetchCollectionContent();
+      let paths = content.map((it) => `/${path}/${it.slug}`);
+
+      if (getAdditionalRoutes) {
+        const allPaths = new Set([...paths]);
+        const additionalPaths = await getAdditionalRoutes();
+        additionalPaths.forEach((p) => allPaths.add(p));
+        paths = setToArray(allPaths);
+      }
+
       return {
         paths,
         fallback: false,
@@ -140,7 +163,9 @@ export class CollectionHelper<T extends ICollectionBase> {
 
   getStaticPathsForPages() {
     const result: GetStaticPaths = async () => {
-      const pages = Math.ceil(this.countPosts() / config.posts_per_page);
+      const totalPages = await this.countPosts();
+
+      const pages = Math.ceil(totalPages / config.posts_per_page);
       const paths = Array.from(Array(pages - 1).keys()).map((it) => ({
         params: { page: (it + 2).toString() },
       }));
@@ -197,7 +222,7 @@ function grabMatterFromSource<T>(source: string) {
   const result = matter(source, {
     engines: { yaml: (s) => yaml.load(s, { schema: yaml.JSON_SCHEMA }) as object },
   });
-  
+
   return {
     content: result.content,
     data: result.data as T,

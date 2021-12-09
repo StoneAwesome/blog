@@ -372,7 +372,7 @@ const SimpleInstagramEmbed: React.FC<{ url: string }> = (props) => {
                 }}
                 target="_blank"
               >
-                A post shared by @stoneawesomehq
+                A post shared by @StoneAwesomeHQ
               </a>
             </p>
           </div>

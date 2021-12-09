@@ -82,6 +82,16 @@ class InstagramAPI {
   async getRecentPosts(): Promise<InstagramMedia[]> {
     const url = this.buildUri("me/media", ...MEDIA_PROPERTIES);
 
+    //-- In order to avoid rate-limits, lets just use debug data locally.
+    if (process.env.NEXT_PUBLIC_IS_DEBUG) {
+      const data = await import("../../data/recent-instagram.json");
+      return data.data.map((d) => ({
+        ...d,
+        thumbnail_url: "",
+        media_type: d.media_type as InstagramMedia["media_type"],
+      }));
+    }
+
     return await parsePagedResult(url);
   }
 

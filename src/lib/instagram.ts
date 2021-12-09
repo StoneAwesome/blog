@@ -1,22 +1,31 @@
-import InstagramListPage from "@pages/instagram";
-import {
-  GetStaticPathsContext,
-  GetStaticPathsResult,
-  GetStaticPropsContext,
-  GetStaticPropsResult,
-  PreviewData,
-} from "next";
+import { GetStaticPropsContext, GetStaticPropsResult, PreviewData } from "next";
 import path from "path";
 import { ParsedUrlQuery } from "querystring";
 import { CollectionHelper, ICollectionBase, ICollectionSource, RTS } from "./collection-helper";
 import InstagramAPI, { InstagramMedia } from "./instagram-service";
+
+const api = new InstagramAPI();
 
 export interface InstagramContent extends ICollectionBase {
   material?: string[];
 }
 
 const instagramHelper = new CollectionHelper<InstagramContent>(
-  path.join(process.cwd(), "content/instagram")
+  path.join(process.cwd(), "content/instagram"),
+  async (items, gfp) => {
+    const posts = await api.getRecentPosts();
+    return posts.map((p) => {
+      const mdx = items.find((i) => i.slug === p.id);
+      return {
+        date: p.timestamp,
+        fullPath: gfp(p.id),
+        slug: p.id,
+        title: mdx?.title || "Instagram Post",
+        material: mdx?.material || [],
+        tags: mdx?.tags || [],
+      };
+    });
+  }
 );
 
 export const fetchInstagramContent = () => instagramHelper.fetchCollectionContent();
@@ -24,27 +33,11 @@ export const fetchInstagramContent = () => instagramHelper.fetchCollectionConten
 export const createInstagramList = (ctx: GetStaticPropsContext<{ page: string }, PreviewData>) =>
   instagramHelper.createGetStaticPropsForPage(ctx);
 
-const api = new InstagramAPI();
-export const createInstagramItemPaths = (path: string) => {
-  return async (ctx: GetStaticPathsContext): Promise<GetStaticPathsResult<ParsedUrlQuery>> => {
-    const result = await instagramHelper.getStaticPathsForItems(path)(ctx);
-
-    //-- Need to add any other routes
-
+export const createInstagramItemPaths = (path: string) =>
+  instagramHelper.getStaticPathsForItems(path, async () => {
     const recent = await api.getRecentPosts();
-
-    const setPath = new Set([...(result.paths as string[])]);
-    recent.forEach((v) => setPath.add(`/${path}/${v.id}`));
-
-    const paths: string[] = [];
-    setPath.forEach((s) => paths.push(s));
-
-    return {
-      fallback: result.fallback,
-      paths,
-    };
-  };
-};
+    return recent.map((v) => `/${path}/${v.id}`);
+  });
 
 export const createInstagramPathsForPages = () => instagramHelper.getStaticPathsForPages();
 
