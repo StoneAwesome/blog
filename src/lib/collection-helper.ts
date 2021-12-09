@@ -19,7 +19,7 @@ export interface ICollectionBase {
   tags?: string[];
 }
 
-type ICollectionSource<T extends ICollectionBase = ICollectionBase> = T & {
+export type ICollectionSource<T extends ICollectionBase = ICollectionBase> = T & {
   source: MdxRemote.Source;
 };
 
