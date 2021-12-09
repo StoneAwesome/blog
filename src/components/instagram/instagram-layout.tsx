@@ -81,7 +81,14 @@ export const InstagramBody: React.FC<Props> = ({ title, date, children, tags, ma
           <div className={"card-body"}>
             <div>{children}</div>
 
-            {post && <InstagramViewer post={post} />}
+            {post && (
+              <>
+                {children ? <hr /> : null}
+                <InstagramViewer post={post} />
+                {post.caption ? <hr /> : null}
+                {post.caption && <InstagramCaption caption={post.caption} />}
+              </>
+            )}
           </div>
         </div>
         <article>
@@ -123,6 +130,74 @@ const InstagramViewer: React.FC<{ post: InstagramMedia }> = ({ post }) => {
     return <img src={post.media_url} className={"img-fluid"} />;
   } else return null;
 };
+
+const InstagramCaption: React.FC<{ caption: string }> = ({ caption }) => {
+  const strings = caption.split("\u000A");
+  return (
+    <div className={"d-flex flex-column"}>
+      {strings.map((s, i) => (
+        <p key={i}>
+          <SmartString v={s} />
+        </p>
+      ))}
+    </div>
+  );
+};
+
+const SmartString: React.FC<{ v: string }> = ({ v }) => {
+  const atIndexes = findMatches(/(\@[\w\d\_]+)/gi, v).map((x) => ({ ...x, type: "@" as const }));
+  const tagIndexes = findMatches(/(\#[\w\d\_]+)/gi, v).map((x) => ({ ...x, type: "#" as const }));
+  const indexes = [...atIndexes, ...tagIndexes].sort((a, b) =>
+    a.start < b.start ? -1 : a.start > b.start ? 1 : 0
+  );
+
+  let lastIdx = 0;
+  const final: { s: string; type: "@" | "#" | "T" }[] = [];
+
+  for (let i = 0; i < indexes.length; i++) {
+    const tag = indexes[i];
+
+    //-- Did we miss some text in between
+    if (lastIdx < tag.start) {
+      final.push({ s: v.substr(lastIdx, tag.start - lastIdx), type: "T" });
+    }
+
+    const text = v.substr(tag.start, tag.end - tag.start);
+
+    if (text) {
+      final.push({ s: text, type: tag.type });
+    }
+
+    lastIdx = tag.end;
+  }
+
+  if (final.length === 0) {
+    return <span>{v}</span>;
+  }
+
+  return (
+    <div>
+      {final.map((v, i) => {
+        if (v.type === "@") {
+          return <a href={`https://www.instagram.com/${v.s.substr(1)}`}>{v.s}</a>;
+        } else if (v.type === "#") {
+          return <a href={`https://www.instagram.com/explore/tags/${v.s.substr(1)}/`}>{v.s}</a>;
+        }
+        return <span key={i}>{v.s}</span>;
+      })}
+    </div>
+  );
+};
+
+function findMatches(reg: RegExp, val: string) {
+  let positions: { start: number; end: number }[] = [];
+  let match: RegExpExecArray | null = null;
+  while ((match = reg.exec(val)) != null) {
+    positions.push({ start: match.index, end: match.index + match[0].length });
+  }
+
+  return positions;
+}
 
 const SimpleInstagramEmbed: React.FC<{ url: string }> = (props) => {
   return (
