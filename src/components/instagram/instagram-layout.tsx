@@ -83,7 +83,6 @@ export const InstagramBody: React.FC<Props> = ({ title, date, children, tags, ma
 
             {post && (
               <>
-                {children ? <hr /> : null}
                 <InstagramViewer post={post} />
                 {post.caption ? <hr /> : null}
                 {post.caption && <InstagramCaption caption={post.caption} />}
@@ -159,10 +158,10 @@ const SmartString: React.FC<{ v: string }> = ({ v }) => {
 
     //-- Did we miss some text in between
     if (lastIdx < tag.start) {
-      final.push({ s: v.substr(lastIdx, tag.start - lastIdx), type: "T" });
+      final.push({ s: v.substring(lastIdx, tag.start), type: "T" });
     }
 
-    const text = v.substr(tag.start, tag.end - tag.start);
+    const text = v.substring(tag.start, tag.end);
 
     if (text) {
       final.push({ s: text, type: tag.type });
@@ -176,12 +175,24 @@ const SmartString: React.FC<{ v: string }> = ({ v }) => {
   }
 
   return (
-    <div>
+    <div className="d-flex flex-wrap align-items-center">
       {final.map((v, i) => {
         if (v.type === "@") {
-          return <a href={`https://www.instagram.com/${v.s.substr(1)}`}>{v.s}</a>;
+          return (
+            <a href={`https://www.instagram.com/${v.s.substring(1)}`} className="m-1" key={i}>
+              {v.s}
+            </a>
+          );
         } else if (v.type === "#") {
-          return <a href={`https://www.instagram.com/explore/tags/${v.s.substr(1)}/`}>{v.s}</a>;
+          return (
+            <a
+              href={`https://www.instagram.com/explore/tags/${v.s.substring(1)}/`}
+              className="m-1"
+              key={i}
+            >
+              {v.s}
+            </a>
+          );
         }
         return <span key={i}>{v.s}</span>;
       })}

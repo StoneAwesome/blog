@@ -19,7 +19,7 @@ export default function InstagramList({ posts, tags, pagination }: Props) {
         <div className={"my-5"}>
           <div className={"mb-5"}>
             {posts.map((it, i) => (
-              <div key={i}>
+              <div key={i} className="mb-3">
                 <InstagramItem post={it} />
               </div>
             ))}

@@ -85,6 +85,7 @@ const InstagramSelector: React.FC<CmsWidgetControlProps<string>> = (props) => {
               <div>
                 <DateView date={parseISO(selected.timestamp)} />
               </div>
+              <span className="badge bg-dark">{selected.id}</span>
               <p>{selected.caption}</p>
             </div>
           </div>
