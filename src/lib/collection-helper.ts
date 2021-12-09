@@ -101,7 +101,9 @@ export class CollectionHelper<T extends ICollectionBase> {
 
   async fetchCollectionContent(): Promise<T[]> {
     if (!this.hasRanInitializationOverride && this.overrideInitialization) {
-      this.cache = await this.overrideInitialization(this.cache, this.createFullPathFromSlug);
+      this.cache = await this.overrideInitialization(this.cache, (v) =>
+        this.createFullPathFromSlug(v)
+      );
       this.cacheDictionary = toDictionary(this.cache, (c) => c.slug);
     }
     return this.cache;
@@ -190,11 +192,12 @@ export class CollectionHelper<T extends ICollectionBase> {
       const slug = params?.slug as string;
       const fullPath = this.cacheDictionary[slug]?.fullPath;
 
-      if (!fullPath) {
+      if (!fullPath || !fs.existsSync(fullPath)) {
         return {
           notFound: true,
         };
       }
+
       const source = fs.readFileSync(fullPath, "utf8");
       const { content, data } = grabMatterFromSource<T>(source);
       const mdxSource = await createMDXSource(content, data, rts);
