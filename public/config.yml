@@ -103,7 +103,7 @@ collections:
         widget: "string"
       - label: "Instagram Id"
         name: "slug"
-        widget: "string"
+        widget: "instagram_id"
       - label: "Post"
         name: "post"
         widget: "instagram"
