@@ -35,6 +35,7 @@ export default function PostItem({ post }: Props) {
               <InstagramImage
                 className={`img-fluid rounded w-${size ? "50" : "75"}`}
                 alt={post.title}
+                instagramId={data.id}
                 image={data.primaryMedia}
               />
             </a>

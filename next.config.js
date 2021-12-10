@@ -1,4 +1,4 @@
-module.exports = ({
+module.exports = {
   //pageExtensions: ["tsx"],
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     config.module.rules.push(
@@ -16,4 +16,9 @@ module.exports = ({
     );
     return config;
   },
-});
+  images: {
+    domains: ["res.cloudinary.com"],
+    loader: "cloudinary",
+    path:"https://res.cloudinary.com/stoneawesome/image/upload/"
+  },
+};
