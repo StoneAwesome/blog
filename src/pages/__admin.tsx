@@ -1,11 +1,11 @@
 import Script from "next/script";
 import * as React from "react";
-import Article from "@components/admin/post-preview";
+import Article from "@components/admin/previews/post-preview";
 import InstagramSelector, {
   INSTAGRAM_POST_SELECTED_EVENT,
 } from "@components/admin/instagram-selector";
 import type { CmsWidgetControlProps } from "netlify-cms-core";
-import InstagramPreview from "@components/admin/previews/instagram-privew";
+import InstagramPreview from "@components/admin/previews/instagram-preview";
 import { InstagramPost } from "@lib/instagram";
 export type AdminPageProps = {};
 
