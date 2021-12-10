@@ -29,7 +29,7 @@ export async function uploadInstagramUrl(
   return {
     height: result.height,
     id: result.public_id,
-    url: result.url,
+    url: result.secure_url,
     width: result.width,
   };
 }
