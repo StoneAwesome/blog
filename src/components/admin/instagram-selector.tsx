@@ -17,20 +17,29 @@ export const CURRENT_INSTAGRAM_ID_FIELD_ID = "instagram_current_field_value";
 export const INSTAGRAM_POST_SELECTED_EVENT = "instagram_post_selected";
 
 const InstagramSelector: React.FC<CmsWidgetControlProps<InstagramPost>> = (props) => {
-  const { data = [] } = useSWR(`RECENT_INSTAGRAM_POSTS`, async () => {
-    const posts = await instagramClient.getRecentPosts();
+  const { data: recentPosts } = useSWR(`RECENT_INSTAGRAM_POSTS`, () =>
+    instagramClient.getRecentPosts()
+  );
 
-    const currentFileNames = await grabAllFileNamesForCollection("instagram");
+  const { data = [] } = useSWR(
+    `RECENT_INSTAGRAM_POSTS_${props.value?.id}_${JSON.stringify(recentPosts)}`,
+    async () => {
+      if (recentPosts) {
+        const currentFileNames = await grabAllFileNamesForCollection("instagram");
 
-    const dictionary = toDictionary(currentFileNames, d => d);
+        const dictionary = toDictionary(currentFileNames, (d) => d);
 
-    return posts.filter(p => !dictionary[p.id]);
-  });
+        return recentPosts.filter((p) => !dictionary[p.id] || props.value?.id === p.id);
+      }
+      return [];
+    }
+  );
 
   const { onClick, panelRef, isCollapsed } = useCollapsePanel(true);
   const [isLoading, set_isLoading] = React.useState<boolean>(false);
 
-  const selected = data ? data.find((d) => d.id === props.value?.id) : null;
+  const selectedId = props.value?.id || Object.fromEntries(props.value as any)?.id;
+  const selected = data ? data.find((d) => d.id === selectedId) : null;
 
   if (isLoading) {
     return <div>{"Loading . . . "}</div>;
@@ -112,6 +121,7 @@ const InstagramSelector: React.FC<CmsWidgetControlProps<InstagramPost>> = (props
     </div>
   );
 };
+
 
 async function persistInstagram(media: InstagramMedia): Promise<InstagramPost> {
   const result: InstagramPost = {
