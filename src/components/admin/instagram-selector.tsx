@@ -47,7 +47,7 @@ const InstagramSelector: React.FC<CmsWidgetControlProps<InstagramPost>> = (props
     return selected;
   }, [props.value, data]);
 
-  if (isLoading) {
+  if (isLoading || !data || data.length === 0) {
     return <div>{"Loading . . . "}</div>;
   }
 
