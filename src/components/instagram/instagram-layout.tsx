@@ -1,10 +1,10 @@
 import React from "react";
 import DateView from "@components/basic/date-view";
 import Layout from "@components/main-layout";
-import BasicMeta from "@components/meta/BasicMeta";
-import JsonLdMeta from "@components/meta/JsonLdMeta";
-import OpenGraphMeta from "@components/meta/OpenGraphMeta";
-import TwitterCardMeta from "@components/meta/TwitterCardMeta";
+import BasicMeta from "@components/meta/basic-meta";
+import JsonLdMeta from "@components/meta/json-ld-meta";
+import OpenGraphMeta from "@components/meta/open-graph-meta";
+import TwitterCardMeta from "@components/meta/twitter-card-meta";
 import { getTag } from "@lib/tags";
 import type { InstagramContent, InstagramPost } from "@lib/instagram";
 import { parseISO } from "date-fns";

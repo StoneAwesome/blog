@@ -1,7 +1,7 @@
 import Layout from "@components/main-layout";
-import BasicMeta from "@components/meta/BasicMeta";
-import OpenGraphMeta from "@components/meta/OpenGraphMeta";
-import TwitterCardMeta from "@components/meta/TwitterCardMeta";
+import BasicMeta from "@components/meta/basic-meta";
+import OpenGraphMeta from "@components/meta/open-graph-meta";
+import TwitterCardMeta from "@components/meta/twitter-card-meta";
 import InstagramList from "@components/instagram/instagram-list";
 import { createInstagramList, InstagramContent } from "@lib/instagram";
 import { TagContent } from "@lib/tags";
