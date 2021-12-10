@@ -16,6 +16,7 @@ module.exports = {
     );
     return config;
   },
+  target: "serverless",
   images: {
     domains: ["res.cloudinary.com"],
     loader: "cloudinary",
