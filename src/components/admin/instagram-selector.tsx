@@ -38,8 +38,14 @@ const InstagramSelector: React.FC<CmsWidgetControlProps<InstagramPost>> = (props
   const { onClick, panelRef, isCollapsed } = useCollapsePanel(true);
   const [isLoading, set_isLoading] = React.useState<boolean>(false);
 
-  const selectedId = props.value?.id || Object.fromEntries(props.value as any)?.id;
-  const selected = data ? data.find((d) => d.id === selectedId) : null;
+  const selected = React.useMemo(() => {
+    if (!props.value) return null;
+
+    const selectedId = props.value?.id || Object.fromEntries(props.value as any)?.id;
+    const selected = data ? data.find((d) => d.id === selectedId) : null;
+
+    return selected;
+  }, [props.value, data]);
 
   if (isLoading) {
     return <div>{"Loading . . . "}</div>;
@@ -121,7 +127,6 @@ const InstagramSelector: React.FC<CmsWidgetControlProps<InstagramPost>> = (props
     </div>
   );
 };
-
 
 async function persistInstagram(media: InstagramMedia): Promise<InstagramPost> {
   const result: InstagramPost = {

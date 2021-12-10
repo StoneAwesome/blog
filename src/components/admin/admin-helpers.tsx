@@ -5,10 +5,12 @@ import html from "remark-html";
 
 export function safeGet<TProps>(entry: PreviewTemplateComponentProps["entry"]) {
   return <TKey extends keyof TProps>(key: TKey, emptyValue: TProps[TKey]) => {
-    const js = entry.toJS() as any as { data: TProps};
+    if (!entry) return emptyValue;
+
+    const js = entry.toJS() as any as { data: TProps };
 
     const value = js.data[key];
-    
+
     return value || emptyValue;
   };
 }
