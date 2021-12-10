@@ -19,6 +19,7 @@ export interface InstagramPost {
   permalink: string;
   timestamp: string;
   images: StoredInstagramImage[];
+  primaryMedia: StoredInstagramImage;
 }
 
 export interface InstagramContent extends ICollectionBase {

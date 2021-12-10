@@ -151,19 +151,34 @@ async function persistInstagram(media: InstagramMedia): Promise<InstagramPost> {
     mediaType: media.media_type,
     permalink: media.permalink,
     timestamp: media.timestamp,
+    primaryMedia: {
+      height: 0,
+      width: 0,
+      id: "",
+      url: "",
+    },
   };
 
   if (media.media_type === "CAROUSEL_ALBUM" && media.children) {
-    console.log("Images");
     //-- Grab Children Images
     for (let i = 0; i < media.children.length; i++) {
-      const uploadResult = await uploadImage(media.children[i].media_url, media.id);
+      const url = media.children[i].media_url;
+      const uploadResult = await uploadImage(url, media.id);
       result.images.push(uploadResult);
+      //-- Check if this should be the primary url
+      if (url === media.media_url) {
+        result.primaryMedia = uploadResult;
+      }
     }
   } else {
-    console.log("Just one", media.media_type);
     const uploadedImage = await uploadImage(media.media_url, media.id);
     result.images.push(uploadedImage);
+    result.primaryMedia = uploadedImage;
+  }
+
+  //-- Ensure Primary Media is set
+  if (result.primaryMedia.height === 0) {
+    result.primaryMedia = result.images[0];
   }
 
   return result;
@@ -239,6 +254,12 @@ const InstagramPreview: React.FC<PreviewTemplateComponentProps> = (props) => {
         mediaType: "IMAGE",
         timestamp: "1900-01-01",
         permalink: "https://",
+        primaryMedia: {
+          height: 0,
+          id: "",
+          width: 0,
+          url: "",
+        },
       })}
       slug={d("slug", "-")}
       title={d("title", "-")}
