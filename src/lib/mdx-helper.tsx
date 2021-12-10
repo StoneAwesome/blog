@@ -22,18 +22,6 @@ export const MDX_Components = {
   YouTube,
   TwitterTweetEmbed,
   img: BlogImage,
-  Question: (props: any) => (
-    <p>
-      <b>{props.children}</b>
-    </p>
-  ),
-  Answer: (props: any) => (
-    <blockquote className={"ms-4"}>
-      <p>
-        <i>{props.children}</i>
-      </p>
-    </blockquote>
-  ),
 };
 export function hydrateSource(source: MdxRemote.Source) {
   return hydrate(source, { components: MDX_Components });
