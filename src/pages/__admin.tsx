@@ -1,6 +1,6 @@
 import Script from "next/script";
 import * as React from "react";
-import Article from "@components/admin/Article";
+import Article from "@components/admin/post-preview";
 import InstagramSelector, {
   INSTAGRAM_POST_SELECTED_EVENT,
 } from "@components/admin/instagram-selector";
