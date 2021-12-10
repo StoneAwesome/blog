@@ -14,6 +14,8 @@ export default function NavHeader() {
               src={"/logo/logo-horizontal.svg"}
               className={"img-fluid"}
               alt={"StoneAwesome Logo"}
+              height={111.574}
+              width={906.667}
             />
             {/* <h1 className="f2">The Bootstrap Blog</h1> */}
           </a>
