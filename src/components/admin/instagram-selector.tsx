@@ -18,7 +18,7 @@ export const INSTAGRAM_POST_SELECTED_EVENT = "instagram_post_selected";
 
 const InstagramSelector: React.FC<CmsWidgetControlProps<InstagramPost>> = (props) => {
   const { data: recentPosts } = useSWR(`RECENT_INSTAGRAM_POSTS`, () =>
-    instagramClient.getRecentPosts()
+    instagramClient.getAllPosts()
   );
 
   const { data = [] } = useSWR(

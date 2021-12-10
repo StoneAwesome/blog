@@ -53,23 +53,31 @@ const MEDIA_PROPERTIES: (keyof InstagramMedia)[] = [
   "username",
 ];
 
+interface IPageResult<T> {
+  data: T[];
+  paging: {
+    cursors: {
+      before: string;
+      after: string;
+    };
+    next: string;
+  };
+}
+
 async function parsePagedResult<T>(url: string) {
   try {
-    const result = await fetch(url);
-    const details = (await result.json()) as {
-      data: T[];
-      paging: {
-        cursors: {
-          before: string;
-          after: string;
-        };
-        next: string;
-      };
-    };
+    const response = await fetch(url);
+    const details = (await response.json()) as IPageResult<T>;
 
-    return details.data || [];
+    return details;
   } catch {}
-  return [];
+  return null;
+}
+
+async function parsePagedResultDataOnly<T>(url: string) {
+  const result = await parsePagedResult<T>(url);
+
+  return result?.data || [];
 }
 
 class InstagramAPI {
@@ -92,7 +100,7 @@ class InstagramAPI {
       }));
     }
 
-    return await parsePagedResult(url);
+    return await parsePagedResultDataOnly(url);
   }
 
   async getPost(id: string): Promise<InstagramMedia | null> {
@@ -111,9 +119,34 @@ class InstagramAPI {
     return null;
   }
 
+  async getAllPosts(): Promise<InstagramMedia[]> {
+    var url: string | null = this.buildUri("me/media", ...MEDIA_PROPERTIES);
+
+    const results: InstagramMedia[] = [];
+    do {
+      const result: IPageResult<InstagramMedia> | null = await parsePagedResult<InstagramMedia>(url);
+      
+      if (result) {
+        const data = result.data || [];
+        
+        if (data.length === 0) {
+          url = null;
+        } else {
+          results.push(...data);
+          url = result.paging.next;
+        }
+      } else {
+        url = null;
+      }
+
+    } while (!!url);
+
+    return results;
+  }
+
   private async getChildren(id: string): Promise<InstagramMedia[]> {
     const url = this.buildUri(`${id}/children`, ...MEDIA_PROPERTIES.filter((p) => p !== "caption"));
-    return await parsePagedResult(url);
+    return await parsePagedResultDataOnly<InstagramMedia>(url);
   }
 
   //   private buildUri<T extends keyof InstagramEndpoints>(
