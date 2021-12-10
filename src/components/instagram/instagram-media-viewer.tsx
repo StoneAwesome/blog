@@ -1,9 +1,9 @@
-import { InstagramMedia } from "@lib/instagram-service";
+import { InstagramPost } from "@lib/instagram";
 import * as React from "react";
 import ImageGallery from "react-image-gallery";
 
 export type InstagramMediaViewerProps = {
-  post: InstagramMedia;
+  post: InstagramPost;
 };
 
 interface GalleryState {
@@ -29,11 +29,11 @@ const InstagramMediaViewer: React.FC<InstagramMediaViewerProps> = ({ post }) => 
   const galleryRef = React.useRef<ImageGallery>(null);
   const state = galleryRef.current?.state as GalleryState | undefined;
 
-  if (post.media_type === "CAROUSEL_ALBUM" && post.children && post.children.length > 0) {
+  if (post.mediaType === "CAROUSEL_ALBUM" && post.images && post.images.length > 0) {
     return (
       <div>
         <ImageGallery
-          items={post.children.map((c) => ({ original: c.media_url }))}
+          items={post.images.map((c) => ({ original: c.url }))}
           showPlayButton={false}
           showBullets={false}
           showThumbnails={false}
@@ -49,8 +49,8 @@ const InstagramMediaViewer: React.FC<InstagramMediaViewerProps> = ({ post }) => 
         />
       </div>
     );
-  } else if (post.media_type === "IMAGE") {
-    return <img src={post.media_url} className={"img-fluid"} />;
+  } else if (post.mediaType === "IMAGE" && post.images.length > 0) {
+    return <img src={post.images?.[0].url} className={"img-fluid"} />;
   } else return null;
 };
 

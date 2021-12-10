@@ -12,8 +12,9 @@ import { useCollapsePanel } from "../hooks/use-collapse-panel";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExternalLink } from "@fortawesome/pro-duotone-svg-icons";
 import DateView from "@components/basic/date-view";
-import { InstagramContent, InstagramPost, StoredInstagramImage } from "@lib/instagram";
-import { deleteFolder } from "@lib/cloud-img";
+import { InstagramPost, StoredInstagramImage } from "@lib/instagram";
+import { InstagramBody } from "@components/instagram/instagram-layout";
+import { InstagramPageProps } from "./instagram/[slug]";
 export type AdminPageProps = {};
 
 const AdminPage: React.FC<AdminPageProps> = (props) => {
@@ -42,6 +43,7 @@ const AdminPage: React.FC<AdminPageProps> = (props) => {
       }
 
       CMS.registerPreviewTemplate("posts", Article);
+      CMS.registerPreviewTemplate("instagram", InstagramPreview);
       CMS.registerWidget("instagram", InstagramSelector);
     })();
   }, []);
@@ -178,31 +180,36 @@ async function uploadImage(url: string, instagramId: string) {
   return (await result.json()) as StoredInstagramImage;
 }
 
-function safeGet(entry: PreviewTemplateComponentProps["entry"]) {
-  return <T,>(key: keyof PostPageProps | "body", emptyValue: T) => {
-    const value = entry.getIn(["data", key]);
+function safeGet<TProps>(entry: PreviewTemplateComponentProps["entry"]) {
+  return <TKey extends keyof TProps>(key: TKey, emptyValue: TProps[TKey]) => {
+    const value = entry.getIn(["data", key]) as TProps[TKey];
 
     return value || emptyValue;
   };
 }
 
-const Article: React.FC<PreviewTemplateComponentProps> = (props) => {
-  const d = safeGet(props.entry);
-  const details = d("body", "");
-
+function useRemark(entry: PreviewTemplateComponentProps["entry"]) {
   const [data, set_data] = React.useState<string | null>(null);
+  const htmlString = entry.getIn(["data", "body"]);
 
   React.useEffect(() => {
     remark()
       .use(html, { allowDangerousHtml: true, allowParseErrors: true })
-      .process(details)
+      .process(htmlString)
       .then((result) => {
         console.log("Changed");
         set_data(
           result.toString().replaceAll(/<img ()src/gi, `<img class="img-fluid rounded " src$1`)
         );
       });
-  }, [details]);
+  }, [htmlString]);
+
+  return <div dangerouslySetInnerHTML={{ __html: data || "" }}></div>;
+}
+
+const Article: React.FC<PreviewTemplateComponentProps> = (props) => {
+  const d = safeGet<PostPageProps>(props.entry);
+  const md = useRemark(props.entry);
 
   return (
     <PostBody
@@ -213,8 +220,33 @@ const Article: React.FC<PreviewTemplateComponentProps> = (props) => {
       description={d("description", "")}
       author={d("author", "")}
     >
-      {data && <div dangerouslySetInnerHTML={{ __html: data }}></div>}
+      {md}
     </PostBody>
+  );
+};
+
+const InstagramPreview: React.FC<PreviewTemplateComponentProps> = (props) => {
+  const d = safeGet<InstagramPageProps>(props.entry);
+  const md = useRemark(props.entry);
+
+  return (
+    <InstagramBody
+      date={d("date", "1900-01-01")}
+      post={d("post", {
+        id: "-1",
+        images: [],
+        caption: "",
+        mediaType: "IMAGE",
+        timestamp: "1900-01-01",
+        permalink: "https://",
+      })}
+      slug={d("slug", "-")}
+      title={d("title", "-")}
+      material={[...(d("material", []) || [])]}
+      tags={d("tags", [])?.map((x) => x)}
+    >
+      {md}
+    </InstagramBody>
   );
 };
 

@@ -4,7 +4,7 @@ import InstagramLayout from "@components/instagram/instagram-layout";
 import { InferGetStaticPropsType } from "next";
 import renderToString from "next-mdx-remote/render-to-string";
 
-type InstagramPageProps = InferGetStaticPropsType<typeof getStaticProps>;
+export type InstagramPageProps = InferGetStaticPropsType<typeof getStaticProps>;
 
 export default function Instagram(props: InstagramPageProps) {
   const content = props.source ? hydrateSource(props.source) : null;

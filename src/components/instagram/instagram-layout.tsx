@@ -6,9 +6,8 @@ import JsonLdMeta from "@components/meta/JsonLdMeta";
 import OpenGraphMeta from "@components/meta/OpenGraphMeta";
 import TwitterCardMeta from "@components/meta/TwitterCardMeta";
 import { getTag } from "@lib/tags";
-import type { InstagramContent } from "@lib/instagram";
+import type { InstagramContent, InstagramPost } from "@lib/instagram";
 import { parseISO } from "date-fns";
-import { InstagramMedia } from "@lib/instagram-service";
 import Script from "next/script";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
@@ -16,7 +15,7 @@ import InstagramMaterialLink from "./instagram-material-link";
 import InstagramCaption from "./instagram-caption";
 import InstagramMediaViewer from "./instagram-media-viewer";
 type Props = Omit<InstagramContent, "fullPath"> & {
-  post: InstagramMedia | null;
+  post: InstagramPost | null;
   children: React.ReactNode;
 };
 export default function InstagramLayout(props: Props) {
@@ -67,7 +66,7 @@ export const InstagramBody: React.FC<Props> = ({ title, date, children, tags, ma
               <DateView date={parseISO(date)} />
             </header>
           </div>
-          {material && (
+          {material && material.length > 0 && (
             <div className={"card-header bg-white d-flex align-items-start"}>
               <b className={"me-2"}>{`Stone${material.length > 1 ? "s" : ""}`}</b>
               <div className={"d-flex gap-3"}>
