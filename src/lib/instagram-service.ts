@@ -95,11 +95,6 @@ class InstagramAPI {
     return await parsePagedResult(url);
   }
 
-  async getAlbumImages(id: string): Promise<InstagramMedia[]> {
-    const url = this.buildUri(`${id}/children`, ...MEDIA_PROPERTIES);
-    return await parsePagedResult(url);
-  }
-
   async getPost(id: string): Promise<InstagramMedia | null> {
     const url = this.buildUri(id, ...MEDIA_PROPERTIES);
     try {

@@ -94,8 +94,8 @@ collections:
     extension: "mdx"
     format: "frontmatter"
     create: true
-    slug: "{{slug}}"
-    identifier_field: slug
+    slug: "{{post.id}}"
+    identifier_field: fields.post.id
     summary: "{{title}}"
     fields:
       - label: "Title"
@@ -103,6 +103,9 @@ collections:
         widget: "string"
       - label: "Instagram Id"
         name: "slug"
+        widget: "string"
+      - label: "Post"
+        name: "post"
         widget: "instagram"
       - label: "Publish Date"
         name: "date"
@@ -134,7 +137,7 @@ collections:
       - label: "Body"
         name: "body"
         widget: "markdown"
-  
+
   - name: "posts"
     label: "Posts"
     folder: "content/posts/"

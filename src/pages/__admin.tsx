@@ -7,11 +7,13 @@ import html from "remark-html";
 import { parseISO } from "date-fns";
 import { PostPageProps } from "./posts/[slug]";
 import useSWR from "swr";
-import InstagramAPI from "@lib/instagram-service";
+import InstagramAPI, { InstagramMedia } from "@lib/instagram-service";
 import { useCollapsePanel } from "../hooks/use-collapse-panel";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExternalLink } from "@fortawesome/pro-duotone-svg-icons";
 import DateView from "@components/basic/date-view";
+import { InstagramContent, InstagramPost, StoredInstagramImage } from "@lib/instagram";
+import { deleteFolder } from "@lib/cloud-img";
 export type AdminPageProps = {};
 
 const AdminPage: React.FC<AdminPageProps> = (props) => {
@@ -51,15 +53,20 @@ const AdminPage: React.FC<AdminPageProps> = (props) => {
   );
 };
 
-const InstagramSelector: React.FC<CmsWidgetControlProps<string>> = (props) => {
+const instagramClient = new InstagramAPI();
+const InstagramSelector: React.FC<CmsWidgetControlProps<InstagramPost>> = (props) => {
   const { data = [] } = useSWR(`RECENT_INSTAGRAM_POSTS`, async () => {
-    const instagramClient = new InstagramAPI();
     return await instagramClient.getRecentPosts();
   });
 
   const { onClick, panelRef, isCollapsed } = useCollapsePanel(true);
+  const [isLoading, set_isLoading] = React.useState<boolean>(false);
 
-  const selected = data ? data.find((d) => d.id === props.value) : null;
+  const selected = data ? data.find((d) => d.id === props.value?.id) : null;
+
+  if (isLoading) {
+    return <div>{"Loading . . . "}</div>;
+  }
 
   return (
     <div className={"pt-2 d-flex flex-column gap-2"}>
@@ -97,15 +104,33 @@ const InstagramSelector: React.FC<CmsWidgetControlProps<string>> = (props) => {
           {data.map((d) => (
             <div className={"col-4"}>
               <div
-                className={`card my-1  ${d.id === props.value ? "border-primary" : ""}`}
+                className={`card my-1  ${d.id === props.value?.id ? "border-primary" : ""}`}
                 onClick={() => {
-                  props.onChange(d.id);
                   onClick();
+                  set_isLoading(true);
+                  instagramClient.getPost(d.id).then((fullPost) => {
+                    if (fullPost) {
+                      fetch(`/api/folder?instagram_id=${d.id}`, { method: "DELETE" })
+                        .then(() =>
+                          persistInstagram(fullPost).then((r) => {
+                            props.onChange(r);
+                          })
+                        )
+                        .catch((r) => {
+                          alert("An Error Occurred");
+                          console.log(r);
+                        })
+                        .finally(() => set_isLoading(false));
+                    } else {
+                      alert("Could not grab instagram post");
+                      set_isLoading(false);
+                    }
+                  });
                 }}
               >
                 <img src={d.thumbnail_url || d.media_url} className={"card-img-top"} />
                 <div className={"card-body border-top"}>
-                  <p className={"card-text"}>{`${d.caption?.substr(0, 255)}...`}</p>
+                  <p className={"card-text"}>{`${d.caption?.substring(0, 255)}...`}</p>
                 </div>
               </div>
             </div>
@@ -115,6 +140,43 @@ const InstagramSelector: React.FC<CmsWidgetControlProps<string>> = (props) => {
     </div>
   );
 };
+
+async function persistInstagram(media: InstagramMedia): Promise<InstagramPost> {
+  const result: InstagramPost = {
+    caption: media.caption,
+    id: media.id,
+    images: [],
+    mediaType: media.media_type,
+    permalink: media.permalink,
+    timestamp: media.timestamp,
+  };
+
+  if (media.media_type === "CAROUSEL_ALBUM" && media.children) {
+    console.log("Images");
+    //-- Grab Children Images
+    for (let i = 0; i < media.children.length; i++) {
+      const uploadResult = await uploadImage(media.children[i].media_url, media.id);
+      result.images.push(uploadResult);
+    }
+  } else {
+    console.log("Just one", media.media_type);
+    const uploadedImage = await uploadImage(media.media_url, media.id);
+    result.images.push(uploadedImage);
+  }
+
+  return result;
+}
+
+async function uploadImage(url: string, instagramId: string) {
+  const result = await fetch(`/api/images?url=${encodeURI(url)}&instagram_id=${instagramId}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ url: url, instagram_id: instagramId }),
+  });
+  return (await result.json()) as StoredInstagramImage;
+}
 
 function safeGet(entry: PreviewTemplateComponentProps["entry"]) {
   return <T,>(key: keyof PostPageProps | "body", emptyValue: T) => {

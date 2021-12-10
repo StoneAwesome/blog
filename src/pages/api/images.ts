@@ -2,8 +2,8 @@ import { uploadInstagramUrl } from "@lib/cloud-img";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const url = req.query["url"] as string;
-  const bucket = req.query["bucket"] as string;
+  const url = req.body["url"] as string;
+  const bucket = req.body["instagram_id"] as string;
 
   try {
     const result = await uploadInstagramUrl(bucket, url);
