@@ -58,7 +58,7 @@ export const InstagramBody: React.FC<Props> = ({ title, date, children, tags, ma
               <h1 className={"d-flex justify-content-between"}>
                 {title}
                 {post && (
-                  <a href={post.permalink} target={"_blank"}>
+                  <a href={post.permalink} target={"_blank"} title="Instagram Page" rel="noreferrer">
                     <FontAwesomeIcon icon={faInstagram} fixedWidth />
                   </a>
                 )}
