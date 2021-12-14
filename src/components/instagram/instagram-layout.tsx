@@ -24,7 +24,11 @@ export default function InstagramLayout(props: Props) {
   const hasTags = tags && tags.length > 0;
   const keywords = hasTags && tags.map ? tags.map((it) => getTag(it).name) : [];
 
-  const description = post?.caption || "";
+  let description = (post?.caption || "").substring(0, 159);
+
+  if (description.length === 160) {
+    description = description.substring(0, 156) + "...";
+  }
 
   const primaryId = post?.primaryMedia?.id;
 
