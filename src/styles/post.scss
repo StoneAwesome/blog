@@ -17,8 +17,18 @@
 .posts-container {
   @extend .px-md-3;
   @extend .mx-auto;
-  @extend .my-5;
+  @extend .mb-5;
+  @extend .mt-2;
   max-width: 760px;
+
+  @include media-breakpoint-up(md) {
+    max-width: map-get($map: $grid-breakpoints, $key: md);
+  }
+  
+  @include media-breakpoint-up(lg) {
+    max-width: map-get($map: $grid-breakpoints, $key: lg);
+  }
+  
 
   p {
     a {

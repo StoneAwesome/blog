@@ -41,15 +41,20 @@
 @import "~bootstrap/scss/helpers";
 // Utilities
 @import "~bootstrap/scss/utilities/api";
+
+@import "breakpoint-helpers.scss";
 @import "~@fortawesome/fontawesome-svg-core/styles.css";
 @import "post.scss";
 $ig-blue: $info;
 @import "~react-image-gallery/styles/scss/image-gallery.scss";
 
-img.image-gallery-image {
-  @extend .rounded;
+.image-gallery {
+  &:not(.fullscreen-modal) {
+   img.image-gallery-image {
+      max-height: max-content !important;
+    }
+  }
 }
-
 
 .bottom-shadow {
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05), inset 0 -1px 0 rgba(0, 0, 0, 0.15);

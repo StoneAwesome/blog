@@ -48,6 +48,7 @@ export default function InstagramLayout(props: Props) {
   );
 }
 
+const BP = "md";
 export const InstagramBody: React.FC<Props> = ({ title, date, children, tags, material, post }) => {
   return (
     <div className={"container"}>
@@ -58,7 +59,12 @@ export const InstagramBody: React.FC<Props> = ({ title, date, children, tags, ma
               <h1 className={"d-flex justify-content-between"}>
                 {title}
                 {post && (
-                  <a href={post.permalink} target={"_blank"} title="Instagram Page" rel="noreferrer">
+                  <a
+                    href={post.permalink}
+                    target={"_blank"}
+                    title="Instagram Page"
+                    rel="noreferrer"
+                  >
                     <FontAwesomeIcon icon={faInstagram} fixedWidth />
                   </a>
                 )}
@@ -76,17 +82,21 @@ export const InstagramBody: React.FC<Props> = ({ title, date, children, tags, ma
               </div>
             </div>
           )}
-          <div className={"card-body"}>
-            <div>{children}</div>
-
-            {post && (
-              <>
+          {children && <div className="card-body pb-0 border-bottom">{children}</div>}
+          {post && (
+            <div className={`d-flex flex-column flex-${BP}-row`}>
+              <div className={`col-${BP}-5 border-${BP}-bottom`}>
                 <InstagramMediaViewer post={post} />
-                {post.caption ? <hr /> : null}
-                {post.caption && <InstagramCaption caption={post.caption} />}
-              </>
-            )}
-          </div>
+              </div>
+              {post.caption && (
+                <div className={`col-${BP}-7`}>
+                  <div className={`col card-body`}>
+                    <InstagramCaption caption={post.caption} />
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
         <article>
           {/* <header className={"mb-3"}>
