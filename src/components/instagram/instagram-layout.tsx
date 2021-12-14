@@ -14,6 +14,7 @@ import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 import InstagramMaterialLink from "./instagram-material-link";
 import InstagramCaption from "./instagram-caption";
 import InstagramMediaViewer from "./instagram-media-viewer";
+import { createFacebookOGGraphImage, createTwitterGraphImage } from "@lib/image-service";
 type Props = Omit<InstagramContent, "fullPath"> & {
   post: InstagramPost | null;
   children: React.ReactNode;
@@ -25,6 +26,8 @@ export default function InstagramLayout(props: Props) {
 
   const description = post?.caption || "";
 
+  const primaryId = post?.primaryMedia?.id;
+
   return (
     <Layout>
       <BasicMeta
@@ -33,8 +36,18 @@ export default function InstagramLayout(props: Props) {
         keywords={keywords}
         description={description}
       />
-      <TwitterCardMeta url={`/instagram/${slug}`} title={title} description={description} />
-      <OpenGraphMeta url={`/instagram/${slug}`} title={title} description={description} />
+      <TwitterCardMeta
+        url={`/instagram/${slug}`}
+        title={title}
+        description={description}
+        imageUrl={primaryId && createTwitterGraphImage(post?.primaryMedia?.id)}
+      />
+      <OpenGraphMeta
+        url={`/instagram/${slug}`}
+        title={title}
+        description={description}
+        image={primaryId && createFacebookOGGraphImage(primaryId)}
+      />
       <JsonLdMeta
         url={`/instagram/${slug}`}
         title={title}
@@ -42,6 +55,7 @@ export default function InstagramLayout(props: Props) {
         date={parseISO(date)}
         author={"@StoneAwesomeHQ"}
         description={description}
+        image={post?.primaryMedia?.url}
       />
       <InstagramBody {...props} />
     </Layout>
