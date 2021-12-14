@@ -26,6 +26,7 @@ const InstagramImage: React.FC<InstagramImageProps> = (props) => {
       height={props.image.height}
       width={props.image.width}
       placeholder={"blur"}
+      layout="responsive"
       blurDataURL={buildUrl(props.image.id, {
         transformations: {
           resize: {
