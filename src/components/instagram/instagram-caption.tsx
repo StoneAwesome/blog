@@ -20,12 +20,16 @@ const InstagramCaption: React.FC<{ caption: string }> = ({ caption }) => {
 const SmartString: React.FC<{ v: string }> = ({ v }) => {
   const atIndexes = findMatches(/(\@[\w\d\_]+)/gi, v).map((x) => ({ ...x, type: "@" as const }));
   const tagIndexes = findMatches(/(\#[\w\d\_]+)/gi, v).map((x) => ({ ...x, type: "#" as const }));
-  const indexes = [...atIndexes, ...tagIndexes].sort((a, b) =>
+  const hrefTags = findMatches(
+    /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/\/=]*)/gi,
+    v
+  ).map((x) => ({ ...x, type: "href" as const }));
+  const indexes = [...atIndexes, ...tagIndexes, ...hrefTags].sort((a, b) =>
     a.start < b.start ? -1 : a.start > b.start ? 1 : 0
   );
 
   let lastIdx = 0;
-  const final: { s: string; type: "@" | "#" | "T" }[] = [];
+  const final: { s: string; type: "@" | "#" | "href" | "T" }[] = [];
 
   for (let i = 0; i < indexes.length; i++) {
     const tag = indexes[i];
@@ -53,7 +57,7 @@ const SmartString: React.FC<{ v: string }> = ({ v }) => {
       {final.map((v, i) => {
         if (v.type === "@") {
           return (
-            <a href={`https://www.instagram.com/${v.s.substring(1)}`} className="m-1" key={i}>
+            <a href={`https://www.instagram.com/${v.s.substring(1)}`} className="m-1" key={i} target={"_blank"}>
               {v.s}
             </a>
           );
@@ -62,8 +66,15 @@ const SmartString: React.FC<{ v: string }> = ({ v }) => {
             <a
               href={`https://www.instagram.com/explore/tags/${v.s.substring(1)}/`}
               className="m-1"
+              target={"_blank"}
               key={i}
             >
+              {v.s}
+            </a>
+          );
+        } else if (v.type === "href") {
+          return (
+            <a href={v.s} className="m-1" key={i} target={"_blank"}>
               {v.s}
             </a>
           );
