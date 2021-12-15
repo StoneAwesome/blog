@@ -55,7 +55,7 @@ export const PostBody: React.FC<Props> = ({ title, author, date, children, tags 
     <div className={"container"}>
       <div className={"posts-container"}>
         <article>
-          <header className={"mb-3"}>
+          <header className={"my-3"}>
             <h1>{title}</h1>
             <div className={"d-flex align-items-center mb-4 text-muted author-info"}>
               {author && <Author author={getAuthor(author)} />}

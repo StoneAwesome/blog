@@ -15,6 +15,7 @@ import InstagramMaterialLink from "./instagram-material-link";
 import InstagramCaption from "./instagram-caption";
 import InstagramMediaViewer from "./instagram-media-viewer";
 import { createFacebookOGGraphImage, createTwitterGraphImage } from "@lib/image-service";
+import { useIsMobile } from "@hooks/use-media";
 type Props = Omit<InstagramContent, "fullPath"> & {
   post: InstagramPost | null;
   children: React.ReactNode;
@@ -68,75 +69,69 @@ export default function InstagramLayout(props: Props) {
 
 const BP = "md";
 export const InstagramBody: React.FC<Props> = ({ title, date, children, tags, material, post }) => {
+  const isMobile = useIsMobile();
   return (
-    <div className={"container"}>
-      <div className={"posts-container"}>
-        <div className={"card"}>
-          <div className={"card-header"}>
-            <header>
-              <h1 className={"d-flex justify-content-between"}>
-                {title}
-                {post && (
-                  <a
-                    href={post.permalink}
-                    target={"_blank"}
-                    title="Instagram Page"
-                    rel="noreferrer"
-                  >
-                    <FontAwesomeIcon icon={faInstagram} fixedWidth />
-                  </a>
-                )}
-              </h1>
-              <DateView date={parseISO(date)} />
-            </header>
-          </div>
-          {material && material.length > 0 && (
-            <div className={"card-header bg-white d-flex align-items-start"}>
-              <b className={"me-2"}>{`Stone${material.length > 1 ? "s" : ""}`}</b>
-              <div className={"d-flex gap-3"}>
-                {material.map((m) => (
-                  <InstagramMaterialLink material={m} key={m} />
-                ))}
-              </div>
-            </div>
-          )}
-          {children && <div className="card-body pb-0 border-bottom">{children}</div>}
-          {post && (
-            <div className={`d-flex flex-column flex-${BP}-row`}>
-              <div className={`col-${BP}-5 border-${BP}-bottom`}>
-                <InstagramMediaViewer post={post} />
-              </div>
-              {post.caption && (
-                <div className={`col-${BP}-7`}>
-                  <div className={`col card-body`}>
-                    <InstagramCaption caption={post.caption} />
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-        <article>
-          {/* <header className={"mb-3"}>
+    <div className={"posts-container"}>
+      <div className={`card rounded-0 border-top-0 ${isMobile ? "border-start-0 border-end-0" : ""}`}>
+        <div className={"card-header"}>
+          <header>
             <h1 className={"d-flex justify-content-between"}>
               {title}
               {post && (
-                <a href={post.permalink} target={"_blank"}>
+                <a href={post.permalink} target={"_blank"} title="Instagram Page" rel="noreferrer">
                   <FontAwesomeIcon icon={faInstagram} fixedWidth />
                 </a>
               )}
             </h1>
             <DateView date={parseISO(date)} />
-          </header> */}
-
-          {/* <code>{JSON.stringify({ material }, null, 2)}</code>
-          <div>{children}</div>
-
-          {post && <InstagramViewer post={post} />} */}
-
-          {/* <SimpleInstagramEmbed url={post.permalink} /> */}
-        </article>
+          </header>
+        </div>
+        {material && material.length > 0 && (
+          <div className={"card-header bg-white d-flex align-items-start"}>
+            <b className={"me-2"}>{`Stone${material.length > 1 ? "s" : ""}`}</b>
+            <div className={"d-flex gap-3"}>
+              {material.map((m) => (
+                <InstagramMaterialLink material={m} key={m} />
+              ))}
+            </div>
+          </div>
+        )}
+        {children && <div className="card-body pb-0 border-bottom">{children}</div>}
+        {post && (
+          <div className={`d-flex flex-column flex-${BP}-row`}>
+            <div className={`col-${BP}-5 border-${BP}-bottom`}>
+              <InstagramMediaViewer post={post} />
+            </div>
+            {post.caption && (
+              <div className={`col-${BP}-7`}>
+                <div className={`col card-body`}>
+                  <InstagramCaption caption={post.caption} />
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
+      <article>
+        {/* <header className={"mb-3"}>
+        <h1 className={"d-flex justify-content-between"}>
+          {title}
+          {post && (
+            <a href={post.permalink} target={"_blank"}>
+              <FontAwesomeIcon icon={faInstagram} fixedWidth />
+            </a>
+          )}
+        </h1>
+        <DateView date={parseISO(date)} />
+      </header> */}
+
+        {/* <code>{JSON.stringify({ material }, null, 2)}</code>
+      <div>{children}</div>
+
+      {post && <InstagramViewer post={post} />} */}
+
+        {/* <SimpleInstagramEmbed url={post.permalink} /> */}
+      </article>
     </div>
   );
 };
