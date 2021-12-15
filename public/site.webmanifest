@@ -1,14 +1,25 @@
 {
-  "short_name": "",
-  "name": "",
+  "short_name": "StoneAwesome",
+  "name": "StoneAwesome",
   "icons": [
     {
-      "src": "icon.png",
+      "src": "/logo/glyph128.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "128x128"
+    },
+    {
+      "src": "/logo/glyph512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "/logo/glyph1024.png",
+      "type": "image/png",
+      "sizes": "1024x1024"
     }
   ],
   "start_url": "/?utm_source=homescreen",
-  "background_color": "#000000",
-  "theme_color": "#000000"
+  "background_color": "#FFFFFF",
+  "theme_color": "#000000",
+  "display": "fullscreen"
 }
