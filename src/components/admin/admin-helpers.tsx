@@ -19,8 +19,6 @@ export function useRemark(entry: PreviewTemplateComponentProps["entry"]) {
   const [data, set_data] = React.useState<string | null>(null);
   const htmlString = entry.getIn(["data", "body"]) as string;
 
-  console.log(`Html String: (${htmlString})`);
-
   React.useEffect(() => {
     if (htmlString && htmlString?.trim().length > 0) {
       remark()

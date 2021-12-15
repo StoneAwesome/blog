@@ -33,11 +33,15 @@ export default function Index({ posts, tag, pagination, page }: Props) {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const queries = params?.slug as string[];
   const [slug, page] = [queries[0], queries[1]];
-  const posts = await listPostContent(page ? parseInt(page as string) : 1, config.posts_per_page, slug);
+  const posts = await listPostContent(
+    page ? parseInt(page as string) : 1,
+    config.posts_per_page,
+    slug
+  );
   const tag = getTag(slug);
   const pagination = {
     current: page ? parseInt(page as string) : 1,
-    pages: Math.ceil(countPosts(slug) / config.posts_per_page),
+    pages: Math.ceil((await countPosts(slug)) / config.posts_per_page),
   };
   const props: {
     posts: PostContent[];
@@ -54,18 +58,25 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = listTags().flatMap((tag) => {
-    const pages = Math.ceil(countPosts(tag.slug) / config.posts_per_page);
-    return Array.from(Array(pages).keys()).map((page) =>
-      page === 0
-        ? {
-            params: { slug: [tag.slug] },
-          }
-        : {
-            params: { slug: [tag.slug, (page + 1).toString()] },
-          }
-    );
-  });
+  const allTags = listTags();
+
+  const pathsForTag = await Promise.all(
+    allTags.map(async (tag) => {
+      const pages = Math.ceil((await countPosts(tag.slug)) / config.posts_per_page);
+      return Array.from(Array(pages).keys()).map((page) =>
+        page === 0
+          ? {
+              params: { slug: [tag.slug] },
+            }
+          : {
+              params: { slug: [tag.slug, (page + 1).toString()] },
+            }
+      );
+    })
+  );
+
+  const paths = pathsForTag.flatMap((i) => i);
+
   return {
     paths: paths,
     fallback: false,

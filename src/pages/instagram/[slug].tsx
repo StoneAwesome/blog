@@ -11,6 +11,6 @@ export default function Instagram(props: InstagramPageProps) {
   return <InstagramLayout {...props}>{content}</InstagramLayout>;
 }
 
-export const getStaticPaths = createInstagramItemPaths("instagram");
+export const getStaticPaths = createInstagramItemPaths();
 
 export const getStaticProps = getInstagramItemProps(renderToString);

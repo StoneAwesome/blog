@@ -1,4 +1,4 @@
-import { getStaticPathsForPosts, getStaticPropsForItem } from "@lib/posts";
+import { createPostItemPaths, getStaticPropsForItem } from "@lib/posts";
 import { parseISO } from "date-fns";
 import PostLayout from "@components/post/post-layout";
 import { hydrateSource } from "@lib/mdx-helper";
@@ -31,6 +31,6 @@ export default function Post({
   );
 }
 
-export const getStaticPaths = getStaticPathsForPosts;
+export const getStaticPaths = createPostItemPaths();
 
 export const getStaticProps = getStaticPropsForItem(renderToString);

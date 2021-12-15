@@ -43,7 +43,7 @@ export class CollectionHelper<T extends ICollectionBase> {
   constructor(
     /** Sub Directory. No need for leading slash */
     subDirectory: string,
-    private pageSize: number = config.posts_per_page,
+    private pageSize: number = 44,
     private overrideInitialization?: (
       mdxItems: T[],
       fnGenerator: (slug: string) => string
@@ -51,6 +51,7 @@ export class CollectionHelper<T extends ICollectionBase> {
   ) {
     this.directory = path.join(process.cwd(), subDirectory);
     const result = this.initializeCache();
+
     this.cache = result.cache;
     this.cacheDictionary = result.dictionary;
     this.hasRanInitializationOverride = overrideInitialization ? false : true;
@@ -64,6 +65,7 @@ export class CollectionHelper<T extends ICollectionBase> {
     if (this.cache && this.cacheDictionary) {
       return { cache: this.cache, dictionary: this.cacheDictionary };
     }
+
     // Get file names under /posts
     const fileNames = fs.readdirSync(this.directory);
     const allPostsData = fileNames
