@@ -1,7 +1,7 @@
 .blog-link {
   @extend .text-dark;
   @extend .border-bottom;
-  @extend .border-primary;
+  @extend .border-info;
   @extend .rounded-top;
   text-decoration: none;
   background-color: tint-color($primary, 90%);
