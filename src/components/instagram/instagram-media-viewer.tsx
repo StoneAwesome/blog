@@ -29,7 +29,11 @@ const InstagramMediaViewer: React.FC<InstagramMediaViewerProps> = ({ post }) => 
   const galleryRef = React.useRef<ImageGallery>(null);
   const state = galleryRef.current?.state as GalleryState | undefined;
 
-  if (post.mediaType === "CAROUSEL_ALBUM" && post.images && post.images.length > 0) {
+  if (
+    (post.mediaType === "CAROUSEL_ALBUM" || post.mediaType === "IMAGE") &&
+    post.images &&
+    post.images.length > 0
+  ) {
     return (
       <div>
         <ImageGallery
@@ -49,8 +53,6 @@ const InstagramMediaViewer: React.FC<InstagramMediaViewerProps> = ({ post }) => 
         />
       </div>
     );
-  } else if (post.mediaType === "IMAGE" && post.images.length > 0) {
-    return <img src={post.images?.[0].url} className={"img-fluid"} />;
   } else return null;
 };
 
