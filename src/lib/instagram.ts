@@ -27,9 +27,7 @@ export interface InstagramContent extends ICollectionBase {
   post: InstagramPost;
 }
 
-const instagramHelper = new CollectionHelper<InstagramContent>(
-  path.join(process.cwd(), "content/instagram")
-);
+const instagramHelper = new CollectionHelper<InstagramContent>("content/instagram", 20);
 
 export const fetchInstagramContent = () => instagramHelper.fetchCollectionContent();
 

@@ -13,16 +13,29 @@ export function createCloudinaryRelativeUrl(imageUrl: string) {
   return imageUrl.replace(CLOUDINARY_PREFIX, "");
 }
 
-export function buildInstagramThumbnailBlurImage(imageId: string) {
+export function buildInstagramThumbnailBlurImage(imageId: string, sizeInPixels: number) {
   return buildUrl(imageId, {
     transformations: {
       resize: {
-        width: 427,
-        type: "scale",
+        width: sizeInPixels,
+        height: sizeInPixels,
+        type: "fill"
       },
       effect: {
         name: "blur",
         value: "400",
+      },
+    },
+  });
+}
+
+export function buildSquareThumbnailImage(imageId: string, sideInPixels: number) {
+  return buildUrl(imageId, {
+    transformations: {
+      resize: {
+        type: "fill",
+        width: sideInPixels,
+        height: sideInPixels,
       },
     },
   });

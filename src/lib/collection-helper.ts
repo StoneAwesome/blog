@@ -38,13 +38,18 @@ export class CollectionHelper<T extends ICollectionBase> {
   private cacheDictionary: NodeJS.Dict<T>;
   private hasRanInitializationOverride?: boolean;
 
+  private directory: string;
+
   constructor(
-    private directory: string,
+    /** Sub Directory. No need for leading slash */
+    subDirectory: string,
+    private pageSize: number = config.posts_per_page,
     private overrideInitialization?: (
       mdxItems: T[],
       fnGenerator: (slug: string) => string
     ) => Promise<T[]>
   ) {
+    this.directory = path.join(process.cwd(), subDirectory);
     const result = this.initializeCache();
     this.cache = result.cache;
     this.cacheDictionary = result.dictionary;
@@ -126,12 +131,12 @@ export class CollectionHelper<T extends ICollectionBase> {
     params,
   }) => {
     const page = parseInt((params?.page as string) || "1");
-    const posts = await this.listContent(page, config.posts_per_page);
+    const posts = await this.listContent(page, this.pageSize);
     const tags = listTags();
     const total = await this.countPosts();
     const pagination = {
       current: page,
-      pages: Math.ceil(total / config.posts_per_page),
+      pages: Math.ceil(total / this.pageSize),
     };
 
     return {
@@ -167,7 +172,7 @@ export class CollectionHelper<T extends ICollectionBase> {
     const result: GetStaticPaths = async () => {
       const totalPages = await this.countPosts();
 
-      const pages = Math.ceil(totalPages / config.posts_per_page);
+      const pages = Math.ceil(totalPages / this.pageSize);
       const paths = Array.from(Array(pages - 1).keys()).map((it) => ({
         params: { page: (it + 2).toString() },
       }));
