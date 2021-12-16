@@ -1,9 +1,8 @@
-![Next.js blogging template for Netlify](./public/logo/ogimage.jpg)
+![StoneAwesomeBlog](./public/logo/ogimage.jpg)
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/430325a9-bf84-4789-907d-e0334c40abeb/deploy-status)](https://app.netlify.com/sites/stoneawesome/deploys)
 
 This is the code & content for StoneAwesome. It's based on the [Next.js blogging template](https://github.com/wutali/nextjs-netlify-blog-template).
-
 
 
 # Dependencies
