@@ -16,7 +16,7 @@ type InstagramListProps = {
 };
 export default function InstagramListPage({ posts, tags, pagination }: InstagramListProps) {
   const url = "/instagram";
-  const title = "Instagram Feed";
+  const title = "Instagram";
   return (
     <Layout>
       <BasicMeta url={url} title={title} />

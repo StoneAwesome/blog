@@ -44,7 +44,7 @@ export default function NavHeader() {
                 <Link href="/instagram">
                   <a className={LINK_CLASS} style={LINK_STYLE}>
                     <FontAwesomeIcon icon={faInstagram} fixedWidth className={"me-1"} />
-                    {"Instagram Feed"}
+                    {"Instagram"}
                   </a>
                 </Link>
               </li>
