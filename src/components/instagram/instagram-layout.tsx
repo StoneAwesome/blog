@@ -72,8 +72,8 @@ export const InstagramBody: React.FC<Props> = ({ title, date, children, tags, ma
   const isMobile = useIsMobile();
   return (
     <div className={"posts-container"}>
-      <div className={`card rounded-0 border-top-0 ${isMobile ? "border-start-0 border-end-0" : ""}`}>
-        <div className={"card-header"}>
+      <div className={`card rounded-0 border-0`}>
+        <div className={"card-header border-end border-start border-bottom rounded-0"}>
           <header>
             <h1 className={"d-flex justify-content-between"}>
               {title}
@@ -96,14 +96,22 @@ export const InstagramBody: React.FC<Props> = ({ title, date, children, tags, ma
             </div>
           </div>
         )}
-        {children && <div className="card-body pb-0 border-bottom">{children}</div>}
+        {children && (
+          <div className={`card-body pb-0 border-bottom border-end-${BP} border-start-${BP}`}>
+            {children}
+          </div>
+        )}
         {post && (
           <div className={`d-flex flex-column flex-${BP}-row`}>
-            <div className={`col-${BP}-5 border-${BP}-bottom`}>
-              <InstagramMediaViewer post={post} />
+            <div className={`col-${BP}-5`}>
+              <div className={`border-bottom border-start-${BP}`}>
+                <InstagramMediaViewer post={post} />
+              </div>
             </div>
             {post.caption && (
-              <div className={`col-${BP}-7`}>
+              <div
+                className={`col-${BP}-7 border-end-${BP} border-start-${BP} border-bottom-${BP}`}
+              >
                 <div className={`col card-body`}>
                   <InstagramCaption caption={post.caption} />
                 </div>
