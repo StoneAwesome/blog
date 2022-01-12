@@ -16,14 +16,14 @@ export default function Pagination({ current, pages, link }: Props) {
   return (
     <div className="d-flex flex-column">
       <div className={"d-flex justify-content-between gap-5"}>
-        {current > 1 && (
-          <Link href={link.href(prevPage)} as={link.as(prevPage)}>
-            <a className={`btn btn-primary col`}>{"Newer"}</a>
-          </Link>
-        )}
         {current < pages && (
           <Link href={link.href(nextPage)} as={link.as(nextPage)}>
             <a className={`btn btn-primary col`}>{"Older"}</a>
+          </Link>
+        )}
+        {current > 1 && (
+          <Link href={link.href(prevPage)} as={link.as(prevPage)}>
+            <a className={`btn btn-primary col`}>{"Newer"}</a>
           </Link>
         )}
       </div>
