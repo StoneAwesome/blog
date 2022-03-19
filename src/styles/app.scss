@@ -49,9 +49,14 @@ $ig-blue: $info;
 @import "~react-image-gallery/styles/scss/image-gallery.scss";
 
 .image-gallery {
+  .image-gallery-slide.center {
+    outline: none;
+  }
   &:not(.fullscreen-modal) {
-   img.image-gallery-image {
-      max-height: max-content !important;
+    img.image-gallery-image {
+      //max-height: max-content !important;
+      height: 40vh;
+      object-fit: cover;
     }
   }
 }
