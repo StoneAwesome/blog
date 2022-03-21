@@ -43,7 +43,7 @@ export class CollectionHelper<T extends ICollectionBase> {
   constructor(
     /** Sub Directory. No need for leading slash */
     subDirectory: string,
-    private pageSize: number = 44,
+    private pageSize: number = 42,
     private overrideInitialization?: (
       mdxItems: T[],
       fnGenerator: (slug: string) => string

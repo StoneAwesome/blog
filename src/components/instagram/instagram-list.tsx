@@ -16,10 +16,10 @@ export default function InstagramList({ posts, tags, pagination }: Props) {
   return (
     <div className={"container"}>
       <div className={"posts-container"}>
-        <div className={"mb-3 mt-1 mx-1"}>
-          <div className={"row row-cols-3 row-cols-md-4 no-gutters"}>
+        <div className={"my-2"}>
+          <div className={"d-flex flex-wrap"}>
             {posts.map((it, i) => (
-              <div key={i} className="col p-0 p-md-1">
+              <div key={i} className="col-4 p-lg-2" style={{ padding: "0.5px" }}>
                 <InstagramItem post={it} />
               </div>
             ))}

@@ -26,15 +26,14 @@ export interface InstagramContent extends ICollectionBase {
   post: InstagramPost;
 }
 
-const instagramHelper = new CollectionHelper<InstagramContent>("content/instagram", 20);
+const instagramHelper = new CollectionHelper<InstagramContent>("content/instagram", 24);
 
 export const fetchInstagramContent = () => instagramHelper.fetchCollectionContent();
 
 export const createInstagramList = (ctx: GetStaticPropsContext<{ page: string }, PreviewData>) =>
   instagramHelper.createGetStaticPropsForPage(ctx);
 
-export const createInstagramItemPaths = () =>
-  instagramHelper.getStaticPathsForItems("instagram");
+export const createInstagramItemPaths = () => instagramHelper.getStaticPathsForItems("instagram");
 
 export const createInstagramPathsForPages = () => instagramHelper.getStaticPathsForPages();
 export const getInstagramItemProps = (rts: RTS) => instagramHelper.getStaticPropsForItem(rts);
