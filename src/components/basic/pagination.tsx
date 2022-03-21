@@ -1,3 +1,10 @@
+import {
+  faArrowFromLeft,
+  faArrowToLeft,
+  faLongArrowLeft,
+  faLongArrowRight,
+} from "@fortawesome/pro-duotone-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { generatePagination } from "@lib/pagination";
 import Link from "next/link";
 
@@ -16,16 +23,19 @@ export default function Pagination({ current, pages, link }: Props) {
   return (
     <div className="d-flex flex-column">
       <div className={"d-flex justify-content-between gap-5"}>
-        {current < pages && (
-          <Link href={link.href(nextPage)} as={link.as(nextPage)}>
-            <a className={`btn btn-primary col`}>{"Older"}</a>
-          </Link>
-        )}
-        {current > 1 && (
-          <Link href={link.href(prevPage)} as={link.as(prevPage)}>
-            <a className={`btn btn-primary col`}>{"Newer"}</a>
-          </Link>
-        )}
+        <Link href={link.href(nextPage)} as={link.as(nextPage)}>
+          <a
+            className={`btn btn-primary col ${current >= pages ? "disabled" : ""}`}
+            title={"Older"}
+          >
+            {<FontAwesomeIcon icon={faLongArrowLeft} fixedWidth />}
+          </a>
+        </Link>
+        <Link href={link.href(prevPage)} as={link.as(prevPage)}>
+          <a className={`btn btn-primary col ${current <= 1 ? "disabled" : ""}`} title={"Newer"}>
+            {<FontAwesomeIcon icon={faLongArrowRight} fixedWidth />}
+          </a>
+        </Link>
       </div>
       {/* <small className="align-self-center text-muted">{current}</small> */}
     </div>
