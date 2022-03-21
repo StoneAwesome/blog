@@ -34,17 +34,17 @@ export default function NavHeader() {
             </Link> */}
 
               <li className="nav-item">
-                <Link href="/posts">
+                <Link href="/instagram">
                   <a className={LINK_CLASS} style={LINK_STYLE}>
-                    {"Blog"}
+                    <FontAwesomeIcon icon={faInstagram} fixedWidth className={"me-1"} />
+                    {"Projects"}
                   </a>
                 </Link>
               </li>
               <li className="nav-item">
-                <Link href="/instagram">
+                <Link href="/posts">
                   <a className={LINK_CLASS} style={LINK_STYLE}>
-                    <FontAwesomeIcon icon={faInstagram} fixedWidth className={"me-1"} />
-                    {"Instagram"}
+                    {"Blog"}
                   </a>
                 </Link>
               </li>

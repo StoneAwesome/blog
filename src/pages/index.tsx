@@ -3,9 +3,9 @@ import Layout from "@components/main-layout";
 import BasicMeta from "@components/meta/basic-meta";
 import OpenGraphMeta from "@components/meta/open-graph-meta";
 import TwitterCardMeta from "@components/meta/twitter-card-meta";
-import PostList from "@components/post/post-list";
-import { createPostList } from "@lib/posts";
 import { InferGetStaticPropsType } from "next";
+import InstagramList from "@components/instagram/instagram-list";
+import { createInstagramList } from "@lib/instagram";
 
 export default function Index({
   posts,
@@ -17,9 +17,8 @@ export default function Index({
       <BasicMeta url={"/"} />
       <OpenGraphMeta url={"/"} />
       <TwitterCardMeta url={"/"} />
-      <PostList posts={posts} tags={tags} pagination={pagination} />
+      <InstagramList posts={posts} tags={tags} pagination={pagination} />
     </Layout>
   );
 }
-
-export const getStaticProps = createPostList;
+export const getStaticProps = createInstagramList;
