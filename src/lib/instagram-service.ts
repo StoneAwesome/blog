@@ -84,7 +84,7 @@ class InstagramAPI {
   private static BASE_URI = "https://graph.instagram.com/";
   constructor(
     private userId: string = "7212714798742229",
-    private access_token: string = "IGQVJYalZAWVGFUb0ZAFLWVVdGVjb1ZArYmxob01VV2dtbGc0QTlEVWpKbTREeTFhUkpWYWU0NzNJSllSLS16NU1PR211THpBTDhpY3psMkVlb19kVE9hNkdLemdNQ2NjeHlSYm9lWkNsRTFicFhfU1NEbAZDZD"
+    private access_token: string = "IGQVJWLWhrUElzaW9GNko5LVc0cWp3VjVWUVdycDBUUmRkU1gwNjN0c1dURG9qSF9pRXhndDlhRWpPc1haSTNuLU1uMWpzRE4zQkNvWDBYcWwtTzFSdmNvNGJkVURtNVZAEel9FYmtHYzhlZAkpnYUR5RgZDZD"
   ) {}
 
   async getRecentPosts(): Promise<InstagramMedia[]> {
@@ -124,11 +124,13 @@ class InstagramAPI {
 
     const results: InstagramMedia[] = [];
     do {
-      const result: IPageResult<InstagramMedia> | null = await parsePagedResult<InstagramMedia>(url);
-      
+      const result: IPageResult<InstagramMedia> | null = await parsePagedResult<InstagramMedia>(
+        url
+      );
+
       if (result) {
         const data = result.data || [];
-        
+
         if (data.length === 0) {
           url = null;
         } else {
@@ -138,7 +140,6 @@ class InstagramAPI {
       } else {
         url = null;
       }
-
     } while (!!url);
 
     return results;
