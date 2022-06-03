@@ -84,7 +84,9 @@ class InstagramAPI {
   private static BASE_URI = "https://graph.instagram.com/";
   constructor(
     private userId: string = "7212714798742229",
-    private access_token: string = "IGQVJWLWhrUElzaW9GNko5LVc0cWp3VjVWUVdycDBUUmRkU1gwNjN0c1dURG9qSF9pRXhndDlhRWpPc1haSTNuLU1uMWpzRE4zQkNvWDBYcWwtTzFSdmNvNGJkVURtNVZAEel9FYmtHYzhlZAkpnYUR5RgZDZD"
+    //-- Head to https://developers.facebook.com/apps/3182862881950108/instagram-basic-display/basic-display/ to get new key
+    private access_token: string = process.env.INSTAGRAM_SECRET ||
+      "IGQVJXdHdkMGJCS3h4WGg3bUxJMURveGJrYkFlVXRVYUJJeXVNQXVZAVm55WGdqSGJScWw1VkE1TVl1bkNiQUxhTGxtOUJwdk9PczY5bkJ5eGo3QUJjX092OFB3clRQbXRXZAzlRMl9LZAnRaeEcwbFNDegZDZD"
   ) {}
 
   async getRecentPosts(): Promise<InstagramMedia[]> {
