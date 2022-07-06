@@ -12,7 +12,6 @@ export type AdminPageProps = {};
 const AdminPage: React.FC<AdminPageProps> = (props) => {
   React.useEffect(() => {
     (async () => {
-      import("bootstrap");
       const CMS = (await import("netlify-cms-app")).default;
       CMS.init();
       const allCss = document.head.getElementsByTagName("style");
@@ -60,7 +59,7 @@ const InstagramIdWidget: React.FC<CmsWidgetControlProps<string>> = (props) => {
     return () => document.removeEventListener(INSTAGRAM_POST_SELECTED_EVENT, listener as any);
   });
 
-  return <span className="badge bg-primary">{props.value}</span>;
+  return <span className="bg-_bsPrimary text-white rounded px-2 ">{props.value}</span>;
 };
 
 export default AdminPage;
