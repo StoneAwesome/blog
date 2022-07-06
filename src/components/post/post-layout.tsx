@@ -6,10 +6,10 @@ import BasicMeta from "@components/meta/basic-meta";
 import JsonLdMeta from "@components/meta/json-ld-meta";
 import OpenGraphMeta from "@components/meta/open-graph-meta";
 import TwitterCardMeta from "@components/meta/twitter-card-meta";
-import TagButton from "@components/post/tag-button";
 import { getAuthor } from "@lib/authors";
 import { getTag } from "@lib/tags";
 import BasicContainer from "@components/basic/basic-container";
+import TagLink from "./tag-link";
 
 type Props = {
   title: string;
@@ -56,21 +56,19 @@ export const PostBody: React.FC<Props> = ({ title, author, date, children, tags 
     <BasicContainer>
       <article>
         <header className={"my-3"}>
-          <h1>{title}</h1>
-          <div className={"d-flex align-items-center mb-4 text-muted author-info"}>
+          <h1 className="text-4xl mb-2">{title}</h1>
+          <div className={"flex items-center mb-4 text-gray-500 author-info"}>
             {author && <Author author={getAuthor(author)} />}
-            <div className={"d-flex align-items-center ms-3"}>
+            <div className={"flex items-center ml-3"}>
               <DateView date={date} />
             </div>
           </div>
         </header>
-        <div>{children}</div>
+        <div className="prose max-w-none [&>p>figure>img]:mb-0">{children}</div>
         {hasTags && tags.map && (
-          <div className={"d-flex flex-wrap border-top py-2"}>
+          <div className={"flex flex-wrap border-t py-2 mt-3 gap-3 prose"}>
             {tags.map((it, i) => (
-              <div key={i} className={"mx-2 my-1"}>
-                <TagButton tag={getTag(it)} />
-              </div>
+              <TagLink key={i} tag={getTag(it)} />
             ))}
           </div>
         )}
