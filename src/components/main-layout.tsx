@@ -18,8 +18,8 @@ export default function Layout({ children }: Props) {
         <NavHeader />
       </nav>
       <main>{children}</main>
-      <footer className="p-3 p-md-5 mt-5 text-center text-muted bg-light border-top">
-        <div className="container">
+      <footer className="p-3 p-md-5 mt-5 text-center text-muted bg-_bsLight border-t-2 border-top">
+        <div className="container mx-auto">
           <SocialList />
           <p className="mb-0 ">
             Curated with ♥ by the <b>StoneAwesome</b> team with the help of <b>designers</b> and{" "}

@@ -7,11 +7,9 @@ export type InstagramCaptionProps = {
 const InstagramCaption: React.FC<{ caption: string }> = ({ caption }) => {
   const strings = caption.split("\u000A");
   return (
-    <div className={"d-flex flex-column"}>
+    <div className={"flex flex-col gap-2"}>
       {strings.map((s, i) => (
-        <p key={i}>
-          <SmartString v={s} />
-        </p>
+        <SmartString v={s} key={i} />
       ))}
     </div>
   );
@@ -53,11 +51,16 @@ const SmartString: React.FC<{ v: string }> = ({ v }) => {
   }
 
   return (
-    <div className="d-flex flex-wrap align-items-center">
+    <div className="flex flex-wrap items-center">
       {final.map((v, i) => {
         if (v.type === "@") {
           return (
-            <a href={`https://www.instagram.com/${v.s.substring(1)}`} className="m-1" key={i} target={"_blank"}>
+            <a
+              href={`https://www.instagram.com/${v.s.substring(1)}`}
+              className="m-1"
+              key={i}
+              target={"_blank"}
+            >
               {v.s}
             </a>
           );

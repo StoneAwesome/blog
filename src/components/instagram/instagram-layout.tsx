@@ -16,6 +16,7 @@ import InstagramCaption from "./instagram-caption";
 import InstagramMediaViewer from "./instagram-media-viewer";
 import { createFacebookOGGraphImage, createTwitterGraphImage } from "@lib/image-service";
 import { useIsMobile } from "@hooks/use-media";
+import BasicContainer from "@components/basic/basic-container";
 type Props = Omit<InstagramContent, "fullPath"> & {
   post: InstagramPost | null;
   children: React.ReactNode;
@@ -71,15 +72,21 @@ const BP = "md";
 export const InstagramBody: React.FC<Props> = ({ title, date, children, tags, material, post }) => {
   const isMobile = useIsMobile();
   return (
-    <div className={"posts-container"}>
-      <div className={`card rounded-0 border-0`}>
-        <div className={"card-header border-end border-start border-bottom rounded-0"}>
+    <BasicContainer>
+      <div className={``}>
+        <div className={"bg-_bsLight border-b border-l border-r p-2 "}>
           <header>
-            <h1 className={"d-flex justify-content-between"}>
+            <h1 className={"flex justify-between items-center text-2xl font-bold mb-2"}>
               {title}
               {post && (
-                <a href={post.permalink} target={"_blank"} title="Instagram Page" rel="noreferrer">
-                  <FontAwesomeIcon icon={faInstagram} fixedWidth />
+                <a
+                  href={post.permalink}
+                  target={"_blank"}
+                  title="Instagram Page"
+                  rel="noreferrer"
+                  className="text-_bsPrimary"
+                >
+                  <FontAwesomeIcon icon={faInstagram} fixedWidth size="lg" />
                 </a>
               )}
             </h1>
@@ -87,32 +94,24 @@ export const InstagramBody: React.FC<Props> = ({ title, date, children, tags, ma
           </header>
         </div>
         {material && material.length > 0 && (
-          <div className={"card-header bg-white d-flex align-items-start"}>
+          <div className={"flex items-start"}>
             <b className={"me-2"}>{`Stone${material.length > 1 ? "s" : ""}`}</b>
-            <div className={"d-flex gap-3"}>
+            <div className={"flex gap-3"}>
               {material.map((m) => (
                 <InstagramMaterialLink material={m} key={m} />
               ))}
             </div>
           </div>
         )}
-        {children && (
-          <div className={`card-body pb-0 border-bottom border-end-${BP} border-start-${BP}`}>
-            {children}
-          </div>
-        )}
+        {children && <div className={`border-b md:border-r md:border-l`}>{children}</div>}
         {post && (
-          <div className={`d-flex flex-column flex-${BP}-row`}>
-            <div className={`col-${BP}-5`}>
-              <div className={`border-bottom border-start-${BP}`}>
-                <InstagramMediaViewer post={post} />
-              </div>
+          <div className={`flex flex-col md:grid md:grid-cols-12`}>
+            <div className={`md:col-span-5`}>
+              <InstagramMediaViewer post={post} />
             </div>
             {post.caption && (
-              <div
-                className={`col-${BP}-7 border-end-${BP} border-start-${BP} border-bottom-${BP}`}
-              >
-                <div className={`col card-body`}>
+              <div className={`md:col-span-7 border-t md:border-t-0 md:border-x md:border-b`}>
+                <div className={`p-3 prose md:prose-lg`}>
                   <InstagramCaption caption={post.caption} />
                 </div>
               </div>
@@ -140,7 +139,7 @@ export const InstagramBody: React.FC<Props> = ({ title, date, children, tags, ma
 
         {/* <SimpleInstagramEmbed url={post.permalink} /> */}
       </article>
-    </div>
+    </BasicContainer>
   );
 };
 

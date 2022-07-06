@@ -3,22 +3,21 @@ import config from "@lib/config";
 import { FontAwesomeIcon, FontAwesomeIconProps } from "@fortawesome/react-fontawesome";
 import { faGithub, faInstagram, faPinterest, faTwitter } from "@fortawesome/free-brands-svg-icons";
 
-
 const DEFAULT_PROPS: Partial<FontAwesomeIconProps> = {
   fixedWidth: true,
-  size: "2x"
-}
+  size: "2x",
+};
 export function SocialList({}) {
   return (
-    <div className={"d-flex justify-content-center mb-3"}>
-      <div className={"d-flex gap-4"}>
+    <div className={"flex justify-center mb-3"}>
+      <div className={"flex gap-4 [&>*]:text-_bsPrimary hover:[&>*]:text-_bsPrimary/90 "}>
         <a
           title="Twitter"
           href={`https://twitter.com/${config.twitter_account}`}
           target="_blank"
           rel="noopener"
         >
-          <FontAwesomeIcon icon={faTwitter} {...DEFAULT_PROPS}/>
+          <FontAwesomeIcon icon={faTwitter} {...DEFAULT_PROPS} />
         </a>
         <a
           title="GitHub"
@@ -26,7 +25,7 @@ export function SocialList({}) {
           target="_blank"
           rel="noopener"
         >
-          <FontAwesomeIcon icon={faGithub}  {...DEFAULT_PROPS}/>
+          <FontAwesomeIcon icon={faGithub} {...DEFAULT_PROPS} />
         </a>
         <a
           title="Instagram"
@@ -34,7 +33,7 @@ export function SocialList({}) {
           target="_blank"
           rel="noopener"
         >
-          <FontAwesomeIcon icon={faInstagram}  {...DEFAULT_PROPS}/>
+          <FontAwesomeIcon icon={faInstagram} {...DEFAULT_PROPS} />
         </a>
         <a
           title="Pinterest"
@@ -42,7 +41,7 @@ export function SocialList({}) {
           target="_blank"
           rel="noopener"
         >
-          <FontAwesomeIcon icon={faPinterest}  {...DEFAULT_PROPS}/>
+          <FontAwesomeIcon icon={faPinterest} {...DEFAULT_PROPS} />
         </a>
       </div>
     </div>
