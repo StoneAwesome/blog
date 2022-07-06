@@ -20,9 +20,7 @@ export default function InstagramList({ posts, tags, pagination }: Props) {
       <div className={"my-2"}>
         <div className={"grid grid-cols-3 gap-2"}>
           {posts.map((it, i) => (
-            <div key={i} className="" style={{ padding: "0.5px" }}>
-              <InstagramItem post={it} />
-            </div>
+            <InstagramItem key={i} post={it} />
           ))}
         </div>
       </div>

@@ -17,7 +17,7 @@ const InstagramImage: React.FC<InstagramImageProps> = (props) => {
   return (
     <NextImage
       src={props.image.id}
-      className=""
+      className="rounded"
       loader={(loaderProps) => buildSquareThumbnailImage(loaderProps.src, loaderProps.width)}
       alt={props.alt || "Image"}
       height={size}
