@@ -25,11 +25,11 @@ export default function NavHeader() {
           {/* <p className="lead  mt-4 text-center">{config.site_description}</p> */}
         </div>
       </div>
-      <div className="bg-_bsLight border-t-2 border-b-2 flex justify-center">
-        <div className="py-2">
+      <div className="bg-_bsLight border-t border-b flex justify-center">
+        <div className="py-2 flex gap-4 text-xl">
           <LinkSpecial href="/instagram">
             <FontAwesomeIcon icon={faInstagram} fixedWidth className={"me-1"} />
-            {"Projects"}
+            {"Inspiration"}
           </LinkSpecial>
 
           <LinkSpecial href="/posts">{"Blog"}</LinkSpecial>
@@ -40,9 +40,9 @@ export default function NavHeader() {
 }
 
 const LinkSpecial: React.FC<React.PropsWithChildren<{ href: string }>> = ({ href, children }) => (
-  <Link href="/posts">
+  <Link href={href}>
     <a
-      className={"px-3 text-_bsPrimary hover:text-_bsPrimary/90  decoration-_bsSecondary underline"}
+      className={"px-3 text-_bsPrimary hover:text-_bsPrimary/90  decoration-_bsInfo p-1 underline"}
     >
       {children}
     </a>

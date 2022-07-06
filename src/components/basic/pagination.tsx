@@ -26,7 +26,7 @@ export default function Pagination({ current, pages, link }: Props) {
         {current >= pages ? null : (
           <Link href={link.href(nextPage)} as={link.as(nextPage)}>
             <a
-              className={`flex-grow text-center bg-_bsPrimary hover:bg-_bsPrimary/90 active:ring-_bsPrimary active:ring-offset-2 active:bg-_bsPrimary active:ring-1 text-white ${
+              className={`flex-grow rounded-sm py-1 text-center bg-_bsPrimary hover:bg-_bsPrimary/90 active:ring-_bsPrimary active:ring-offset-2 active:bg-_bsPrimary active:ring-1 text-white ${
                 current >= pages ? "disabled" : ""
               }`}
               title={"Older"}
@@ -39,7 +39,7 @@ export default function Pagination({ current, pages, link }: Props) {
         {current <= 1 ? null : (
           <Link href={link.href(prevPage)} as={link.as(prevPage)}>
             <a
-              className={`flex-grow text-center bg-_bsPrimary hover:bg-_bsPrimary/90 active:ring-_bsPrimary active:ring-offset-2 active:bg-_bsPrimary active:ring-1 text-white ${
+              className={`flex-grow rounded-sm py-1 text-center bg-_bsPrimary hover:bg-_bsPrimary/90 active:ring-_bsPrimary active:ring-offset-2 active:bg-_bsPrimary active:ring-1 text-white ${
                 current <= 1 ? "disabled" : ""
               }`}
               title={"Newer"}

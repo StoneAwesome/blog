@@ -12,28 +12,34 @@ type Props = {
 export default function PostItem({ post }: Props) {
   const url = `/posts/${post.slug}`;
   return (
-    <div>
+    <div className="">
       <header className={"mt-5 mb-3"}>
         <Link href={url}>
-          <a className={"text-decoration-none"}>
+          <a className={"text-_bsPrimary text-2xl"}>
             <h1>{post.title}</h1>
           </a>
         </Link>
-        <div className={"d-flex align-items-center mb-4 text-muted author-info"}>
+        <div className={"flex items-center mb-4"}>
           <Author author={getAuthor(post.author)} />
-          <div className={"d-flex align-items-center ms-3"}>
+          <div className={"flex items-center ml-3"}>
             <DateView date={parseISO(post.date)} />
           </div>
         </div>
       </header>
       {post.description && post.image ? (
-        <div>
+        <div className="">
           <Link href={url}>
             <a>
-              <img className={"img-fluid rounded mb-3"} src={post.image} alt={post.title} />
+              <img
+                className={"w-full max-h-[60vh] object-cover object-center rounded mb-3"}
+                src={post.image}
+                alt={post.title}
+              />
             </a>
           </Link>
-          <p>{post.description}</p>
+          <div className="prose max-w-none">
+            <p>{post.description}</p>
+          </div>
         </div>
       ) : null}
     </div>

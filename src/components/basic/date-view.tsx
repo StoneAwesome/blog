@@ -7,10 +7,10 @@ type Props = {
 };
 export default function DateView({ date }: Props) {
   return (
-    <div className={"d-flex align-items-center"}>
+    <div className={"flex items-center"}>
       <FontAwesomeIcon icon={faCalendarDay} fixedWidth className={"me-2"} />
       <time dateTime={formatISO(date)} className={"text-nowrap"}>
-        <span className={"text-muted"}>{format(date, "LLLL d, yyyy")}</span>
+        <span className={"text-gray-600"}>{format(date, "LLLL d, yyyy")}</span>
       </time>
     </div>
   );

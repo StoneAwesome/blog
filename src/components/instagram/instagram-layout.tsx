@@ -74,13 +74,19 @@ export const InstagramBody: React.FC<Props> = ({ title, date, children, tags, ma
   return (
     <BasicContainer>
       <div className={``}>
-        <div className={"bg-_bsLight border-b-2 border-l-2 border-r-2 p-2 "}>
+        <div className={"bg-_bsLight border-b border-l border-r p-2 "}>
           <header>
-            <h1 className={"flex justify-between"}>
+            <h1 className={"flex justify-between items-center text-2xl font-bold mb-2"}>
               {title}
               {post && (
-                <a href={post.permalink} target={"_blank"} title="Instagram Page" rel="noreferrer">
-                  <FontAwesomeIcon icon={faInstagram} fixedWidth />
+                <a
+                  href={post.permalink}
+                  target={"_blank"}
+                  title="Instagram Page"
+                  rel="noreferrer"
+                  className="text-_bsPrimary"
+                >
+                  <FontAwesomeIcon icon={faInstagram} fixedWidth size="lg" />
                 </a>
               )}
             </h1>
@@ -97,15 +103,15 @@ export const InstagramBody: React.FC<Props> = ({ title, date, children, tags, ma
             </div>
           </div>
         )}
-        {children && <div className={`border-b-2 md:border-r-2 md:border-l-2`}>{children}</div>}
+        {children && <div className={`border-b md:border-r md:border-l`}>{children}</div>}
         {post && (
-          <div className={`flex flex-col md:grid md:grid-cols-12 md:divide-x`}>
+          <div className={`flex flex-col md:grid md:grid-cols-12`}>
             <div className={`md:col-span-5`}>
               <InstagramMediaViewer post={post} />
             </div>
             {post.caption && (
-              <div className={`md:col-span-7`}>
-                <div className={`p-3 prose prose-a:text-_bsPrimary`}>
+              <div className={`md:col-span-7 border-t md:border-t-0 md:border-x md:border-b`}>
+                <div className={`p-3 prose md:prose-lg`}>
                   <InstagramCaption caption={post.caption} />
                 </div>
               </div>
