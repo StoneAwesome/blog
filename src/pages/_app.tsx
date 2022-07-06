@@ -1,9 +1,7 @@
-import "normalize.css";
 import { AppProps } from "next/app";
-import "../styles/app.scss";
+import "../styles/app.css";
 import Head from "next/head";
 import Analytics from "@components/analytics";
-//import "bootstrap";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (

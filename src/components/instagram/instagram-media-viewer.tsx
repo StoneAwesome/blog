@@ -1,6 +1,7 @@
 import { InstagramPost } from "@lib/instagram";
 import * as React from "react";
 import ImageGallery from "react-image-gallery";
+import "react-image-gallery/styles/css/image-gallery.css";
 
 export type InstagramMediaViewerProps = {
   post: InstagramPost;
@@ -35,23 +36,22 @@ const InstagramMediaViewer: React.FC<InstagramMediaViewerProps> = ({ post }) => 
     post.images.length > 0
   ) {
     return (
-      <div>
-        <ImageGallery
-          items={post.images.map((c) => ({ original: c.url }))}
-          showPlayButton={false}
-          showBullets={false}
-          showThumbnails={false}
-          useBrowserFullscreen={false}
-          onClick={() => {
-            if (galleryRef.current) {
-              if (!state?.isFullscreen) {
-                galleryRef.current.fullScreen();
-              }
+      <ImageGallery
+        items={post.images.map((c) => ({ original: c.url }))}
+        showPlayButton={false}
+        showBullets={false}
+        showThumbnails={false}
+        useBrowserFullscreen={false}
+        additionalClass={"w-full"}
+        onClick={() => {
+          if (galleryRef.current) {
+            if (!state?.isFullscreen) {
+              galleryRef.current.fullScreen();
             }
-          }}
-          ref={galleryRef}
-        />
-      </div>
+          }
+        }}
+        ref={galleryRef}
+      />
     );
   } else return null;
 };

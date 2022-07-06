@@ -9,6 +9,7 @@ import TwitterCardMeta from "@components/meta/twitter-card-meta";
 import TagButton from "@components/post/tag-button";
 import { getAuthor } from "@lib/authors";
 import { getTag } from "@lib/tags";
+import BasicContainer from "@components/basic/basic-container";
 
 type Props = {
   title: string;
@@ -52,30 +53,28 @@ export const PostBody: React.FC<Props> = ({ title, author, date, children, tags 
   const hasTags = tags && tags.length > 0;
 
   return (
-    <div className={"container"}>
-      <div className={"posts-container"}>
-        <article>
-          <header className={"my-3"}>
-            <h1>{title}</h1>
-            <div className={"d-flex align-items-center mb-4 text-muted author-info"}>
-              {author && <Author author={getAuthor(author)} />}
-              <div className={"d-flex align-items-center ms-3"}>
-                <DateView date={date} />
+    <BasicContainer>
+      <article>
+        <header className={"my-3"}>
+          <h1>{title}</h1>
+          <div className={"d-flex align-items-center mb-4 text-muted author-info"}>
+            {author && <Author author={getAuthor(author)} />}
+            <div className={"d-flex align-items-center ms-3"}>
+              <DateView date={date} />
+            </div>
+          </div>
+        </header>
+        <div>{children}</div>
+        {hasTags && tags.map && (
+          <div className={"d-flex flex-wrap border-top py-2"}>
+            {tags.map((it, i) => (
+              <div key={i} className={"mx-2 my-1"}>
+                <TagButton tag={getTag(it)} />
               </div>
-            </div>
-          </header>
-          <div>{children}</div>
-          {hasTags && tags.map && (
-            <div className={"d-flex flex-wrap border-top py-2"}>
-              {tags.map((it, i) => (
-                <div key={i} className={"mx-2 my-1"}>
-                  <TagButton tag={getTag(it)} />
-                </div>
-              ))}
-            </div>
-          )}
-        </article>
-      </div>
-    </div>
+            ))}
+          </div>
+        )}
+      </article>
+    </BasicContainer>
   );
 };

@@ -14,30 +14,3 @@
     color: color-contrast(tint-color($primary, 80%));
   }
 }
-.posts-container {
-  @extend .px-md-3;
-  @extend .mx-auto;
-  @extend .mb-5;
-  max-width: 760px;
-
-  @include media-breakpoint-up(md) {
-    max-width: map-get($map: $grid-breakpoints, $key: md);
-  }
-  
-  @include media-breakpoint-up(lg) {
-    max-width: map-get($map: $grid-breakpoints, $key: lg);
-  }
-  
-
-  p {
-    a {
-      @extend .blog-link;
-    }
-  }
-}
-
-@media (min-width: 40em) {
-  .posts-container {
-    font-size: 18px;
-  }
-}
