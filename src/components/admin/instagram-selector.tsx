@@ -52,20 +52,23 @@ const InstagramSelector: React.FC<CmsWidgetControlProps<InstagramPost>> = (props
   }
 
   return (
-    <div className={"pt-2 d-flex flex-column gap-2"}>
+    <div className={"pt-2 flex flex-col gap-2"}>
       <input type={"hidden"} value={props.value?.id || ""} id={CURRENT_INSTAGRAM_ID_FIELD_ID} />
       {isCollapsed && (
-        <button className={"btn btn-primary"} onClick={onClick}>
+        <button
+          className={"bg-_bsPrimary hover:bg-_bsPrimary/90 py-1 px-2 rounded text-white"}
+          onClick={onClick}
+        >
           {"Select Post"}
         </button>
       )}
 
       <div>
         {selected && isCollapsed ? (
-          <div className={"d-flex gap-2"}>
+          <div className={"flex gap-2"}>
             <img
               src={selected.thumbnail_url || selected.media_url}
-              className={"img-thumbnail"}
+              className={"h-auto w-full"}
               style={{ width: "18rem" }}
             />
             <div>
@@ -83,42 +86,44 @@ const InstagramSelector: React.FC<CmsWidgetControlProps<InstagramPost>> = (props
         ) : null}
       </div>
 
-      <div className={"collapse"} ref={panelRef}>
-        <div className={"row border py-1"}>
+      <div className={isCollapsed ? "hidden" : ""} ref={panelRef}>
+        <div className={"grid grid-cols-3 gap-2 border py-1"}>
           {data.map((d) => (
-            <div className={"col-4"}>
-              <div
-                className={`card my-1  ${d.id === props.value?.id ? "border-primary" : ""}`}
-                onClick={(e) => {
-                  onClick();
-                  set_isLoading(true);
-                  instagramClient.getPost(d.id).then((fullPost) => {
-                    if (fullPost) {
-                      fetch(`/api/folder?instagram_id=${d.id}`, { method: "DELETE" })
-                        .then(() =>
-                          persistInstagram(fullPost).then((r) => {
-                            props.onChange(r);
-                            document.dispatchEvent(
-                              new CustomEvent(INSTAGRAM_POST_SELECTED_EVENT, { detail: r })
-                            );
-                          })
-                        )
-                        .catch((r) => {
-                          alert("An Error Occurred");
-                          console.log(r);
+            <div
+              key={d.id}
+              className={`p-2  ${d.id === props.value?.id ? "ring ring-_bsPrimary" : ""}`}
+              onClick={(e) => {
+                onClick();
+                set_isLoading(true);
+                instagramClient.getPost(d.id).then((fullPost) => {
+                  if (fullPost) {
+                    fetch(`/api/folder?instagram_id=${d.id}`, { method: "DELETE" })
+                      .then(() =>
+                        persistInstagram(fullPost).then((r) => {
+                          props.onChange(r);
+                          document.dispatchEvent(
+                            new CustomEvent(INSTAGRAM_POST_SELECTED_EVENT, { detail: r })
+                          );
                         })
-                        .finally(() => set_isLoading(false));
-                    } else {
-                      alert("Could not grab instagram post");
-                      set_isLoading(false);
-                    }
-                  });
-                }}
-              >
-                <img src={d.thumbnail_url || d.media_url} className={"card-img-top"} />
-                <div className={"card-body border-top"}>
-                  <p className={"card-text"}>{`${d.caption?.substring(0, 255)}...`}</p>
-                </div>
+                      )
+                      .catch((r) => {
+                        alert("An Error Occurred");
+                        console.log(r);
+                      })
+                      .finally(() => set_isLoading(false));
+                  } else {
+                    alert("Could not grab instagram post");
+                    set_isLoading(false);
+                  }
+                });
+              }}
+            >
+              <img
+                src={d.thumbnail_url || d.media_url}
+                className={"w-full h-[10rem] object-cover"}
+              />
+              <div className={"border-t"}>
+                <p className={""}>{`${d.caption?.substring(0, 255)}...`}</p>
               </div>
             </div>
           ))}
