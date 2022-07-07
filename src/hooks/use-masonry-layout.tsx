@@ -78,8 +78,19 @@ function isBig(idx: number, cols: COLUMN_WIDTH, len: number) {
     return rowVariant < 3 ? idx % 3 === 0 : rowVariant % 3 === 1;
   }
   if (cols === 2) {
+    //-- First is always large
+    if (idx === 0) return true;
+
+    //-- If we only have 2, both are large
+    if (len === 2) return true;
+
+    //-- Last Item
+    if (idx === len - 1) {
+      return len % 3 !== 0;
+    }
+
     //-- With 2 cols, we have either 2 or 1 elements per row and we have 2 variants
-    return idx % 3 === 0 || len < 3 || (idx === len - 1 && len % 2 == 1);
+    return idx % 3 === 0;
   }
 
   if (idx % cols === 0) return true;
