@@ -89,7 +89,7 @@ export const InstagramBody: React.FC<Props> = ({ title, date, children, tags, ma
                 // >
                 //   <FontAwesomeIcon icon={faInstagram} fixedWidth size="lg" />
                 // </a>
-                <ShareButton url={location.href} title={title} className={"font-normal px-2"} />
+                <ShareButton title={`${title} - StoneAwesome`} className={"font-normal px-2"} />
               )}
             </h1>
             <DateView date={parseISO(date)} />

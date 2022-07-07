@@ -9,7 +9,7 @@ export type ShareButtonProps = {
    */
   text?: string;
   title: string;
-  url: string;
+  url?: string;
   className?: string;
 };
 
@@ -30,7 +30,7 @@ const ShareButton: React.FC<React.PropsWithChildren<ShareButtonProps>> = (props)
           e.preventDefault();
           e.stopPropagation();
           navigator.share({
-            url: props.url,
+            url: props.url || location.href,
             title: props.title,
             text: props.text,
           });

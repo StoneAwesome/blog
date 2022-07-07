@@ -11,22 +11,22 @@ export function SocialList({}) {
   return (
     <div className={"flex justify-center mb-3"}>
       <div className={"flex gap-4 [&>*]:text-_bsPrimary hover:[&>*]:text-_bsPrimary/90 "}>
-        <a
+        {/* <a
           title="Twitter"
           href={`https://twitter.com/${config.twitter_account}`}
           target="_blank"
           rel="noopener"
         >
           <FontAwesomeIcon icon={faTwitter} {...DEFAULT_PROPS} />
-        </a>
-        <a
+        </a> */}
+        {/* <a
           title="GitHub"
           href={`https://github.com/${config.github_account}`}
           target="_blank"
           rel="noopener"
         >
           <FontAwesomeIcon icon={faGithub} {...DEFAULT_PROPS} />
-        </a>
+        </a> */}
         <a
           title="Instagram"
           href={`https://instagram.com/${config.instagram_account}`}
