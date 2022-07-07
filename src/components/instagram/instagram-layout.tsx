@@ -17,6 +17,7 @@ import InstagramMediaViewer from "./instagram-media-viewer";
 import { createFacebookOGGraphImage, createTwitterGraphImage } from "@lib/image-service";
 import { useIsMobile } from "@hooks/use-media";
 import BasicContainer from "@components/basic/basic-container";
+import ShareButton from "@components/basic/share-button";
 type Props = Omit<InstagramContent, "fullPath"> & {
   post: InstagramPost | null;
   children: React.ReactNode;
@@ -79,15 +80,16 @@ export const InstagramBody: React.FC<Props> = ({ title, date, children, tags, ma
             <h1 className={"flex justify-between items-center text-2xl font-bold mb-2"}>
               {title}
               {post && (
-                <a
-                  href={post.permalink}
-                  target={"_blank"}
-                  title="Instagram Page"
-                  rel="noreferrer"
-                  className="text-_bsPrimary"
-                >
-                  <FontAwesomeIcon icon={faInstagram} fixedWidth size="lg" />
-                </a>
+                // <a
+                //   href={post.permalink}
+                //   target={"_blank"}
+                //   title="Instagram Page"
+                //   rel="noreferrer"
+                //   className="text-_bsPrimary"
+                // >
+                //   <FontAwesomeIcon icon={faInstagram} fixedWidth size="lg" />
+                // </a>
+                <ShareButton url={location.href} title={title} className={"font-normal px-2"} />
               )}
             </h1>
             <DateView date={parseISO(date)} />
