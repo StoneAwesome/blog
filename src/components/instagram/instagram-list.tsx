@@ -4,6 +4,7 @@ import Pagination from "@components/basic/pagination";
 import type { TagContent } from "@lib/tags";
 import type { InstagramContent } from "@lib/instagram";
 import BasicContainer from "@components/basic/basic-container";
+import { useMasonryLayout } from "@hooks/use-masonry-layout";
 
 type Props = {
   posts: InstagramContent[];
@@ -18,7 +19,7 @@ export default function InstagramList({ posts, tags, pagination }: Props) {
   return (
     <BasicContainer>
       <div className={"my-2"}>
-        <div className={"grid grid-cols-3 gap-2"}>
+        <div className={`grid grid-cols-3 lg:grid-cols-4 gap-3`}>
           {posts.map((it, i) => (
             <InstagramItem key={i} post={it} />
           ))}

@@ -19,6 +19,7 @@ module.exports = {
   images: {
     domains: ["res.cloudinary.com"],
     loader: "cloudinary",
-    path:"https://res.cloudinary.com/stoneawesome/image/upload/"
+    path: "https://res.cloudinary.com/stoneawesome/image/upload/",
   },
+  experimental: { images: { allowFutureImage: true } },
 };
