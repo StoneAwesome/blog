@@ -1,4 +1,9 @@
-import { faArrowUpFromBracket, faShare } from "@fortawesome/pro-thin-svg-icons";
+import {
+  faArrowUpBigSmall,
+  faArrowUpFromBracket,
+  faShare,
+  faShareNodes,
+} from "@fortawesome/pro-thin-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useClientOnly } from "@hooks/use-client-only";
 import * as React from "react";
@@ -25,7 +30,7 @@ const ShareButton: React.FC<React.PropsWithChildren<ShareButtonProps>> = (props)
   if (setup.value) {
     return (
       <button
-        className={`text-_bsPrimary hover:text-_bsPrimary/90 flex flex-col items-center ${props.className}`}
+        className={`text-_bsPrimary hover:text-_bsPrimary/80 rounded py-1 flex flex-col items-center ${props.className}`}
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -36,12 +41,18 @@ const ShareButton: React.FC<React.PropsWithChildren<ShareButtonProps>> = (props)
           });
         }}
       >
-        <FontAwesomeIcon icon={faArrowUpFromBracket} />
+        <FontAwesomeIcon icon={grabIcon()} />
+        <span>{"Share"}</span>
       </button>
     );
   }
 
   return null;
 };
+
+function grabIcon() {
+  const ua = navigator?.userAgent?.toLowerCase() || "";
+  return ua.indexOf("android") > -1 ? faShareNodes : faArrowUpFromBracket;
+}
 
 export default ShareButton;

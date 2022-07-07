@@ -1,3 +1,5 @@
+import { faInstagram } from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as React from "react";
 
 export type InstagramCaptionProps = {
@@ -57,7 +59,7 @@ const SmartString: React.FC<{ v: string }> = ({ v }) => {
           return (
             <a
               href={`https://www.instagram.com/${v.s.substring(1)}`}
-              className="m-1"
+              className="m-1 instagram-link"
               key={i}
               target={"_blank"}
             >
@@ -68,7 +70,7 @@ const SmartString: React.FC<{ v: string }> = ({ v }) => {
           return (
             <a
               href={`https://www.instagram.com/explore/tags/${v.s.substring(1)}/`}
-              className="m-1"
+              className="m-1 instagram-link"
               target={"_blank"}
               key={i}
             >

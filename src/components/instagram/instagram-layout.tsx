@@ -71,28 +71,25 @@ export default function InstagramLayout(props: Props) {
 
 const BP = "md";
 export const InstagramBody: React.FC<Props> = ({ title, date, children, tags, material, post }) => {
-  const isMobile = useIsMobile();
   return (
     <BasicContainer>
       <div className={``}>
-        <div className={"bg-_bsLight border-b border-l border-r p-2 "}>
-          <header>
-            <h1 className={"flex justify-between items-center text-2xl font-bold mb-2"}>
-              {title}
-              {post && (
-                // <a
-                //   href={post.permalink}
-                //   target={"_blank"}
-                //   title="Instagram Page"
-                //   rel="noreferrer"
-                //   className="text-_bsPrimary"
-                // >
-                //   <FontAwesomeIcon icon={faInstagram} fixedWidth size="lg" />
-                // </a>
-                <ShareButton title={`${title} - StoneAwesome`} className={"font-normal px-2"} />
-              )}
-            </h1>
-            <DateView date={parseISO(date)} />
+        <div className={"bg-_bsLight border-b border-l border-r rounded-b mb-2 p-2 "}>
+          <header className="flex justify-between items-center">
+            <div>
+              <h1 className={"flex justify-between items-center text-2xl font-bold mb-2"}>
+                {title}
+              </h1>
+              <a href={post.permalink}>
+                <DateView date={parseISO(date)} />
+              </a>
+            </div>
+            <div className="flex flex-col items-center">
+              <ShareButton
+                title={`${title} - StoneAwesome`}
+                className={"font-normal text-lg px-2"}
+              />
+            </div>
           </header>
         </div>
         {material && material.length > 0 && (
@@ -105,14 +102,14 @@ export const InstagramBody: React.FC<Props> = ({ title, date, children, tags, ma
             </div>
           </div>
         )}
-        {children && <div className={`border-b md:border-r md:border-l`}>{children}</div>}
+        {children && <div className={``}>{children}</div>}
         {post && (
           <div className={`flex flex-col md:grid md:grid-cols-12`}>
             <div className={`md:col-span-5`}>
               <InstagramMediaViewer post={post} />
             </div>
             {post.caption && (
-              <div className={`md:col-span-7 border-t md:border-t-0 md:border-x md:border-b`}>
+              <div className={`md:col-span-7 border-t md:border-t-0`}>
                 <div className={`p-3 prose md:prose-lg`}>
                   <InstagramCaption caption={post.caption} />
                 </div>

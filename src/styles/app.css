@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+.instagram-link {
+  position: relative;
+  /*background: linear-gradient(90deg, #ffd600, #ff7a00, #ff0069, #d300c5, #7638fa);*/
+}
+
+.instagram-link::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  left: 0;
+  height: 1px;
+  background: linear-gradient(90deg, #ffd600, #ff7a00, #ff0069, #d300c5, #7638fa);
+}
+
 /* .image-gallery {
   .image-gallery-slide.center {
     outline: none;
