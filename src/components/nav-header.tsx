@@ -36,10 +36,10 @@ export default function NavHeader() {
           </LinkSpecial>
 
           <LinkSpecial href="/posts">{"Blog"}</LinkSpecial>
-          <LinkSpecial href="/posts">
+          {/* <LinkSpecial href="/posts">
             <FontAwesomeIcon icon={faPlus} fixedWidth className={"me-1"} />
             {"Submit Your Designs"}
-          </LinkSpecial>
+          </LinkSpecial> */}
         </div>
       </div>
     </>
