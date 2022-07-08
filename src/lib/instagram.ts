@@ -17,6 +17,11 @@ export interface InstagramPost {
   mediaType: InstagramMedia["media_type"];
   permalink: string;
   timestamp: string;
+  links?: {
+    title: string;
+    isSt?: boolean;
+    url: string;
+  }[];
   images: StoredInstagramImage[];
   primaryMedia: StoredInstagramImage;
 }
@@ -26,14 +31,22 @@ export interface InstagramContent extends ICollectionBase {
   post: InstagramPost;
 }
 
-const instagramHelper = new CollectionHelper<InstagramContent>("content/instagram", 24);
+const instagramHelper = new CollectionHelper<InstagramContent>(
+  "content/instagram",
+  24
+);
 
-export const fetchInstagramContent = () => instagramHelper.fetchCollectionContent();
+export const fetchInstagramContent = () =>
+  instagramHelper.fetchCollectionContent();
 
-export const createInstagramList = (ctx: GetStaticPropsContext<{ page: string }, PreviewData>) =>
-  instagramHelper.createGetStaticPropsForPage(ctx);
+export const createInstagramList = (
+  ctx: GetStaticPropsContext<{ page: string }, PreviewData>
+) => instagramHelper.createGetStaticPropsForPage(ctx);
 
-export const createInstagramItemPaths = () => instagramHelper.getStaticPathsForItems("instagram");
+export const createInstagramItemPaths = () =>
+  instagramHelper.getStaticPathsForItems("instagram");
 
-export const createInstagramPathsForPages = () => instagramHelper.getStaticPathsForPages();
-export const getInstagramItemProps = (rts: RTS) => instagramHelper.getStaticPropsForItem(rts);
+export const createInstagramPathsForPages = () =>
+  instagramHelper.getStaticPathsForPages();
+export const getInstagramItemProps = (rts: RTS) =>
+  instagramHelper.getStaticPropsForItem(rts);

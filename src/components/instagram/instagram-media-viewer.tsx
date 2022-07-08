@@ -26,7 +26,7 @@ const InstagramMediaViewer: React.FC<InstagramMediaViewerProps> = ({ post }) => 
     return (
       <>
         <Gallery>
-          <div className={`p-3 gap-3 ${masonry.parentClass}`}>
+          <div className={`gap-3 ${masonry.parentClass}`}>
             {post.images.map((i, idx, all) => (
               <Item
                 key={i.url}

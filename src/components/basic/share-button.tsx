@@ -22,7 +22,9 @@ function canUseShareCharm() {
   return typeof navigator !== "undefined" && (navigator as any).share;
 }
 
-const ShareButton: React.FC<React.PropsWithChildren<ShareButtonProps>> = (props) => {
+const ShareButton: React.FC<React.PropsWithChildren<ShareButtonProps>> = (
+  props
+) => {
   const setup = useClientOnly(canUseShareCharm);
 
   if (!setup.readyToRender) return null;
@@ -30,7 +32,7 @@ const ShareButton: React.FC<React.PropsWithChildren<ShareButtonProps>> = (props)
   if (setup.value) {
     return (
       <button
-        className={`text-_bsPrimary hover:text-_bsPrimary/80 rounded py-1 flex flex-col items-center ${props.className}`}
+        className={`flex flex-col items-center rounded py-1 text-_bsPrimary hover:text-_bsPrimary/80 ${props.className}`}
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -42,7 +44,7 @@ const ShareButton: React.FC<React.PropsWithChildren<ShareButtonProps>> = (props)
         }}
       >
         <FontAwesomeIcon icon={grabIcon()} />
-        <span>{"Share"}</span>
+        <span className="hidden md:block">{"Share"}</span>
       </button>
     );
   }
