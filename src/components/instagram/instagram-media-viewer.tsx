@@ -3,7 +3,6 @@ import * as React from "react";
 import { Gallery, Item } from "react-photoswipe-gallery";
 import "photoswipe/dist/photoswipe.css";
 import { useMasonryLayout } from "@hooks/use-masonry-layout";
-//import "photoswipe/dist/default-skin/default-skin.css";
 
 export type InstagramMediaViewerProps = {
   post: InstagramPost;
@@ -13,7 +12,9 @@ export interface ThumbsStyle {
   transition: string;
 }
 
-const InstagramMediaViewer: React.FC<InstagramMediaViewerProps> = ({ post }) => {
+const InstagramMediaViewer: React.FC<InstagramMediaViewerProps> = ({
+  post,
+}) => {
   const masonry = useMasonryLayout(post.images, {
     columns: 2,
   });
@@ -22,7 +23,6 @@ const InstagramMediaViewer: React.FC<InstagramMediaViewerProps> = ({ post }) => 
     post.images &&
     post.images.length > 0
   ) {
-    const len = post.images.length;
     return (
       <>
         <Gallery>
@@ -40,7 +40,7 @@ const InstagramMediaViewer: React.FC<InstagramMediaViewerProps> = ({ post }) => 
                   <img
                     src={i.url}
                     ref={ref as React.MutableRefObject<HTMLImageElement>}
-                    className={`object-cover rounded cursor-pointer shadow hover:shadow-lg hover:shadow-_bsInfo/50  transition-shadow duration-300  h-[8rem] md:h-[12rem] w-full ${masonry.getChildClass(
+                    className={`h-[8rem] w-full cursor-pointer rounded object-cover shadow  transition-shadow duration-300  hover:shadow-lg hover:shadow-_bsInfo/50 md:h-[12rem] ${masonry.getChildClass(
                       idx
                     )}`}
                     onClick={open}

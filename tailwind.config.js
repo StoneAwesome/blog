@@ -16,6 +16,7 @@ module.exports = {
     "./src/pages/**/*.{ts,tsx}",
     "./src/components/**/*.{ts,tsx}",
     "./src/hooks/**/*.{ts,tsx}",
+    "./src/lib/**/*.tsx",
   ],
   theme: {
     extend: {

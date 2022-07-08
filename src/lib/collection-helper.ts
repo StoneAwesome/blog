@@ -20,9 +20,10 @@ export interface ICollectionBase {
   tags?: string[];
 }
 
-export type ICollectionSource<T extends ICollectionBase = ICollectionBase> = T & {
-  source: MdxRemote.Source;
-};
+export type ICollectionSource<T extends ICollectionBase = ICollectionBase> =
+  T & {
+    source: MdxRemote.Source;
+  };
 
 export type CollectionListProps<T extends ICollectionBase> = {
   posts: T[];
@@ -83,11 +84,11 @@ export class CollectionHelper<T extends ICollectionBase> {
         const slug = fileName.replace(/\.mdx$/, "");
 
         // Validate slug string
-        if (matterData.slug !== slug) {
-          throw new Error(
-            `slug ${slug} field not match with the path of its content source ${matterData.slug}`
-          );
-        }
+        // if (matterData.slug !== slug) {
+        //   throw new Error(
+        //     `slug ${slug} field not match with the path of its content source ${matterData.slug}`
+        //   );
+        // }
 
         return matterData;
       });
@@ -126,12 +127,14 @@ export class CollectionHelper<T extends ICollectionBase> {
 
   async countPosts(tag?: string): Promise<number> {
     const posts = await this.fetchCollectionContent();
-    return posts.filter((it) => !tag || (it.tags && it.tags.includes(tag))).length;
+    return posts.filter((it) => !tag || (it.tags && it.tags.includes(tag)))
+      .length;
   }
 
-  createGetStaticPropsForPage: GetStaticProps<CollectionListProps<T>, { page: string }> = async ({
-    params,
-  }) => {
+  createGetStaticPropsForPage: GetStaticProps<
+    CollectionListProps<T>,
+    { page: string }
+  > = async ({ params }) => {
     const page = parseInt((params?.page as string) || "1");
     const posts = await this.listContent(page, this.pageSize);
     const tags = listTags();
@@ -150,7 +153,10 @@ export class CollectionHelper<T extends ICollectionBase> {
     };
   };
 
-  getStaticPathsForItems(path: string, getAdditionalRoutes?: () => Promise<string[]>) {
+  getStaticPathsForItems(
+    path: string,
+    getAdditionalRoutes?: () => Promise<string[]>
+  ) {
     const result: GetStaticPaths = async () => {
       const content = await this.fetchCollectionContent();
       let paths = content.map((it) => `/${path}/${it.slug}`);
@@ -194,7 +200,9 @@ export class CollectionHelper<T extends ICollectionBase> {
     rts: RTS,
     enhancer: (item: T) => Promise<TEnhanced>
   ) {
-    const func: GetStaticProps<ICollectionSource<TEnhanced>> = async ({ params }) => {
+    const func: GetStaticProps<ICollectionSource<TEnhanced>> = async ({
+      params,
+    }) => {
       this.fetchCollectionContent();
       const slug = params?.slug as string;
       const fullPath = this.cacheDictionary[slug]?.fullPath;
@@ -223,14 +231,23 @@ export class CollectionHelper<T extends ICollectionBase> {
   }
 }
 
-async function createMDXSource(content: string, data: { [x: string]: any }, rts: RTS) {
-  const mdxSource = await rts(content, { components: MDX_Components, scope: data });
+async function createMDXSource(
+  content: string,
+  data: { [x: string]: any },
+  rts: RTS
+) {
+  const mdxSource = await rts(content, {
+    components: MDX_Components,
+    scope: data,
+  });
   return mdxSource;
 }
 
 function grabMatterFromSource<T>(source: string) {
   const result = matter(source, {
-    engines: { yaml: (s) => yaml.load(s, { schema: yaml.JSON_SCHEMA }) as object },
+    engines: {
+      yaml: (s) => yaml.load(s, { schema: yaml.JSON_SCHEMA }) as object,
+    },
   });
 
   return {

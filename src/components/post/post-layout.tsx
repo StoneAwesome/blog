@@ -10,6 +10,8 @@ import { getAuthor } from "@lib/authors";
 import { getTag } from "@lib/tags";
 import BasicContainer from "@components/basic/basic-container";
 import TagLink from "./tag-link";
+import { Gallery } from "react-photoswipe-gallery";
+import "photoswipe/dist/photoswipe.css";
 
 type Props = {
   title: string;
@@ -34,8 +36,16 @@ export default function PostLayout(props: Props) {
         keywords={keywords}
         description={description}
       />
-      <TwitterCardMeta url={`/posts/${slug}`} title={title} description={description} />
-      <OpenGraphMeta url={`/posts/${slug}`} title={title} description={description} />
+      <TwitterCardMeta
+        url={`/posts/${slug}`}
+        title={title}
+        description={description}
+      />
+      <OpenGraphMeta
+        url={`/posts/${slug}`}
+        title={title}
+        description={description}
+      />
       <JsonLdMeta
         url={`/posts/${slug}`}
         title={title}
@@ -49,30 +59,40 @@ export default function PostLayout(props: Props) {
   );
 }
 
-export const PostBody: React.FC<Props> = ({ title, author, date, children, tags }) => {
+export const PostBody: React.FC<Props> = ({
+  title,
+  author,
+  date,
+  children,
+  tags,
+}) => {
   const hasTags = tags && tags.length > 0;
 
   return (
     <BasicContainer>
-      <article>
-        <header className={"my-3"}>
-          <h1 className="text-4xl mb-2">{title}</h1>
-          <div className={"flex items-center mb-4 text-gray-500 author-info"}>
-            {author && <Author author={getAuthor(author)} />}
-            <div className={"flex items-center ml-3"}>
-              <DateView date={date} />
+      <Gallery>
+        <article>
+          <header className={"my-3"}>
+            <h1 className="mb-2 text-4xl">{title}</h1>
+            <div className={"author-info mb-4 flex items-center text-gray-500"}>
+              {author && <Author author={getAuthor(author)} />}
+              <div className={"ml-3 flex items-center"}>
+                <DateView date={date} />
+              </div>
             </div>
+          </header>
+          <div className="prose max-w-none [&>p>figure>img]:mb-0">
+            {children}
           </div>
-        </header>
-        <div className="prose max-w-none [&>p>figure>img]:mb-0">{children}</div>
-        {hasTags && tags.map && (
-          <div className={"flex flex-wrap border-t py-2 mt-3 gap-3 prose"}>
-            {tags.map((it, i) => (
-              <TagLink key={i} tag={getTag(it)} />
-            ))}
-          </div>
-        )}
-      </article>
+          {hasTags && tags.map && (
+            <div className={"prose mt-3 flex flex-wrap gap-3 border-t py-2"}>
+              {tags.map((it, i) => (
+                <TagLink key={i} tag={getTag(it)} />
+              ))}
+            </div>
+          )}
+        </article>
+      </Gallery>
     </BasicContainer>
   );
 };

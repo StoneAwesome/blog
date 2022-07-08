@@ -21,8 +21,7 @@ import ShareButton from "@components/basic/share-button";
 import Modal from "@components/modal";
 import { Dialog } from "@headlessui/react";
 import STLogo from "@components/st-logo";
-import { useRouter } from "next/router";
-import { addParamsToUrl } from "@lib/uri";
+import { addUtmParamsToUrl, UtmProps } from "@lib/uri";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/pro-duotone-svg-icons";
 type Props = Omit<InstagramContent, "fullPath"> & {
@@ -86,7 +85,7 @@ export const InstagramBody: React.FC<Props> = ({
   post,
 }) => {
   const [isOpen, set_isOpen] = React.useState<boolean>(false);
-  const utmParams = {
+  const utmParams: Partial<UtmProps> = {
     utm_source: "stone_awesome",
     utm_medium: "referral",
     utm_id: post.id,
@@ -165,7 +164,7 @@ export const InstagramBody: React.FC<Props> = ({
                   l.isSt ? (
                     <a
                       key={i}
-                      href={addParamsToUrl(l.url, utmParams)}
+                      href={addUtmParamsToUrl(l.url, utmParams)}
                       target={"_blank"}
                     >
                       <STLogo
@@ -176,7 +175,7 @@ export const InstagramBody: React.FC<Props> = ({
                   ) : (
                     <a
                       key={i}
-                      href={addParamsToUrl(l.url, utmParams)}
+                      href={addUtmParamsToUrl(l.url, utmParams)}
                       target={"_blank"}
                       className="inline-flex w-full justify-center rounded-md border border-transparent bg-_bsPrimary px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
                     >

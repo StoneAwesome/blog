@@ -1,4 +1,4 @@
-export function addParamsToUrl(
+function addParamsToUrl(
   self: string,
   queryParams: { [x: string]: string | number }
 ) {
@@ -22,4 +22,17 @@ export function addParamsToUrl(
   return `${querystring[0]}?${Object.keys(allParams)
     .map((k) => `${k}=${allParams[k]}`)
     .join("&")}`;
+}
+
+export interface UtmProps {
+  utm_source: string;
+  utm_medium: string;
+  utm_id: string;
+  utm_campaign: string;
+  utm_term: string;
+  utm_content: string;
+}
+
+export function addUtmParamsToUrl(self: string, utmProps: Partial<UtmProps>) {
+  return addParamsToUrl(self, utmProps as any);
 }
