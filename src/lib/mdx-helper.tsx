@@ -94,7 +94,7 @@ const MDXLink: React.FC<
   //-- For outgoing Urls, make sure we tag them with our UTM codes.
   const url = React.useMemo(
     () =>
-      href && /(stoneawesome\.com|localhost)/i.exec(href)
+      href && !/(stoneawesome\.com|localhost)/i.exec(href)
         ? addUtmParamsToUrl(href, utmProps)
         : href,
     [href, utmProps]
