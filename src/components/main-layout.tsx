@@ -18,7 +18,7 @@ export default function Layout({ children }: Props) {
         <NavHeader />
       </nav>
       <main>{children}</main>
-      <footer className="p-3 p-md-5 mt-5 text-center text-muted bg-_bsLight border-t-2 border-top">
+      <footer className="p-3 p-md-5 mt-5 text-center text-muted bg-_bsLight border-t border-top">
         <div className="container mx-auto">
           <SocialList />
           <p className="mb-0 ">
