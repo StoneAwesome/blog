@@ -4,6 +4,9 @@ import { TagContent } from "@lib/tags";
 import PostItem from "./post-item";
 import Pagination from "../basic/pagination";
 import Link from "next/link";
+import BasicContainer from "@components/basic/basic-container";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTag } from "@fortawesome/pro-solid-svg-icons";
 
 type Props = {
   posts: PostContent[];
@@ -15,40 +18,33 @@ type Props = {
 };
 export default function TagPostList({ posts, tag, pagination }: Props) {
   return (
-    <div className={"container"}>
-      <div className={"posts-container"}>
-        <nav aria-label="breadcrumb">
-          <ol className="breadcrumb">
-            <li className="breadcrumb-item">
-              <Link href={"/posts"}>
-                <a>{"All Posts"}</a>
-              </Link>
-            </li>
-            <li className="breadcrumb-item active" aria-current="page">
-              {tag.name}
-            </li>
-          </ol>
-        </nav>
-        <h1>
-          All posts / <span>{tag.name}</span>
-        </h1>
-        <div>
-          {posts.map((it, i) => (
-            <div key={i}>
-              <PostItem post={it} />
-            </div>
-          ))}
-        </div>
-        <Pagination
-          current={pagination.current}
-          pages={pagination.pages}
-          link={{
-            href: () => "/posts/tags/[[...slug]]",
-            as: (page) =>
-              page === 1 ? "/posts/tags/" + tag.slug : `/posts/tags/${tag.slug}/${page}`,
-          }}
+    <BasicContainer>
+      <div className="mt-3 flex items-center gap-3 text-2xl">
+        <FontAwesomeIcon
+          icon={faTag}
+          className={"text-dark rounded bg-_bsInfo px-3 py-1 text-white"}
         />
+        {":"}
+        <h1 className="font-thin">{tag.name}</h1>
       </div>
-    </div>
+      <div>
+        {posts.map((it, i) => (
+          <div key={i}>
+            <PostItem post={it} />
+          </div>
+        ))}
+      </div>
+      <Pagination
+        current={pagination.current}
+        pages={pagination.pages}
+        link={{
+          href: () => "/posts/tags/[[...slug]]",
+          as: (page) =>
+            page === 1
+              ? "/posts/tags/" + tag.slug
+              : `/posts/tags/${tag.slug}/${page}`,
+        }}
+      />
+    </BasicContainer>
   );
 }
