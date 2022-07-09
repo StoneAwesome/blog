@@ -120,22 +120,24 @@ export const InstagramBody: React.FC<Props> = ({
               />
             </div>
           </header>
-          <div className="flex flex-col justify-between border-t sm:flex-row">
-            <button
-              className=" mt-3 flex items-center justify-center gap-2 rounded bg-_bsPrimary px-5 py-1 text-white sm:py-2"
-              onClick={() => set_isOpen(!isOpen)}
-            >
-              <FontAwesomeIcon icon={faSearch} />
-              {"Find this material"}
-            </button>
-            {/* <button
+          {hasLinks && (
+            <div className="flex flex-col justify-between border-t sm:flex-row">
+              <button
+                className=" mt-3 flex items-center justify-center gap-2 rounded bg-_bsPrimary px-5 py-1 text-white sm:py-2"
+                onClick={() => set_isOpen(!isOpen)}
+              >
+                <FontAwesomeIcon icon={faSearch} />
+                {"Find this material"}
+              </button>
+              {/* <button
               className=" mt-3 flex items-center justify-center gap-2 rounded bg-_bsInfo px-5 py-1 text-white  sm:py-2"
               onClick={() => set_isOpen(!isOpen)}
             >
               <FontAwesomeIcon icon={faSearch} />
               {"Get Design Help"}
             </button> */}
-          </div>
+            </div>
+          )}
         </div>
         {hasLinks ? (
           <>
