@@ -53,7 +53,7 @@ const LinkSpecial: React.FC<React.PropsWithChildren<{ href: string }>> = ({
   <Link href={href}>
     <a
       className={
-        "p-1 px-3 text-_bsPrimary  underline decoration-_bsInfo hover:text-_bsPrimary/90"
+        "rounded p-1 px-3  text-_bsPrimary underline decoration-_bsInfo hover:bg-_bsInfo/10 hover:text-_bsPrimary/90 active:bg-_bsInfo/40"
       }
     >
       {children}
