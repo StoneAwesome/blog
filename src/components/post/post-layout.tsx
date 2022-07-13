@@ -71,7 +71,11 @@ export const PostBody: React.FC<
             {children}
           </div>
           {hasTags && tags.map && (
-            <div className={"prose mt-3 flex flex-wrap gap-3 border-t py-2"}>
+            <div
+              className={
+                "prose mt-5 flex max-w-none flex-wrap gap-3 border-t p-3"
+              }
+            >
               {tags.map((it, i) => (
                 <TagLink key={i} tag={getTag(it)} />
               ))}

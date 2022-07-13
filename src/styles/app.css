@@ -14,7 +14,30 @@
   width: 100%;
   left: 0;
   height: 1px;
-  background: linear-gradient(90deg, #ffd600, #ff7a00, #ff0069, #d300c5, #7638fa);
+  background: linear-gradient(
+    90deg,
+    #ffd600,
+    #ff7a00,
+    #ff0069,
+    #d300c5,
+    #7638fa
+  );
+}
+
+.facebook-link {
+  position: relative;
+  /* background: linear-gradient(90deg, #18aefe, #0d8af0, #0062e0);
+  color: white; */
+}
+
+.facebook-link::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  left: 0;
+  height: 1px;
+  background: linear-gradient(90deg, #18aefe, #0d8af0, #0062e0);
 }
 
 /* .image-gallery {

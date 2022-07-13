@@ -6,6 +6,8 @@ import type { MdxRemote } from "next-mdx-remote/types";
 import React, { useEffect } from "react";
 import { addUtmParamsToUrl, UtmProps } from "./uri";
 import { Item } from "react-photoswipe-gallery";
+import Link from "next/link";
+import SocialLink from "@components/social-link";
 
 export const BlogImage: React.FC<any> = (props) => {
   if (props.title !== undefined) {
@@ -100,6 +102,14 @@ const MDXLink: React.FC<
     [href, utmProps]
   );
 
+  // if (!url && typeof children === "string" && children?.indexOf("##") === 0) {
+  //   return (
+  //     <Link href={`/posts/tags/${children.substring(2)?.toLowerCase()}`}>
+  //       <a>{children.substring(1)}</a>
+  //     </Link>
+  //   );
+  // }
+
   return (
     <a {...rest} href={url}>
       {children}
@@ -113,6 +123,7 @@ export const MDX_Components = {
   TwitterTweetEmbed,
   img: BlogImage,
   a: MDXLink,
+  SocialLink,
 };
 export function hydrateSource(source: MdxRemote.Source) {
   return hydrate(source, { components: MDX_Components });
