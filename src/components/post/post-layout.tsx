@@ -63,7 +63,7 @@ export const PostBody: React.FC<
 
   return (
     <BasicContainer>
-      <Gallery>
+      <Gallery withCaption withDownloadButton>
         <article>
           <PostHeader post={post} />
 

@@ -40,6 +40,7 @@ const MDXImage: React.FC<
         thumbnail={props.src}
         width={dimensions.width}
         height={dimensions.height}
+        caption={props.title}
         cropped
       >
         {({ ref, open }) => (
