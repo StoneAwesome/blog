@@ -46,7 +46,7 @@ const MDXImage: React.FC<
               ref={ref as React.MutableRefObject<HTMLImageElement>}
               {...props}
               className={
-                "max-h-[40vh] w-full cursor-pointer rounded object-cover"
+                "mx-auto max-h-[40vh] w-[90%] cursor-pointer rounded object-cover "
               }
               onClick={open}
             />

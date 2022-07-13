@@ -1,6 +1,4 @@
 import React from "react";
-import Author from "@components/post/post-author";
-import DateView from "@components/basic/date-view";
 import Layout from "@components/main-layout";
 import BasicMeta from "@components/meta/basic-meta";
 import JsonLdMeta from "@components/meta/json-ld-meta";
@@ -12,18 +10,15 @@ import BasicContainer from "@components/basic/basic-container";
 import TagLink from "./tag-link";
 import { Gallery } from "react-photoswipe-gallery";
 import "photoswipe/dist/photoswipe.css";
+import PostHeader from "./post-header";
+import { PostContent } from "@lib/posts";
+import { parseISO } from "date-fns";
 
-type Props = {
-  title: string;
-  date: Date;
-  slug: string;
-  tags?: string[];
-  author: string;
-  description?: string;
-  children: React.ReactNode;
-};
-export default function PostLayout(props: Props) {
-  const { title, date, slug, author, tags, description = "", children } = props;
+const PostLayout: React.FC<React.PropsWithChildren<{ post: PostContent }>> = ({
+  post,
+  children,
+}) => {
+  const { title, date, slug, author, tags, description = "" } = post;
   const hasTags = tags && tags.length > 0;
   const keywords = hasTags && tags.map ? tags.map((it) => getTag(it).name) : [];
   const authorName = getAuthor(author).name;
@@ -50,37 +45,28 @@ export default function PostLayout(props: Props) {
         url={`/posts/${slug}`}
         title={title}
         keywords={keywords}
-        date={date}
+        date={parseISO(date)}
         author={authorName}
         description={description}
       />
-      <PostBody {...props} />
+      <PostBody post={post}>{children}</PostBody>
     </Layout>
   );
-}
+};
 
-export const PostBody: React.FC<Props> = ({
-  title,
-  author,
-  date,
-  children,
-  tags,
-}) => {
+export default PostLayout;
+export const PostBody: React.FC<
+  React.PropsWithChildren<{ post: PostContent }>
+> = ({ post, children }) => {
+  const tags = post.tags;
   const hasTags = tags && tags.length > 0;
 
   return (
     <BasicContainer>
       <Gallery>
         <article>
-          <header className={"my-3"}>
-            <h1 className="mb-2 text-4xl">{title}</h1>
-            <div className={"author-info mb-4 flex items-center text-gray-500"}>
-              {author && <Author author={getAuthor(author)} />}
-              <div className={"ml-3 flex items-center"}>
-                <DateView date={date} />
-              </div>
-            </div>
-          </header>
+          <PostHeader post={post} />
+
           <div className="prose max-w-none [&>p>figure>img]:mb-0">
             {children}
           </div>

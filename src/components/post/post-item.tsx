@@ -1,42 +1,30 @@
 import type { PostContent } from "@lib/posts";
-import DateView from "@components/basic/date-view";
-import Link from "next/link";
-import { parseISO } from "date-fns";
 import React from "react";
-import { getAuthor } from "@lib/authors";
-import Author from "@components/post/post-author";
+import PostHeader from "./post-header";
+import PostLink from "./post-link";
 
 type Props = {
   post: Readonly<PostContent>;
 };
 export default function PostItem({ post }: Props) {
-  const url = `/posts/${post.slug}`;
   return (
     <div className="">
-      <header className={"mt-5 mb-3"}>
-        <Link href={url}>
-          <a className={"text-_bsPrimary text-2xl"}>
-            <h1>{post.title}</h1>
-          </a>
-        </Link>
-        <div className={"flex items-center mb-4"}>
-          <Author author={getAuthor(post.author)} />
-          <div className={"flex items-center ml-3"}>
-            <DateView date={parseISO(post.date)} />
-          </div>
-        </div>
-      </header>
+      <PostHeader post={post} />
+
       {post.description && post.image ? (
         <div className="">
-          <Link href={url}>
+          <PostLink post={post}>
             <a>
               <img
-                className={"w-full max-h-[60vh] object-cover object-center rounded mb-3"}
+                className={
+                  "mb-3 max-h-[60vh] w-full rounded object-cover object-center"
+                }
                 src={post.image}
                 alt={post.title}
               />
             </a>
-          </Link>
+          </PostLink>
+
           <div className="prose max-w-none">
             <p>{post.description}</p>
           </div>
