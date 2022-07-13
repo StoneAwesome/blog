@@ -18,9 +18,9 @@ const PostHeader: React.FC<PostHeaderProps> = ({ post }) => {
           <h1>{post.title}</h1>
         </a>
       </PostLink>
-      <div className={"mb-4 flex items-center"}>
-        <Author author={getAuthor(post.author)} />
-        <div className={"ml-3 flex items-center"}>
+      <div className={"mb-4 flex items-center gap-4"}>
+        {/* <Author author={getAuthor(post.author)} /> */}
+        <div className={"flex items-center"}>
           <DateView date={parseISO(post.date)} />
         </div>
       </div>
