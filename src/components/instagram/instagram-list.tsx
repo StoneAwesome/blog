@@ -19,7 +19,7 @@ export default function InstagramList({ posts, tags, pagination }: Props) {
   return (
     <BasicContainer>
       <div className={"my-2"}>
-        <div className={`grid grid-cols-3 lg:grid-cols-4 gap-3`}>
+        <div className={`grid grid-cols-3 gap-3 lg:grid-cols-4`}>
           {posts.map((it, i) => (
             <InstagramItem key={i} post={it} />
           ))}
@@ -30,7 +30,8 @@ export default function InstagramList({ posts, tags, pagination }: Props) {
           current={pagination.current}
           pages={pagination.pages}
           link={{
-            href: (page) => (page === 1 ? "/instagram" : "/instagram/page/[page]"),
+            href: (page) =>
+              page === 1 ? "/instagram" : "/instagram/page/[page]",
             as: (page) => (page === 1 ? "" : "/instagram/page/" + page),
           }}
         />

@@ -36,6 +36,24 @@ const instagramHelper = new CollectionHelper<InstagramContent>(
   24
 );
 
+export const countInstagram = (tag?: string) =>
+  instagramHelper.countPosts(
+    tag,
+    (x) => !!x.material?.some((m) => m.toLowerCase() === tag)
+  );
+
+export const listInstagramContent = (
+  page: number,
+  limit: number,
+  tag?: string
+) =>
+  instagramHelper.listContent(
+    page,
+    limit,
+    tag,
+    (x) => !!x.material?.some((m) => m.toLowerCase() === tag)
+  );
+
 export const fetchInstagramContent = () =>
   instagramHelper.fetchCollectionContent();
 

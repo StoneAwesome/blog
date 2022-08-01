@@ -117,18 +117,29 @@ export class CollectionHelper<T extends ICollectionBase> {
     return this.cache;
   }
 
-  async listContent(page: number, limit: number, tag?: string) {
+  async listContent(
+    page: number,
+    limit: number,
+    tag?: string,
+    validator?: (x: T) => boolean
+  ) {
     page = !page || page < 1 ? 1 : page;
     const content = await this.fetchCollectionContent();
     return content
-      .filter((it) => !tag || (it.tags && it.tags.includes(tag)))
+      .filter(
+        (it) => !tag || (it.tags && it.tags.includes(tag)) || validator?.(it)
+      )
       .slice((page - 1) * limit, page * limit);
   }
 
-  async countPosts(tag?: string): Promise<number> {
+  async countPosts(
+    tag?: string,
+    validator?: (x: T) => boolean
+  ): Promise<number> {
     const posts = await this.fetchCollectionContent();
-    return posts.filter((it) => !tag || (it.tags && it.tags.includes(tag)))
-      .length;
+    return posts.filter(
+      (it) => !tag || (it.tags && it.tags.includes(tag)) || validator?.(it)
+    ).length;
   }
 
   createGetStaticPropsForPage: GetStaticProps<

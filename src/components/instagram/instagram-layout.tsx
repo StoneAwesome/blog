@@ -23,7 +23,7 @@ import { Dialog } from "@headlessui/react";
 import STLogo from "@components/st-logo";
 import { addUtmParamsToUrl, UtmProps } from "@lib/uri";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/pro-duotone-svg-icons";
+import { faSearch, faTags } from "@fortawesome/pro-duotone-svg-icons";
 type Props = Omit<InstagramContent, "fullPath"> & {
   post: InstagramPost | null;
   children: React.ReactNode;
@@ -100,25 +100,43 @@ export const InstagramBody: React.FC<Props> = ({
             "flex flex-col rounded-b border-b border-l border-r bg-_bsLight p-3"
           }
         >
-          <header className="flex items-center justify-between">
-            <div>
-              <h1
-                className={
-                  "flex items-center justify-between text-2xl font-bold"
-                }
-              >
-                {title}
-              </h1>
-              <a href={post.permalink}>
-                <DateView date={parseISO(date)} />
-              </a>
+          <header className="flex flex-col">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1
+                  className={
+                    "flex items-center justify-between text-2xl font-bold"
+                  }
+                >
+                  {title}
+                </h1>
+                <a href={post.permalink}>
+                  <DateView date={parseISO(date)} />
+                </a>
+              </div>
+              <div className="flex flex-col items-center">
+                <ShareButton
+                  title={`${title} - StoneAwesome`}
+                  className={"px-2 text-lg font-normal"}
+                />
+              </div>
             </div>
-            <div className="flex flex-col items-center">
-              <ShareButton
-                title={`${title} - StoneAwesome`}
-                className={"px-2 text-lg font-normal"}
-              />
-            </div>
+            {material && material.length > 0 && (
+              <div className={"flex items-center gap-2"}>
+                <FontAwesomeIcon icon={faTags} fixedWidth />
+                <div className={"flex gap-3"}>
+                  {material.map((m) => (
+                    <InstagramMaterialLink
+                      material={m}
+                      key={m}
+                      className={
+                        "font-medium text-_bsPrimary/80 underline decoration-_bsInfo/80 underline-offset-1 hover:text-_bsPrimary/90 hover:decoration-_bsInfo/90 active:text-_bsPrimary active:decoration-_bsInfo"
+                      }
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
           </header>
           {hasLinks && (
             <div className="flex flex-col justify-between border-t sm:flex-row">
@@ -190,16 +208,6 @@ export const InstagramBody: React.FC<Props> = ({
           </>
         ) : null}
 
-        {material && material.length > 0 && (
-          <div className={"flex items-start"}>
-            <b className={"me-2"}>{`Stone${material.length > 1 ? "s" : ""}`}</b>
-            <div className={"flex gap-3"}>
-              {material.map((m) => (
-                <InstagramMaterialLink material={m} key={m} />
-              ))}
-            </div>
-          </div>
-        )}
         {children && <div className={``}>{children}</div>}
         {post && (
           <div className={`flex flex-col gap-3 md:grid md:grid-cols-12`}>

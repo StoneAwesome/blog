@@ -21,9 +21,12 @@ export const countPosts = (tag?: string) => postHelper.countPosts(tag);
 export const listPostContent = (page: number, limit: number, tag?: string) =>
   postHelper.listContent(page, limit, tag);
 
-export const createPostList = (ctx: GetStaticPropsContext<{ page: string }, PreviewData>) =>
-  postHelper.createGetStaticPropsForPage(ctx);
+export const createPostList = (
+  ctx: GetStaticPropsContext<{ page: string }, PreviewData>
+) => postHelper.createGetStaticPropsForPage(ctx);
 
 export const createPostListPaths = () => postHelper.getStaticPathsForPages();
-export const createPostItemPaths = () => postHelper.getStaticPathsForItems("posts");
-export const getStaticPropsForItem = (rts: RTS) => postHelper.getStaticPropsForItem(rts);
+export const createPostItemPaths = () =>
+  postHelper.getStaticPathsForItems("posts");
+export const getStaticPropsForItem = (rts: RTS) =>
+  postHelper.getStaticPropsForItem(rts);
