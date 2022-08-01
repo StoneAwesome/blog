@@ -87,6 +87,24 @@ collections:
                 name: "name"
                 widget: "string"
                 hint: "Tag name for displaying on the site"
+      - name: "materials"
+        label: "Materials"
+        file: "meta/materials.yml"
+        description: "List of Materials"
+        fields:
+          - name: materials
+            label: Materials
+            label_singular: "Material"
+            widget: list
+            fields:
+              - label: "Slug"
+                name: "slug"
+                widget: "string"
+                hint: "The part of a URL identifies the tag"
+              - label: "Display Name"
+                name: "name"
+                widget: "string"
+                hint: "Tag name for displaying on the site"
 
   - name: "instagram"
     label: "Instagram"
@@ -115,9 +133,20 @@ collections:
         timeFormat: false
       - label: "Material"
         name: "material"
-        widget: select
+        widget: list
         multiple: true
-        options: ["marble", "granite", "porcelain"]
+        summary: "{{fields.materials}}"
+        field:
+          label: Tag
+          name: tag
+          widget: relation
+          collection: "meta"
+          file: "tags"
+          searchFields:
+            - "tags.*.name"
+          displayFields:
+            - "tags.*.name"
+          valueField: "tags.*.slug"
       - label: Tags
         label_singular: "Tag"
         name: "tags"

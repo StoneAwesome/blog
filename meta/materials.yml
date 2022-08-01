@@ -1,0 +1,49 @@
+materials:
+  - slug: basalt
+    name: Basalt
+  - slug: bluestone
+    name: Bluestone
+  - slug: cement
+    name: Cement
+  - slug: ceramic
+    name: Ceramic
+  - slug: clay
+    name: Clay
+  - slug: concrete
+    name: Concrete
+  - slug: dolomite
+    name: Dolomite
+  - slug: glass
+    name: Glass
+  - slug: granite
+    name: Granite
+  - slug: limestone
+    name: Limestone
+  - slug: marble
+    name: Marble
+  - slug: metallic
+    name: Metallic
+  - slug: natural stone
+    name: Natural Stone
+  - slug: onyx
+    name: Onyx
+  - slug: porcelain
+    name: Porcelain
+  - slug: quarry
+    name: Quarry
+  - slug: quartz
+    name: Quartz
+  - slug: quartzite
+    name: Quartzite
+  - slug: sandstone
+    name: Sandstone
+  - slug: semi-precious
+    name: Semi-Precious
+  - slug: slate
+    name: Slate
+  - slug: terrazzo
+    name: Terrazzo
+  - slug: travertine
+    name: Travertine
+  - slug: vinyl
+    name: Vinyl
