@@ -137,16 +137,16 @@ collections:
         multiple: true
         summary: "{{fields.materials}}"
         field:
-          label: Tag
+          label: Material
           name: tag
           widget: relation
           collection: "meta"
-          file: "tags"
+          file: "materials"
           searchFields:
-            - "tags.*.name"
+            - "materials.*.name"
           displayFields:
-            - "tags.*.name"
-          valueField: "tags.*.slug"
+            - "materials.*.name"
+          valueField: "materials.*.slug"
       - label: Tags
         label_singular: "Tag"
         name: "tags"
