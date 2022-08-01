@@ -1,7 +1,6 @@
 import * as React from "react";
 import { PostBody } from "@components/post/post-layout";
 import type { PreviewTemplateComponentProps } from "netlify-cms-core";
-import { parseISO } from "date-fns";
 import { PostPageProps } from "@pages/posts/[slug]";
 import { safeGet, useRemark } from "@components/admin/admin-helpers";
 
@@ -11,12 +10,15 @@ const Article: React.FC<PreviewTemplateComponentProps> = (props) => {
 
   return (
     <PostBody
-      date={parseISO(d("date", "1900-01-01"))}
-      slug={d("slug", "")}
-      tags={d("tags", [])}
-      title={d("title", "")}
-      description={d("description", "")}
-      author={d("author", "")}
+      post={{
+        date: d("date", "1900-01-01"),
+        slug: d("slug", ""),
+        tags: d("tags", []),
+        title: d("title", ""),
+        description: d("description", ""),
+        author: d("author", ""),
+        fullPath: "",
+      }}
     >
       {md}
     </PostBody>
