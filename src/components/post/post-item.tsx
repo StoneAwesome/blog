@@ -17,7 +17,7 @@ export default function PostItem({ post }: Props) {
             <a>
               <img
                 className={
-                  "mb-3 max-h-[60vh] rounded object-cover object-center md:w-[60%]"
+                  "mx-auto mb-3 max-h-[40vh] w-[90%] rounded object-cover"
                 }
                 src={post.image}
                 alt={post.title}

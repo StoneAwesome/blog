@@ -36,13 +36,13 @@ export default function PostList({ posts, tags, pagination }: Props) {
           />
         )}
       </div>
-      <div className={"flex flex-wrap gap-3 mt-3"}>
+      {/* <div className={"flex flex-wrap gap-3 mt-3"}>
         {tags.map((it, i) => (
           <div key={i} className={"prose"}>
             <TagLink tag={it} />
           </div>
         ))}
-      </div>
+      </div> */}
     </BasicContainer>
   );
 }
