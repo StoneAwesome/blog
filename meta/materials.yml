@@ -11,6 +11,8 @@ materials:
     name: Clay
   - slug: concrete
     name: Concrete
+  - slug: dekton
+    name: Dekton
   - slug: dolomite
     name: Dolomite
   - slug: glass
@@ -23,6 +25,8 @@ materials:
     name: Marble
   - slug: metallic
     name: Metallic
+  - slug: msi
+    name: MSI
   - slug: natural stone
     name: Natural Stone
   - slug: onyx

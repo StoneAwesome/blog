@@ -1,0 +1,29 @@
+colors:
+  - slug: beige
+    name: Beige
+  - slug: black
+    name: Black
+  - slug: blue
+    name: Blue
+  - slug: brown
+    name: Brown
+  - slug: gold
+    name: Gold
+  - slug: gray
+    name: Gray
+  - slug: green
+    name: Green
+  - slug: orange
+    name: Orange
+  - slug: pink
+    name: Pink
+  - slug: purple
+    name: Purple
+  - slug: red
+    name: Red
+  - slug: tan
+    name: Tan
+  - slug: white
+    name: White
+  - slug: yellow
+    name: Yellow

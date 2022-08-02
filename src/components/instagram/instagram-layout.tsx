@@ -9,7 +9,7 @@ import { getTag } from "@lib/tags";
 import type { InstagramContent, InstagramPost } from "@lib/instagram";
 import { parseISO } from "date-fns";
 import Script from "next/script";
-import InstagramMaterialLink from "./instagram-material-link";
+import InstagramTagLink, { ITag } from "./instagram-tag-link";
 import InstagramCaption from "./instagram-caption";
 import InstagramMediaViewer from "./instagram-media-viewer";
 import {
@@ -75,7 +75,6 @@ export default function InstagramLayout(props: Props) {
   );
 }
 
-const BP = "md";
 export const InstagramBody: React.FC<Props> = ({
   title,
   date,
@@ -91,6 +90,11 @@ export const InstagramBody: React.FC<Props> = ({
     utm_id: post.id,
   };
   const hasLinks = post.links && post.links.length > 0;
+  const allTags: ITag[] = [
+    ...(material || []).map((m) => ({ tag: m, type: "material" } as ITag)),
+    ...(tags || []).map((t) => ({ tag: t, type: "tag" } as ITag)),
+  ];
+  const hasTags = allTags.length > 0;
 
   return (
     <BasicContainer>
@@ -122,16 +126,16 @@ export const InstagramBody: React.FC<Props> = ({
               </div>
             </div>
           </header>
-          {material && material.length > 0 && (
+          {hasTags && (
             <div className={"flex items-center gap-2 py-1"}>
               <FontAwesomeIcon icon={faTags} fixedWidth />
               <div className={"flex gap-3"}>
-                {material.map((m) => (
-                  <InstagramMaterialLink
-                    material={m}
-                    key={m}
+                {allTags.map((tag) => (
+                  <InstagramTagLink
+                    tag={tag}
+                    key={JSON.stringify(tag)}
                     className={
-                      "font-medium text-_bsPrimary/80 underline decoration-_bsInfo/80 underline-offset-1 hover:text-_bsPrimary/90 hover:decoration-_bsInfo/90 active:text-_bsPrimary active:decoration-_bsInfo"
+                      "rounded px-2 font-medium text-_bsPrimary/80 underline decoration-_bsInfo/80 underline-offset-1 transition-all hover:bg-_bsInfo/20 hover:text-_bsPrimary/90 hover:decoration-_bsPrimary active:text-_bsPrimary active:decoration-_bsInfo"
                     }
                   />
                 ))}

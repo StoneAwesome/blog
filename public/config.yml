@@ -105,6 +105,24 @@ collections:
                 name: "name"
                 widget: "string"
                 hint: "Tag name for displaying on the site"
+      - name: "colors"
+        label: "Colors"
+        file: "meta/colors.yml"
+        description: "List of Colors"
+        fields:
+          - name: colors
+            label: Colors
+            label_singular: "Color"
+            widget: list
+            fields:
+              - label: "Slug"
+                name: "slug"
+                widget: "string"
+                hint: "The part of a URL identifies the tag"
+              - label: "Display Name"
+                name: "name"
+                widget: "string"
+                hint: "Tag name for displaying on the site"
 
   - name: "instagram"
     label: "Instagram"
