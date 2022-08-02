@@ -55,6 +55,8 @@ materials:
     name: Quartzite
   - slug: sandstone
     name: Sandstone
+  - slug: soapstone
+    name: Soapstone
   - slug: semi-precious
     name: Semi-Precious
   - slug: slate

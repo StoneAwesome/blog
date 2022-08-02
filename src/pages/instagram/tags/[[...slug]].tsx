@@ -42,7 +42,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     config.posts_per_page,
     slug
   );
-  console.log("Got me some posts");
   const tag = getTag(slug);
   const pagination = {
     current: page ? parseInt(page as string) : 1,
