@@ -62,7 +62,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   const pathsForTag = await Promise.all(
     allTags.map(async (tag) => {
-      const pages = Math.ceil((await countPosts(tag.slug)) / config.posts_per_page);
+      const pages = Math.ceil(
+        (await countPosts(tag.slug)) / config.posts_per_page
+      );
       return Array.from(Array(pages).keys()).map((page) =>
         page === 0
           ? {

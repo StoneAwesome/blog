@@ -38,11 +38,11 @@ export default function InstagramTagList({ posts, tag, pagination }: Props) {
         current={pagination.current}
         pages={pagination.pages}
         link={{
-          href: () => "/posts/tags/[[...slug]]",
+          href: () => "/instagram/tags/[[...slug]]",
           as: (page) =>
             page === 1
-              ? "/posts/tags/" + tag.slug
-              : `/posts/tags/${tag.slug}/${page}`,
+              ? "/instagram/tags/" + tag.slug
+              : `/instagram/tags/${tag.slug}/${page}`,
         }}
       />
     </BasicContainer>

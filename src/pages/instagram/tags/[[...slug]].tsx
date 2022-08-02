@@ -83,6 +83,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   const paths = pathsForTag.flatMap((i) => i);
 
+  console.log(
+    "Paths",
+    paths.map((p) => JSON.stringify(p.params))
+  );
+
   return {
     paths: paths,
     fallback: false,
