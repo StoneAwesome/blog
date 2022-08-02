@@ -61,6 +61,8 @@ materials:
     name: Semi-Precious
   - slug: slate
     name: Slate
+  - slug: super-white
+    name: "Super White"
   - slug: terrazzo
     name: Terrazzo
   - slug: travertine

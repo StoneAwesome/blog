@@ -59,6 +59,8 @@ tags:
     name: Shower
   - slug: spa
     name: Spa
+  - slug: steps
+    name: Steps
   - slug: wainscoting
     name: Wainscoting
   - slug: waterfall
