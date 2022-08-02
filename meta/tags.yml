@@ -1,15 +1,63 @@
 tags:
+  - slug: apronsink
+    name: Apronsink
   - slug: backsplash
-    name: "Back Splash"
+    name: Backsplash
+  - slug: backlit
+    name: Backlit
+  - slug: bath
+    name: Bath
   - slug: bathroom
     name: Bathroom
+  - slug: bookmatch
+    name: Bookmatch
+  - slug: exotic
+    name: Exotic
   - slug: fireplace
     name: Fireplace
+  - slug: floor
+    name: Floor
+  - slug: hamptons
+    name: Hamptons
+  - slug: hgtv
+    name: Hgtv
+  - slug: hotel
+    name: Hotel
+  - slug: interior
+    name: Interior
   - slug: island
     name: Island
   - slug: kitchen
     name: Kitchen
+  - slug: laundryroom
+    name: Laundryroom
+  - slug: laurent
+    name: Laurent
+  - slug: livingroom
+    name: Livingroom
+  - slug: luxury
+    name: Luxury
+  - slug: miami
+    name: Miami
+  - slug: mudroom
+    name: Mudroom
+  - slug: organized
+    name: Organized
+  - slug: outdoors
+    name: Outdoors
+  - slug: pantry
+    name: Pantry
   - slug: pool
     name: Pool
+  - slug: retro
+    name: Retro
+  - slug: rustic
+    name: Rustic
+  - slug: shower
+    name: Shower
+  - slug: spa
+    name: Spa
+  - slug: wainscoting
+    name: Wainscoting
   - slug: waterfall
     name: Waterfall

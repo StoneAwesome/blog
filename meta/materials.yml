@@ -1,8 +1,18 @@
 materials:
+  - slug: amazonite
+    name: Amazonite
+  - slug: arabescato
+    name: Arabescato
   - slug: basalt
     name: Basalt
+  - slug: brick
+    name: Brick
   - slug: bluestone
     name: Bluestone
+  - slug: calacatta
+    name: Calacatta
+  - slug: carrara
+    name: Carrara
   - slug: cement
     name: Cement
   - slug: ceramic
@@ -11,10 +21,14 @@ materials:
     name: Clay
   - slug: concrete
     name: Concrete
+  - slug: coral
+    name: Coral
   - slug: dekton
     name: Dekton
   - slug: dolomite
     name: Dolomite
+  - slug: flagstone
+    name: Flagstone
   - slug: glass
     name: Glass
   - slug: granite
@@ -51,3 +65,5 @@ materials:
     name: Travertine
   - slug: vinyl
     name: Vinyl
+  - slug: wood
+    name: Wood
