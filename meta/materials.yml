@@ -41,7 +41,7 @@ materials:
     name: Metallic
   - slug: msi
     name: MSI
-  - slug: natural stone
+  - slug: naturalstone
     name: Natural Stone
   - slug: onyx
     name: Onyx
