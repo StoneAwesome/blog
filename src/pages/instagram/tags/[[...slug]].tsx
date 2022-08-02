@@ -10,7 +10,7 @@ import {
   listInstagramContent,
 } from "@lib/instagram";
 import { getTag, listTags, TagContent } from "@lib/tags";
-import InstagramTagList from "@components/instagram/instagram-Tag-list";
+import InstagramTagList from "@components/instagram/instagram-tag-list";
 
 type Props = {
   posts: InstagramContent[];
