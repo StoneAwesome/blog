@@ -80,6 +80,7 @@ export const InstagramBody: React.FC<Props> = ({
   date,
   children,
   tags,
+  colors,
   material,
   post,
 }) => {
@@ -93,6 +94,7 @@ export const InstagramBody: React.FC<Props> = ({
   const allTags: ITag[] = [
     ...(material || []).map((m) => ({ tag: m, type: "material" } as ITag)),
     ...(tags || []).map((t) => ({ tag: t, type: "tag" } as ITag)),
+    ...(colors || []).map((t) => ({ tag: t, type: "color" } as ITag)),
   ];
   const hasTags = allTags.length > 0;
 

@@ -3,7 +3,7 @@ import * as React from "react";
 
 export interface ITag {
   tag: string;
-  type: "material" | "tag";
+  type: "material" | "tag" | "color";
 }
 export type InstagramMaterialLinkProps = {
   tag: ITag;
