@@ -27,6 +27,10 @@ export function listTags(): TagContent[] {
   return [...tags.tags, ...tags.materials, ...tags.colors];
 }
 
+export function isMaterialTag(tag: TagContent) {
+  return !!materialMap[tag.slug];
+}
+
 export function listTagsByType() {
   return {
     colors: [...tags.colors] as TagContent[],
