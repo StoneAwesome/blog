@@ -8,7 +8,7 @@ type Props = {
 };
 export default function Layout({ children }: Props) {
   return (
-    <div className="root">
+    <div className="flex h-screen flex-col">
       <Head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -18,12 +18,12 @@ export default function Layout({ children }: Props) {
         <NavHeader />
       </nav>
       <main>{children}</main>
-      <footer className="p-3 p-md-5 mt-5 text-center text-muted bg-_bsLight border-t border-top">
+      <footer className="p-md-5 text-muted border-top mt-auto justify-end border-t bg-_bsLight p-3 text-center">
         <div className="container mx-auto">
           <SocialList />
           <p className="mb-0 ">
-            Curated with ♥ by the <b>StoneAwesome</b> team with the help of <b>designers</b> and{" "}
-            <b>builders</b> everywhere!
+            Curated with ♥ by the <b>StoneAwesome</b> team with the help of{" "}
+            <b>designers</b> and <b>builders</b> everywhere!
           </p>
         </div>
       </footer>
