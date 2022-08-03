@@ -1,6 +1,4 @@
 import tags from "../../meta/tags.yml";
-import materials from "../../meta/materials.yml";
-import colors from "../../meta/colors.yml";
 
 export type TagContent = {
   readonly slug: string;
@@ -9,9 +7,9 @@ export type TagContent = {
 
 const tagMap: { [key: string]: TagContent } = generateTagMap(tags.tags);
 const materialMap: { [key: string]: TagContent } = generateTagMap(
-  materials.materials
+  tags.materials
 );
-const colorsMap: { [key: string]: TagContent } = generateTagMap(colors.colors);
+const colorsMap: { [key: string]: TagContent } = generateTagMap(tags.colors);
 
 function generateTagMap(vals: any): { [key: string]: TagContent } {
   let result: { [key: string]: TagContent } = {};
@@ -26,5 +24,5 @@ export function getTag(slug: string) {
 }
 
 export function listTags(): TagContent[] {
-  return [...tags.tags, ...materials.materials, ...colors.colors];
+  return [...tags.tags, ...tags.materials, ...tags.colors];
 }

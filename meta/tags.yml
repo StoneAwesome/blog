@@ -65,3 +65,99 @@ tags:
     name: Wainscoting
   - slug: waterfall
     name: Waterfall
+materials:
+  - slug: amazonite
+    name: Amazonite
+  - slug: arabescato
+    name: Arabescato
+  - slug: basalt
+    name: Basalt
+  - slug: brick
+    name: Brick
+  - slug: bluestone
+    name: Bluestone
+  - slug: calacatta
+    name: Calacatta
+  - slug: carrara
+    name: Carrara
+  - slug: cement
+    name: Cement
+  - slug: ceramic
+    name: Ceramic
+  - slug: clay
+    name: Clay
+  - slug: concrete
+    name: Concrete
+  - slug: coral
+    name: Coral
+  - slug: dekton
+    name: Dekton
+  - slug: dolomite
+    name: Dolomite
+  - slug: flagstone
+    name: Flagstone
+  - slug: glass
+    name: Glass
+  - slug: granite
+    name: Granite
+  - slug: limestone
+    name: Limestone
+  - slug: marble
+    name: Marble
+  - slug: metallic
+    name: Metallic
+  - slug: msi
+    name: MSI
+  - slug: naturalstone
+    name: Natural Stone
+  - slug: onyx
+    name: Onyx
+  - slug: porcelain
+    name: Porcelain
+  - slug: quarry
+    name: Quarry
+  - slug: quartz
+    name: Quartz
+  - slug: quartzite
+    name: Quartzite
+  - slug: sandstone
+    name: Sandstone
+  - slug: soapstone
+    name: Soapstone
+  - slug: semi-precious
+    name: Semi-Precious
+  - slug: slate
+    name: Slate
+  - slug: super-white
+    name: "Super White"
+  - slug: terrazzo
+    name: Terrazzo
+  - slug: travertine
+    name: Travertine
+  - slug: vinyl
+    name: Vinyl
+  - slug: wood
+    name: Wood
+colors:
+  - slug: black
+    name: Black
+  - slug: blue
+    name: Blue
+  - slug: brown
+    name: Brown
+  - slug: gray
+    name: Gray
+  - slug: green
+    name: Green
+  - slug: orange
+    name: Orange
+  - slug: pink
+    name: Pink
+  - slug: purple
+    name: Purple
+  - slug: red
+    name: Red
+  - slug: white
+    name: White
+  - slug: yellow
+    name: Yellow

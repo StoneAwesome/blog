@@ -89,7 +89,7 @@ collections:
                 hint: "Tag name for displaying on the site"
       - name: "materials"
         label: "Materials"
-        file: "meta/materials.yml"
+        file: "meta/tags.yml"
         description: "List of Materials"
         fields:
           - name: materials
@@ -107,7 +107,7 @@ collections:
                 hint: "Tag name for displaying on the site"
       - name: "colors"
         label: "Colors"
-        file: "meta/colors.yml"
+        file: "meta/tags.yml"
         description: "List of Colors"
         fields:
           - name: colors
