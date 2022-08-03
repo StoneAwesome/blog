@@ -68,7 +68,7 @@ const TagList: React.FC<{ tags: TagContent[]; type: string }> = (props) => {
           <InstagramTagLink
             className="blog-link my-1 text-xl"
             tag={{
-              tag: t.name,
+              tag: t.slug,
               type: props.type as any,
             }}
             key={t.name}
