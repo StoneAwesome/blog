@@ -9,7 +9,7 @@ const InstagramPreview: React.FC<PreviewTemplateComponentProps> = (props) => {
 
   return (
     <InstagramBody
-      date={d("date", "1900-01-01")}
+      date={d("date", "1900-01-01T00:00:00.000Z")}
       post={d("post", {
         id: "-1",
         images: [],
@@ -28,6 +28,7 @@ const InstagramPreview: React.FC<PreviewTemplateComponentProps> = (props) => {
       title={d("title", "-")}
       material={[...(d("material", []) || [])]}
       tags={d("tags", [])?.map((x) => x)}
+      colors={d("colors", [])?.map((x) => x)}
     >
       {md}
     </InstagramBody>

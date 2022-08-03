@@ -87,14 +87,8 @@ collections:
                 name: "name"
                 widget: "string"
                 hint: "Tag name for displaying on the site"
-      - name: "materials"
-        label: "Materials"
-        file: "meta/tags.yml"
-        description: "List of Materials"
-        fields:
           - name: materials
             label: Materials
-            label_singular: "Material"
             widget: list
             fields:
               - label: "Slug"
@@ -105,11 +99,6 @@ collections:
                 name: "name"
                 widget: "string"
                 hint: "Tag name for displaying on the site"
-      - name: "colors"
-        label: "Colors"
-        file: "meta/tags.yml"
-        description: "List of Colors"
-        fields:
           - name: colors
             label: Colors
             label_singular: "Color"
@@ -123,7 +112,6 @@ collections:
                 name: "name"
                 widget: "string"
                 hint: "Tag name for displaying on the site"
-
   - name: "instagram"
     label: "Instagram"
     folder: "content/instagram/"
@@ -159,12 +147,28 @@ collections:
           name: tag
           widget: relation
           collection: "meta"
-          file: "materials"
+          file: "tags"
           searchFields:
             - "materials.*.name"
           displayFields:
             - "materials.*.name"
           valueField: "materials.*.slug"
+      - label: "Colors"
+        name: "colors"
+        widget: list
+        multiple: true
+        summary: "{{fields.colors}}"
+        field:
+          label: Color
+          name: tag
+          widget: relation
+          collection: "meta"
+          file: "tags"
+          searchFields:
+            - "colors.*.name"
+          displayFields:
+            - "colors.*.name"
+          valueField: "colors.*.slug"
       - label: Tags
         label_singular: "Tag"
         name: "tags"

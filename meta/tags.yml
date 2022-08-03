@@ -65,6 +65,7 @@ tags:
     name: Wainscoting
   - slug: waterfall
     name: Waterfall
+
 materials:
   - slug: amazonite
     name: Amazonite
@@ -138,6 +139,7 @@ materials:
     name: Vinyl
   - slug: wood
     name: Wood
+
 colors:
   - slug: black
     name: Black

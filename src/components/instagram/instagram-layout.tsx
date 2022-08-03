@@ -117,7 +117,7 @@ export const InstagramBody: React.FC<Props> = ({
                   {title}
                 </h1>
                 <a href={post.permalink}>
-                  <DateView date={parseISO(date)} />
+                  <DateView date={date} />
                 </a>
               </div>
               <div className="flex flex-col items-center">
