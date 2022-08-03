@@ -26,3 +26,11 @@ export function getTag(slug: string) {
 export function listTags(): TagContent[] {
   return [...tags.tags, ...tags.materials, ...tags.colors];
 }
+
+export function listTagsByType() {
+  return {
+    colors: [...tags.colors] as TagContent[],
+    materials: [...tags.materials] as TagContent[],
+    tags: [...tags.tags] as TagContent[],
+  };
+}

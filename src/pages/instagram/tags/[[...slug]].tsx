@@ -9,50 +9,91 @@ import {
   InstagramContent,
   listInstagramContent,
 } from "@lib/instagram";
-import { getTag, listTags, TagContent } from "@lib/tags";
+import { getTag, listTags, TagContent, listTagsByType } from "@lib/tags";
 import InstagramTagList from "@components/instagram/instagram-tag-list";
+import InstagramTagLink from "@components/instagram/instagram-tag-link";
+import BasicContainer from "@components/basic/basic-container";
 
 type Props = {
   posts: InstagramContent[];
-  tag: TagContent;
+  tag: TagContent | null;
   page?: string;
+  allTags: ReturnType<typeof listTagsByType>;
   pagination: {
     current: number;
     pages: number;
   };
 };
-export default function Index({ posts, tag, pagination, page }: Props) {
-  const url = `/instagram/tags/${tag.name}` + (page ? `/${page}` : "");
-  const title = tag.name;
+export default function Index({
+  posts,
+  tag,
+  pagination,
+  page,
+  allTags,
+}: Props) {
+  const hasPosts = tag && posts.length > 0;
+  const url = hasPosts
+    ? `/instagram/tags/${tag.name}` + (page ? `/${page}` : "")
+    : "/instagram/tags";
+  const title = hasPosts
+    ? `Stone inspiration that contains ${tag.name} stones`
+    : "Stone inspiration by material, color or feature!";
   return (
     <Layout>
       <BasicMeta url={url} title={title} />
       <OpenGraphMeta url={url} title={title} />
       <TwitterCardMeta url={url} title={title} />
-      <InstagramTagList posts={posts} tag={tag} pagination={pagination} />
+      {hasPosts ? (
+        <InstagramTagList posts={posts} tag={tag} pagination={pagination} />
+      ) : (
+        <BasicContainer>
+          <div className="mt-3 flex flex-col gap-3">
+            <TagList tags={allTags.colors} type={"Colors"} />
+            <TagList tags={allTags.materials} type={"Materials"} />
+            <TagList tags={allTags.tags} type={"Features"} />
+          </div>
+        </BasicContainer>
+      )}
     </Layout>
   );
 }
+const TagList: React.FC<{ tags: TagContent[]; type: string }> = (props) => {
+  if (props.tags?.length === 0) return null;
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const queries = params?.slug as string[];
-  const [slug, page] = [queries[0], queries[1]];
-  const posts = await listInstagramContent(
-    page ? parseInt(page as string) : 1,
-    config.posts_per_page,
-    slug
+  return (
+    <div>
+      <h2 className="border-b text-3xl">{props.type}</h2>
+      <div className="mt-3 flex flex-wrap gap-2">
+        {props.tags.map((t) => (
+          <InstagramTagLink
+            className="blog-link my-1 text-xl"
+            tag={{
+              tag: t.name,
+              type: props.type as any,
+            }}
+            key={t.name}
+          />
+        ))}
+      </div>
+    </div>
   );
-  const tag = getTag(slug);
+};
+export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
+  const queries = params?.slug as string[];
+  const [slug, page] = [queries?.[0], queries?.[1]];
+  const posts = slug
+    ? await listInstagramContent(
+        page ? parseInt(page as string) : 1,
+        config.posts_per_page,
+        slug
+      )
+    : [];
+  const tag = slug ? getTag(slug) : null;
   const pagination = {
     current: page ? parseInt(page as string) : 1,
     pages: Math.ceil((await countInstagram(slug)) / config.posts_per_page),
   };
-  const props: {
-    posts: InstagramContent[];
-    tag: TagContent;
-    pagination: { current: number; pages: number };
-    page?: string;
-  } = { posts, tag, pagination };
+  const props: Props = { posts, tag, pagination, allTags: listTagsByType() };
   if (page) {
     props.page = page;
   }
@@ -83,13 +124,15 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   const paths = pathsForTag.flatMap((i) => i);
 
-  console.log(
-    "Paths",
-    paths.map((p) => JSON.stringify(p.params))
-  );
-
   return {
-    paths: paths,
+    paths: [
+      ...paths,
+      {
+        params: {
+          slug: [],
+        },
+      },
+    ],
     fallback: false,
   };
 };

@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .blog-link {
+    @apply rounded-t border-b border-_bsInfo bg-_bsPrimary/10 px-1 text-_bsDark no-underline transition-colors hover:bg-_bsPrimary/20 active:bg-_bsPrimary active:text-white;
+  }
+}
+
 .instagram-link {
   position: relative;
   /*background: linear-gradient(90deg, #ffd600, #ff7a00, #ff0069, #d300c5, #7638fa);*/
