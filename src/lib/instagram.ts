@@ -28,6 +28,7 @@ export interface InstagramPost {
 
 export interface InstagramContent extends ICollectionBase {
   material?: string[];
+  colors?: string[];
   post: InstagramPost;
 }
 
@@ -36,23 +37,22 @@ const instagramHelper = new CollectionHelper<InstagramContent>(
   24
 );
 
+function tagFilter(
+  tag: string | undefined
+): ((x: InstagramContent) => boolean) | undefined {
+  return (x) =>
+    !!x.material?.some((m) => m.toLowerCase() === tag) ||
+    !!x.colors?.some((c) => c.toLowerCase() === tag);
+}
+
 export const countInstagram = (tag?: string) =>
-  instagramHelper.countPosts(
-    tag,
-    (x) => !!x.material?.some((m) => m.toLowerCase() === tag)
-  );
+  instagramHelper.countPosts(tag, tagFilter(tag));
 
 export const listInstagramContent = (
   page: number,
   limit: number,
   tag?: string
-) =>
-  instagramHelper.listContent(
-    page,
-    limit,
-    tag,
-    (x) => !!x.material?.some((m) => m.toLowerCase() === tag)
-  );
+) => instagramHelper.listContent(page, limit, tag, tagFilter(tag));
 
 export const fetchInstagramContent = () =>
   instagramHelper.fetchCollectionContent();
