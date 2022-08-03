@@ -127,9 +127,9 @@ export const InstagramBody: React.FC<Props> = ({
             </div>
           </header>
           {hasTags && (
-            <div className={"flex items-center gap-2 py-1"}>
+            <div className={"flex items-center gap-2 pt-1"}>
               <FontAwesomeIcon icon={faTags} fixedWidth />
-              <div className={"flex gap-3"}>
+              <div className={"flex gap-3 overflow-auto pb-1 md:flex-wrap"}>
                 {allTags.map((tag) => (
                   <InstagramTagLink
                     tag={tag}
