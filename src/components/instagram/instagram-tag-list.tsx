@@ -7,7 +7,6 @@ import { faTag } from "@fortawesome/pro-solid-svg-icons";
 import { InstagramContent } from "@lib/instagram";
 import InstagramItem from "./instagram-item";
 import Link from "next/dist/client/link";
-import { addUtmParamsToUrl } from "@lib/uri";
 import ShopThisLookButton from "@components/shop-this-look-button";
 
 type Props = {
