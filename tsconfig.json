@@ -21,7 +21,8 @@
       "@pages/*": ["pages/*"],
       "@routes/*": ["routes/*"],
       "@lib/*": ["lib/*"],
-      "@styles/*": ["styles/*"]
+      "@styles/*": ["styles/*"],
+      "@meta/*": ["../meta/*"]
     }
   },
   "exclude": ["node_modules"],

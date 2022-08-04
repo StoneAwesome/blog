@@ -7,35 +7,27 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/pro-duotone-svg-icons";
 import { useRouter } from "next/router";
 import { LINK_SPECIAL_CLASS } from "@components/nav-header";
+import tags from "@meta/tags.yml";
+import { TagContent } from "@lib/tags";
 
 export type SearchProps = {};
 
-function findInArray(array: string[] | undefined, query: string) {
-  return array?.some((v) => v.indexOf(query) > -1);
+function filterArray(array: TagContent[] | undefined, query: string) {
+  return array?.filter((v) => v.slug.indexOf(query) > -1) || [];
 }
 
 const Search: React.FC<SearchProps> = (props) => {
-  const { data } = useSWR<AllInstagramResponse[]>(`All_INSTAGRAM_POSTS`, () =>
-    fetch("/api/all_posts").then((p) => p.json())
-  );
-
   const [query, set_query] = React.useState("");
   const [isOpen, set_isOpen] = React.useState<boolean>(false);
   const router = useRouter();
 
   const filtered = React.useMemo(() => {
-    return (
-      (query
-        ? data?.filter(
-            (d) =>
-              findInArray(d.colors, query) ||
-              findInArray(d.material, query) ||
-              findInArray(d.tags, query) ||
-              (d.title?.toLocaleLowerCase()?.indexOf(query) || -1) > -1
-          )
-        : data) || []
-    );
-  }, [query, data]);
+    return {
+      colors: filterArray(tags.colors, query),
+      materials: filterArray(tags.materials, query),
+      tags: filterArray(tags.tags, query),
+    };
+  }, [query]);
 
   return (
     <>
@@ -79,7 +71,7 @@ const Search: React.FC<SearchProps> = (props) => {
               onChange={(v: any) => {
                 set_isOpen(false);
                 set_query("");
-                router.push(`/instagram/${v.slug}`);
+                router.push(`/instagram/tags/${v.slug}`);
               }}
               className="relative mx-auto max-w-xl divide-y divide-gray-100 overflow-hidden  rounded-xl bg-white shadow-2xl ring-1 ring-black/5"
             >
@@ -98,35 +90,44 @@ const Search: React.FC<SearchProps> = (props) => {
                   placeholder={"Search ..."}
                 />
               </div>
-              {filtered.length > 0 ? (
-                <Combobox.Options className={"max-h-96 overflow-y-auto px-2"}>
-                  {filtered?.map((x) => (
-                    <Combobox.Option key={x.slug} value={x}>
-                      {({ active }) => (
-                        <div
-                          className={`my-2 flex items-center gap-2 rounded ${
-                            active ? "bg-_bsInfo" : "bg-white"
-                          }`}
-                        >
-                          <img
-                            src={x.primaryImageUrl?.url}
-                            height={x.primaryImageUrl?.height}
-                            width={x.primaryImageUrl?.width}
-                            className={"h-24 w-24 rounded object-cover"}
-                          />
-                          <span>{x.title}</span>
-                        </div>
-                      )}
-                    </Combobox.Option>
-                  ))}
-                </Combobox.Options>
-              ) : query && filtered.length === 0 ? (
-                <p className="p-4 text-sm text-gray-500">{"No results"}</p>
-              ) : null}
+              <Combobox.Options className={"max-h-96 overflow-auto px-2"}>
+                <RenderItems items={filtered.colors} />
+                <RenderItems items={filtered.materials} />
+                <RenderItems items={filtered.tags} />
+
+                {query &&
+                filtered.colors.length === 0 &&
+                filtered.materials.length === 0 &&
+                filtered.tags.length === 0 ? (
+                  <p className="p-4 text-sm text-gray-500">{"No results"}</p>
+                ) : null}
+              </Combobox.Options>
             </Combobox>
           </Transition.Child>
         </Dialog>
       </Transition.Root>
+    </>
+  );
+};
+
+const RenderItems: React.FC<{ items: TagContent[] }> = ({ items }) => {
+  if (items.length === 0) return null;
+
+  return (
+    <>
+      {items.map((x) => (
+        <Combobox.Option key={x.slug} value={x}>
+          {({ active }) => (
+            <div
+              className={`my-2 flex items-center gap-2 space-x-1 rounded px-4 py-2 transition-all duration-75 ${
+                active ? "bg-_bsInfo font-semibold text-white" : "bg-white"
+              }`}
+            >
+              <span>{x.name}</span>
+            </div>
+          )}
+        </Combobox.Option>
+      ))}
     </>
   );
 };
