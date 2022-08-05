@@ -1,8 +1,6 @@
 import * as React from "react";
-import type { AllInstagramResponse } from "@pages/api/all_posts";
 import { Dialog, Combobox, Transition } from "@headlessui/react";
 
-import useSWR from "swr";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/pro-duotone-svg-icons";
 import { useRouter } from "next/router";
@@ -41,7 +39,7 @@ const Search: React.FC<SearchProps> = (props) => {
       <Transition.Root show={isOpen} as={React.Fragment}>
         <Dialog
           onClose={set_isOpen}
-          className={"fixed inset-0 overflow-y-auto p-4 pt-[25vh]"}
+          className={"fixed inset-0 overflow-y-auto p-4 lg:pt-[25vh]"}
         >
           <Transition.Child
             as={React.Fragment}
@@ -85,7 +83,7 @@ const Search: React.FC<SearchProps> = (props) => {
                     set_query(evt.target.value?.toLowerCase() || "");
                   }}
                   className={
-                    "placeholder:gray-400 h-12 w-full border-0 bg-transparent text-sm text-gray-800 outline-0"
+                    "placeholder:gray-400 h-12 w-full border-0 bg-transparent text-sm text-gray-800 outline-0 ring-0"
                   }
                   placeholder={"Search ..."}
                 />
