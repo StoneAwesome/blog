@@ -83,7 +83,7 @@ const Search: React.FC<SearchProps> = (props) => {
                     set_query(evt.target.value?.toLowerCase() || "");
                   }}
                   className={
-                    "placeholder:gray-400 h-12 w-full border-0 bg-transparent text-sm text-gray-800 outline-0 ring-0"
+                    "placeholder:gray-400 h-12 w-full border-0 bg-transparent text-sm text-gray-800 outline-none ring-0"
                   }
                   placeholder={"Search ..."}
                 />
