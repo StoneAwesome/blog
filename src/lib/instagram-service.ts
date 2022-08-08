@@ -86,7 +86,7 @@ class InstagramAPI {
     private userId: string = "7212714798742229",
     //-- Head to https://developers.facebook.com/apps/3182862881950108/instagram-basic-display/basic-display/ to get new key
     private access_token: string = process.env.INSTAGRAM_SECRET ||
-      "IGQVJXdHdkMGJCS3h4WGg3bUxJMURveGJrYkFlVXRVYUJJeXVNQXVZAVm55WGdqSGJScWw1VkE1TVl1bkNiQUxhTGxtOUJwdk9PczY5bkJ5eGo3QUJjX092OFB3clRQbXRXZAzlRMl9LZAnRaeEcwbFNDegZDZD"
+      "IGQVJYU28xWU9YcmI3WlpVd1BHMFBpdTRfT1pWVkNsQ1FWRFRQNHJoSjFTUG9nbk04YTRLNVB4T1IwN1p4MDh2S2FTaXJXQnVKSHVjVEpSb0pyOXJ6azRZAVW51QkhlZAFFQVV85WDlmVXFKWC1qRTFlUgZDZD"
   ) {}
 
   async getRecentPosts(): Promise<InstagramMedia[]> {
@@ -126,9 +126,8 @@ class InstagramAPI {
 
     const results: InstagramMedia[] = [];
     do {
-      const result: IPageResult<InstagramMedia> | null = await parsePagedResult<InstagramMedia>(
-        url
-      );
+      const result: IPageResult<InstagramMedia> | null =
+        await parsePagedResult<InstagramMedia>(url);
 
       if (result) {
         const data = result.data || [];
@@ -148,7 +147,10 @@ class InstagramAPI {
   }
 
   private async getChildren(id: string): Promise<InstagramMedia[]> {
-    const url = this.buildUri(`${id}/children`, ...MEDIA_PROPERTIES.filter((p) => p !== "caption"));
+    const url = this.buildUri(
+      `${id}/children`,
+      ...MEDIA_PROPERTIES.filter((p) => p !== "caption")
+    );
     return await parsePagedResultDataOnly<InstagramMedia>(url);
   }
 
@@ -165,9 +167,9 @@ class InstagramAPI {
     endpoint: "me/media" | InstagramChildrenEndpoint | string,
     ...fields: (keyof InstagramMedia)[]
   ) {
-    return `${InstagramAPI.BASE_URI}${endpoint}?fields=${fields.join(",")}&access_token=${
-      this.access_token
-    }`;
+    return `${InstagramAPI.BASE_URI}${endpoint}?fields=${fields.join(
+      ","
+    )}&access_token=${this.access_token}`;
   }
 }
 

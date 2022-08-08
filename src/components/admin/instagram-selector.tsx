@@ -16,8 +16,10 @@ export const CURRENT_INSTAGRAM_ID_FIELD_ID = "instagram_current_field_value";
 
 export const INSTAGRAM_POST_SELECTED_EVENT = "instagram_post_selected";
 
-const InstagramSelector: React.FC<CmsWidgetControlProps<InstagramPost>> = (props) => {
-  const { data: recentPosts } = useSWR(`RECENT_INSTAGRAM_POSTS`, () =>
+const InstagramSelector: React.FC<CmsWidgetControlProps<InstagramPost>> = (
+  props
+) => {
+  const { data: recentPosts } = useSWR(`RECENT_INSTAGRAM_POSTS_22`, () =>
     instagramClient.getAllPosts()
   );
 
@@ -25,11 +27,15 @@ const InstagramSelector: React.FC<CmsWidgetControlProps<InstagramPost>> = (props
     `RECENT_INSTAGRAM_POSTS_${props.value?.id}_${JSON.stringify(recentPosts)}`,
     async () => {
       if (recentPosts) {
-        const currentFileNames = await grabAllFileNamesForCollection("instagram");
+        const currentFileNames = await grabAllFileNamesForCollection(
+          "instagram"
+        );
 
         const dictionary = toDictionary(currentFileNames, (d) => d);
 
-        return recentPosts.filter((p) => !dictionary[p.id] || props.value?.id === p.id);
+        return recentPosts.filter(
+          (p) => !dictionary[p.id] || props.value?.id === p.id
+        );
       }
       return [];
     }
@@ -41,22 +47,33 @@ const InstagramSelector: React.FC<CmsWidgetControlProps<InstagramPost>> = (props
   const selected = React.useMemo(() => {
     if (!props.value) return null;
 
-    const selectedId = props.value?.id || Object.fromEntries(props.value as any)?.id;
+    const selectedId =
+      props.value?.id || Object.fromEntries(props.value as any)?.id;
     const selected = data ? data.find((d) => d.id === selectedId) : null;
 
     return selected;
   }, [props.value, data]);
 
-  if (isLoading || !data || data.length === 0) {
+  if (isLoading || !data) {
     return <div>{"Loading . . . "}</div>;
   }
 
+  if (data.length === 0) {
+    return <div>{"All posts are already added!"}</div>;
+  }
+
   return (
-    <div className={"pt-2 flex flex-col gap-2"}>
-      <input type={"hidden"} value={props.value?.id || ""} id={CURRENT_INSTAGRAM_ID_FIELD_ID} />
+    <div className={"flex flex-col gap-2 pt-2"}>
+      <input
+        type={"hidden"}
+        value={props.value?.id || ""}
+        id={CURRENT_INSTAGRAM_ID_FIELD_ID}
+      />
       {isCollapsed && (
         <button
-          className={"bg-_bsPrimary hover:bg-_bsPrimary/90 py-1 px-2 rounded text-white"}
+          className={
+            "rounded bg-_bsPrimary py-1 px-2 text-white hover:bg-_bsPrimary/90"
+          }
           onClick={onClick}
         >
           {"Select Post"}
@@ -91,18 +108,24 @@ const InstagramSelector: React.FC<CmsWidgetControlProps<InstagramPost>> = (props
           {data.map((d) => (
             <div
               key={d.id}
-              className={`p-2  ${d.id === props.value?.id ? "ring ring-_bsPrimary" : ""}`}
+              className={`p-2  ${
+                d.id === props.value?.id ? "ring ring-_bsPrimary" : ""
+              }`}
               onClick={(e) => {
                 onClick();
                 set_isLoading(true);
                 instagramClient.getPost(d.id).then((fullPost) => {
                   if (fullPost) {
-                    fetch(`/api/folder?instagram_id=${d.id}`, { method: "DELETE" })
+                    fetch(`/api/folder?instagram_id=${d.id}`, {
+                      method: "DELETE",
+                    })
                       .then(() =>
                         persistInstagram(fullPost).then((r) => {
                           props.onChange(r);
                           document.dispatchEvent(
-                            new CustomEvent(INSTAGRAM_POST_SELECTED_EVENT, { detail: r })
+                            new CustomEvent(INSTAGRAM_POST_SELECTED_EVENT, {
+                              detail: r,
+                            })
                           );
                         })
                       )
@@ -120,7 +143,7 @@ const InstagramSelector: React.FC<CmsWidgetControlProps<InstagramPost>> = (props
             >
               <img
                 src={d.thumbnail_url || d.media_url}
-                className={"w-full h-[10rem] object-cover"}
+                className={"h-[10rem] w-full object-cover"}
               />
               <div className={"border-t"}>
                 <p className={""}>{`${d.caption?.substring(0, 255)}...`}</p>
@@ -175,13 +198,16 @@ async function persistInstagram(media: InstagramMedia): Promise<InstagramPost> {
 }
 
 async function uploadImage(url: string, instagramId: string) {
-  const result = await fetch(`/api/images?url=${encodeURI(url)}&instagram_id=${instagramId}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ url: url, instagram_id: instagramId }),
-  });
+  const result = await fetch(
+    `/api/images?url=${encodeURI(url)}&instagram_id=${instagramId}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ url: url, instagram_id: instagramId }),
+    }
+  );
   return (await result.json()) as StoredInstagramImage;
 }
 
