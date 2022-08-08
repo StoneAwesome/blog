@@ -20,7 +20,7 @@ tags:
   - slug: hamptons
     name: Hamptons
   - slug: hgtv
-    name: Hgtv
+    name: HGTV
   - slug: hotel
     name: Hotel
   - slug: interior
@@ -30,11 +30,11 @@ tags:
   - slug: kitchen
     name: Kitchen
   - slug: laundryroom
-    name: Laundryroom
+    name: "Laundry Room"
   - slug: laurent
     name: Laurent
   - slug: livingroom
-    name: Livingroom
+    name: "Living Room"
   - slug: luxury
     name: Luxury
   - slug: miami
