@@ -93,7 +93,17 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     current: page ? parseInt(page as string) : 1,
     pages: Math.ceil((await countInstagram(slug)) / config.posts_per_page),
   };
-  const props: Props = { posts, tag, pagination, allTags: listTagsByType() };
+  const allValidTags = await getAllValidTags();
+  const props: Props = {
+    posts,
+    tag,
+    pagination,
+    allTags: {
+      colors: allValidTags.colors.map((c) => c.tag),
+      materials: allValidTags.materials.map((m) => m.tag),
+      tags: allValidTags.tags.map((t) => t.tag),
+    },
+  };
   if (page) {
     props.page = page;
   }
@@ -102,25 +112,37 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   };
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const allTags = listTags();
+async function getAllValidTags() {
+  const allTags = listTagsByType();
 
-  const pathsForTag = await Promise.all(
-    allTags.map(async (tag) => {
-      const pages = Math.ceil(
-        (await countInstagram(tag.slug)) / config.posts_per_page
-      );
-      return Array.from(Array(pages).keys()).map((page) =>
-        page === 0
-          ? {
-              params: { slug: [tag.slug] },
-            }
-          : {
-              params: { slug: [tag.slug, (page + 1).toString()] },
-            }
-      );
-    })
-  );
+  return {
+    materials: await getValidTags(allTags.materials),
+    colors: await getValidTags(allTags.colors),
+    tags: await getValidTags(allTags.tags),
+  };
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const allValidTags = await getAllValidTags();
+  const allTags = [
+    ...allValidTags.colors,
+    ...allValidTags.materials,
+    ...allValidTags.tags,
+  ];
+
+  const pathsForTag = allTags.map((tag) => {
+    const pages = Math.ceil(tag.count / config.posts_per_page);
+
+    return Array.from(Array(pages).keys()).map((page) =>
+      page === 0
+        ? {
+            params: { slug: [tag.tag.slug] },
+          }
+        : {
+            params: { slug: [tag.tag.slug, (page + 1).toString()] },
+          }
+    );
+  });
 
   const paths = pathsForTag.flatMap((i) => i);
 
@@ -136,3 +158,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
     fallback: false,
   };
 };
+async function getValidTags(tags: TagContent[]) {
+  const validTags = [];
+  for (let i = 0; i < tags.length; i++) {
+    const tag = tags[i];
+    const count = await countInstagram(tag.slug);
+    if (count > 0) {
+      validTags.push({ tag, count });
+    }
+  }
+  return validTags;
+}
