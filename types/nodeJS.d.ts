@@ -28,5 +28,11 @@ declare namespace NodeJS {
      * Cloudinary Secrete. Only to be used on server side functions (hence no NEXT_PUBLIC)
      */
     CLOUDINARY_SECRET: string;
+
+    NEXT_PUBLIC_STORYBLOK_READONLY_KEY: string;
+    /**
+     * Webhook Secret @see https://app.storyblok.com/#/me/spaces/158448/settings?tab=webhooks
+     */
+    STORYBLOK_WEBHOOK_SECRET: string;
   }
 }

@@ -117,9 +117,17 @@ export async function grabStoryBlockByUUID<T extends IStoryBlokContent>(
   uuid: string,
   isDraft = false
 ) {
-  return grabStoryWithOptions(`cdn/stories/${uuid}`, {
+  return grabStoryWithOptions<T>(`cdn/stories/${uuid}`, {
     version: isDraft ? "draft" : "published",
     find_by: "uuid",
+  });
+}
+export async function grabStoryBlockByID<T extends IStoryBlokContent>(
+  id: number,
+  isDraft = false
+) {
+  return grabStoryWithOptions<T>(`cdn/stories/${id}`, {
+    version: isDraft ? "draft" : "published",
   });
 }
 

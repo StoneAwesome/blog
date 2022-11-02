@@ -109,7 +109,7 @@ export const getStaticPaths: GetStaticPaths<PathQuery> = async (ctx) => {
         slug: l.slug?.replace(/blog\//i, ""),
       },
     })),
-    fallback: true,
+    fallback: "blocking",
   };
 };
 
