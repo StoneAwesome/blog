@@ -1,5 +1,3 @@
-import { getStoryblokApi } from "@storyblok/react";
-
 export interface IStoryBlokContent {
   _uid: string;
 }
@@ -125,19 +123,34 @@ export async function grabStoryBlockByUUID<T extends IStoryBlokContent>(
   });
 }
 
-export async function grabStoryblokLinks(isDraft = false) {
-  const storyblokApi = getStoryblokApi();
-  let { data }: { data: IStoryBlokLinksResponse } = await storyblokApi.get(
-    "cdn/links/",
-    {
-      version: isDraft ? "draft" : "published",
+export async function grabStoryBlokLinks(isDraft = false) {
+  // let { data }: { data: IStoryBlokLinksResponse } = await storyBlokApi.get(
+  //   "cdn/links/",
+  //   {
+  //     version: isDraft ? "draft" : "published",
+  //   }
+  // );
+
+  const url = `https://api.storyblok.com/v2/cdn/links?version=${
+    isDraft ? "draft" : "published"
+  }&token=${process.env.NEXT_PUBLIC_STORYBLOK_READONLY_KEY}`;
+
+  const result = await fetch(url).then((r) => {
+    if (r.status !== 200) {
+      return null;
     }
-  );
-  return data;
+    return r.json() as Promise<IStoryBlokLinksResponse>;
+  });
+
+  if (!result) return null;
+
+  return result;
 }
 
-export async function grabStoryblokMaterialLinks(isDraft = false) {
-  const data = await grabStoryblokLinks(isDraft);
+export async function grabStoryBlokMaterialLinks(isDraft = false) {
+  const data = await grabStoryBlokLinks(isDraft);
+
+  if (null === data) return [];
 
   const links = Object.keys(data.links)
     .map((l) => data.links[l])
@@ -153,6 +166,18 @@ export async function grabStoryblokMaterialLinks(isDraft = false) {
         species: split[1],
       };
     });
+
+  return links;
+}
+
+export async function grabStroyBlokBlogLinks(isDraft = false) {
+  const data = await grabStoryBlokLinks(isDraft);
+
+  if (null === data) return [];
+
+  const links = Object.keys(data.links)
+    .map((l) => data.links[l])
+    .filter((l) => l.slug.match(/^blog\//gi));
 
   return links;
 }

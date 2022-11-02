@@ -1,7 +1,12 @@
 import * as React from "react";
-import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import type {
+  GetStaticProps,
+  GetStaticPaths,
+  InferGetStaticPropsType,
+} from "next";
 import {
   grabStory,
+  grabStroyBlokBlogLinks,
   IStoryBlockStory,
   IStoryBlokContent,
 } from "@lib/storyblok-service";
@@ -15,14 +20,13 @@ import OpenGraphMeta from "@components/meta/open-graph-meta";
 import TwitterCardMeta from "@components/meta/twitter-card-meta";
 import { parse } from "date-fns";
 import { GenericPostHeader } from "@components/post/post-header";
-
 import renderToString from "next-mdx-remote/render-to-string";
 import { hydrateSource, MDX_Components } from "@lib/mdx-helper";
 import { MdxRemote } from "next-mdx-remote/types";
 
-const BlogPage: React.FC<
-  InferGetServerSidePropsType<typeof getServerSideProps>
-> = (props) => {
+const BlogPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (
+  props
+) => {
   const {
     slug,
     story: {
@@ -94,30 +98,48 @@ type IBlogStory = IStoryBlokContent & {
   keywords?: string[];
 };
 
-export const getServerSideProps: GetServerSideProps<{
-  story: IStoryBlockStory<IBlogStory>;
-  mdx: MdxRemote.Source;
+type PathQuery = {
   slug: string;
-}> = async (ctx) => {
-  const slug = ctx.params?.["slug"] as string;
+};
+export const getStaticPaths: GetStaticPaths<PathQuery> = async (ctx) => {
+  const links = await grabStroyBlokBlogLinks(true);
+  return {
+    paths: links.map((l) => ({
+      params: {
+        slug: l.slug?.replace(/blog\//i, ""),
+      },
+    })),
+    fallback: true,
+  };
+};
+
+export const getStaticProps: GetStaticProps<
+  {
+    story: IStoryBlockStory<IBlogStory>;
+    mdx: MdxRemote.Source;
+    slug: string;
+  },
+  PathQuery
+> = async (ctx) => {
+  const slug = ctx.params?.slug;
 
   if (!slug) {
     return {
       notFound: true,
     };
   }
-  const val = await grabStory<IBlogStory>(`cdn/stories/blog/${slug}`, true);
+  const result = await grabStory<IBlogStory>(`cdn/stories/blog/${slug}`, true);
 
-  if (!val?.story)
+  if (!result?.story)
     return {
       notFound: true,
     };
 
-  const mdx = await renderToString(val.story.content.body, MDX_Components);
+  const mdx = await renderToString(result.story.content.body, MDX_Components);
 
   return {
     props: {
-      story: val?.story,
+      story: result?.story,
       mdx,
       slug,
     },
