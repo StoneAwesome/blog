@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import crypto from "crypto";
-import { grabStoryBlockByID } from "@lib/storyblok-service";
+import StoryBlokClient from "@lib/storyblok-client";
 
 function verifySignature(body: any, signature: string | string[] | undefined) {
   let bodyHmac = crypto
@@ -22,7 +22,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const body = req.body as IBodyType;
 
   if (verifySignature(body, req.headers["webhook-signature"])) {
-    const story = await grabStoryBlockByID(body.story_id, true);
+    const story = await StoryBlokClient.grabStoryBlockByID(body.story_id, true);
     const slug = story?.story.full_slug;
     if (slug) {
       console.log("Revalidating Story @ ", slug);

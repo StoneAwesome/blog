@@ -4,12 +4,6 @@ import type {
   GetStaticPaths,
   InferGetStaticPropsType,
 } from "next";
-import {
-  grabStory,
-  grabStroyBlokBlogLinks,
-  IStoryBlockStory,
-  IStoryBlokContent,
-} from "@lib/storyblok-service";
 import BasicContainer from "@components/basic/basic-container";
 import { Gallery } from "react-photoswipe-gallery";
 import "photoswipe/dist/photoswipe.css";
@@ -23,6 +17,10 @@ import { GenericPostHeader } from "@components/post/post-header";
 import renderToString from "next-mdx-remote/render-to-string";
 import { hydrateSource, MDX_Components } from "@lib/mdx-helper";
 import { MdxRemote } from "next-mdx-remote/types";
+import StoryBlokClient, {
+  IStoryBlockStory,
+  IStoryBlokContent,
+} from "@lib/storyblok-client";
 
 const BlogPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (
   props
@@ -75,11 +73,6 @@ const BlogPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (
               {content}
             </Gallery>
           </div>
-          <div>
-            <pre>
-              <code>{JSON.stringify(props, null, 2)}</code>
-            </pre>
-          </div>
         </article>
       </BasicContainer>
     </Layout>
@@ -102,7 +95,7 @@ type PathQuery = {
   slug: string;
 };
 export const getStaticPaths: GetStaticPaths<PathQuery> = async (ctx) => {
-  const links = await grabStroyBlokBlogLinks(true);
+  const links = await StoryBlokClient.grabStroyBlokBlogLinks(true);
   return {
     paths: links.map((l) => ({
       params: {
@@ -128,7 +121,7 @@ export const getStaticProps: GetStaticProps<
       notFound: true,
     };
   }
-  const result = await grabStory<IBlogStory>(`cdn/stories/blog/${slug}`, true);
+  const result = await StoryBlokClient.grabBlogStory(slug, true);
 
   if (!result?.story)
     return {
