@@ -1,6 +1,7 @@
 import * as React from "react";
 import NextImage from "next/image";
 import { Item } from "react-photoswipe-gallery";
+import { useImageDimensions } from "@hooks/use-image";
 
 export type StoryBlockImageProps = React.DetailedHTMLProps<
   React.ImgHTMLAttributes<HTMLImageElement>,
@@ -67,6 +68,45 @@ const StoryBlokImgWrapper: React.FC<{ src: string }> = (props) => {
     };
   }, [props]);
 
+  return <ItemWrapper {...i} />;
+};
+
+const DefaultImgWrapper: React.FC<StoryBlockImageProps> = (props) => {
+  const { data: dim } = useImageDimensions(props.src);
+
+  const i = React.useMemo(() => {
+    if (!dim || !props.src) return null;
+
+    const { width, height } = dim;
+    const { width: thumbWidth, height: thumbHeight } = getHWInRange(
+      width,
+      height
+    );
+
+    return {
+      url: props.src,
+      thumb: props.src,
+      thumbHeight,
+      thumbWidth,
+      width,
+      height,
+    };
+  }, [dim]);
+
+  if (!i) return null;
+
+  return <ItemWrapper {...i} />;
+};
+
+interface ItemProps {
+  url: string;
+  thumb: string;
+  thumbHeight?: number;
+  thumbWidth?: number;
+  width?: number;
+  height?: number;
+}
+const ItemWrapper: React.FC<ItemProps> = (i) => {
   return (
     <Item
       key={i.url}
@@ -92,10 +132,6 @@ const StoryBlokImgWrapper: React.FC<{ src: string }> = (props) => {
       )}
     </Item>
   );
-};
-
-const DefaultImgWrapper: React.FC<StoryBlockImageProps> = (props) => {
-  return <img {...props} />;
 };
 
 export default StoryBlockImage;

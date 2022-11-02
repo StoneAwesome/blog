@@ -1,9 +1,9 @@
 declare module "*.svg" {
   import * as React from "react";
 
-  export const ReactComponent: React.FunctionComponent<React.SVGProps<
-    SVGSVGElement
-  >>;
+  export const ReactComponent: React.FunctionComponent<
+    React.SVGProps<SVGSVGElement>
+  >;
 
   export default ReactComponent;
 }
@@ -18,5 +18,5 @@ declare module "*.yml" {
   export default value;
 }
 
-
 type StringKey<T> = Extract<keyof T, string>;
+type IDictionary<T> = Record<string, T>;
