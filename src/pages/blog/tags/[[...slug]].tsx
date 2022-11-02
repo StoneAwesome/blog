@@ -7,9 +7,10 @@ import TagPostList from "@components/post/tag-post-list";
 import config from "@lib/config";
 import { countPosts, listPostContent, PostContent } from "@lib/posts";
 import { getTag, listTags, TagContent } from "@lib/tags";
+import { IBlogStoryMeta } from "@lib/storyblok-client";
 
 type Props = {
-  posts: PostContent[];
+  posts: IBlogStoryMeta[];
   tag: TagContent;
   page?: string;
   pagination: {
@@ -18,7 +19,7 @@ type Props = {
   };
 };
 export default function Index({ posts, tag, pagination, page }: Props) {
-  const url = `/posts/tags/${tag.name}` + (page ? `/${page}` : "");
+  const url = `/blog/tags/${tag.name}` + (page ? `/${page}` : "");
   const title = `Stone inspiration that contains ${tag.name} stones`;
   return (
     <Layout>

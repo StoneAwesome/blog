@@ -7,13 +7,14 @@ import PostHeader from "./post-header";
 type Props = {
   post: Readonly<IBlogStoryMeta>;
   hideDescription?: boolean;
+  hideImage?: boolean;
 };
-export default function PostItem({ post, hideDescription }: Props) {
+export default function PostItem({ post, hideDescription, hideImage }: Props) {
   return (
     <div className="">
       <PostHeader post={post} />
 
-      {post.content.primary_image?.id && (
+      {!hideImage && post.content.primary_image?.id && (
         <div className="">
           <Link href={`/blog/${post.slug}`}>
             <StoryBlokImg

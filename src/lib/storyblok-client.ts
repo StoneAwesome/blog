@@ -15,7 +15,7 @@ export interface IStoryBlockStory<
   full_slug: string;
   sort_by_date: null;
   position: number;
-  tag_list: any[];
+  tag_list: string[];
   is_startpage: boolean;
   parent_id: number;
   meta_data: null;

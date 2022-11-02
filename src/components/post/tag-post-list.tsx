@@ -7,9 +7,10 @@ import Link from "next/link";
 import BasicContainer from "@components/basic/basic-container";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTag } from "@fortawesome/pro-solid-svg-icons";
+import { IBlogStoryMeta } from "@lib/storyblok-client";
 
 type Props = {
-  posts: PostContent[];
+  posts: IBlogStoryMeta[];
   tag: TagContent;
   pagination: {
     current: number;

@@ -63,7 +63,7 @@ const BlogPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (
       />
       <BasicContainer>
         <article>
-          <PostItem post={props.story} hideDescription />
+          <PostItem post={props.story} hideDescription hideImage />
 
           <div className="prose max-w-none [&>p>figure>img]:mb-0">
             <Gallery withCaption withDownloadButton>
