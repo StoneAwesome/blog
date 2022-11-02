@@ -68,11 +68,11 @@ const BlogPage: React.FC<
               <MarkdownRenderer markdown={props.story.content.body} />
             </Gallery>
           </div>
-          {/* <div>
+          <div>
             <pre>
               <code>{JSON.stringify(props, null, 2)}</code>
             </pre>
-          </div> */}
+          </div>
         </article>
       </BasicContainer>
     </Layout>

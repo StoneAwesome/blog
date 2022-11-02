@@ -16,7 +16,12 @@ const StoryBlockImage: React.FC<StoryBlockImageProps> = (props) => {
   );
 
   return src && isStoryBlokImage ? (
-    <StoryBlokImgWrapper src={src} />
+    <>
+      <StoryBlokImgWrapper src={src} alt={props.alt} title={props.title} />
+      {/* <pre>
+        <code>{JSON.stringify(props.title, null, 2)}</code>
+      </pre> */}
+    </>
   ) : (
     <DefaultImgWrapper {...props} />
   );
@@ -37,7 +42,11 @@ function getHWInRange(width: number, height: number, range: number = 1000) {
   };
 }
 
-const StoryBlokImgWrapper: React.FC<{ src: string }> = (props) => {
+const StoryBlokImgWrapper: React.FC<{
+  src: string;
+  alt?: string;
+  title?: string;
+}> = (props) => {
   const i = React.useMemo(() => {
     const match = /\/(\d+)x(\d+)\//gm.exec(props.src);
 
@@ -68,7 +77,7 @@ const StoryBlokImgWrapper: React.FC<{ src: string }> = (props) => {
     };
   }, [props]);
 
-  return <ItemWrapper {...i} />;
+  return <ItemWrapper {...i} alt={props.alt} title={props.title} />;
 };
 
 const DefaultImgWrapper: React.FC<StoryBlockImageProps> = (props) => {
@@ -95,11 +104,13 @@ const DefaultImgWrapper: React.FC<StoryBlockImageProps> = (props) => {
 
   if (!i) return null;
 
-  return <ItemWrapper {...i} />;
+  return <ItemWrapper {...i} alt={props.alt} title={props.title} />;
 };
 
 interface ItemProps {
   url: string;
+  alt?: string;
+  title?: string;
   thumb: string;
   thumbHeight?: number;
   thumbWidth?: number;
@@ -108,29 +119,33 @@ interface ItemProps {
 }
 const ItemWrapper: React.FC<ItemProps> = (i) => {
   return (
-    <Item
-      key={i.url}
-      original={i.url}
-      width={i.width}
-      height={i.height}
-      thumbnail={i.url}
-      cropped
-    >
-      {({ ref, open }) => (
-        <img
-          src={i.thumb}
-          alt={"Image for Blog Post"}
-          width={i.thumbWidth}
-          height={i.thumbHeight}
-          placeholder={"blur"}
-          ref={ref as any}
-          className={
-            "mx-auto max-h-[40vh] w-[90%] cursor-pointer rounded object-cover shadow transition-shadow duration-300 hover:shadow-lg hover:shadow-_bsInfo/50"
-          }
-          onClick={open}
-        />
-      )}
-    </Item>
+    <figure>
+      <Item
+        key={i.url}
+        original={i.url}
+        width={i.width}
+        height={i.height}
+        thumbnail={i.url}
+        caption={i.title}
+        cropped
+      >
+        {({ ref, open }) => (
+          <img
+            src={i.thumb}
+            alt={i.alt || "Image for Blog Post"}
+            width={i.thumbWidth}
+            height={i.thumbHeight}
+            placeholder={"blur"}
+            ref={ref as any}
+            className={
+              "mx-auto max-h-[40vh] w-[90%] cursor-pointer rounded object-cover shadow transition-shadow duration-300 hover:shadow-lg hover:shadow-_bsInfo/50"
+            }
+            onClick={open}
+          />
+        )}
+      </Item>
+      {i.title && <figcaption className="text-center">{i.title}</figcaption>}
+    </figure>
   );
 };
 
