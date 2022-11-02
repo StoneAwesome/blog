@@ -11,14 +11,28 @@ import BasicContainer from "@components/basic/basic-container";
 import { Gallery } from "react-photoswipe-gallery";
 import "photoswipe/dist/photoswipe.css";
 import Layout from "@components/main-layout";
+import BasicMeta from "@components/meta/basic-meta";
+import JsonLdMeta from "@components/meta/json-ld-meta";
+import OpenGraphMeta from "@components/meta/open-graph-meta";
+import TwitterCardMeta from "@components/meta/twitter-card-meta";
+import { parse, parseISO } from "date-fns";
+import { GenericPostHeader } from "@components/post/post-header";
 
 const BlogPage: React.FC<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = (props) => {
-  //const value = props.val?.story.content
+  const {
+    slug,
+    story: {
+      content: { title, date, keywords, description },
+    },
+  } = props;
+
+  const publishDate = parse(date, "yyyy-MM-dd H:mm", new Date());
+
   return (
     <Layout>
-      {/* <BasicMeta
+      <BasicMeta
         url={`/blog/${props.slug}`}
         title={title}
         keywords={keywords}
@@ -38,24 +52,27 @@ const BlogPage: React.FC<
         url={`/posts/${slug}`}
         title={title}
         keywords={keywords}
-        date={parseISO(date)}
-        author={authorName}
+        date={publishDate}
         description={description}
-      /> */}
+      />
       <BasicContainer>
         <article>
-          {/* <PostHeader post={post} /> */}
+          <GenericPostHeader
+            url={`/blog/${slug}`}
+            title={title}
+            date={publishDate}
+          />
 
           <div className="prose max-w-none [&>p>figure>img]:mb-0">
             <Gallery withCaption withDownloadButton>
               <MarkdownRenderer markdown={props.story.content.body} />
             </Gallery>
           </div>
-          <div>
+          {/* <div>
             <pre>
               <code>{JSON.stringify(props, null, 2)}</code>
             </pre>
-          </div>
+          </div> */}
         </article>
       </BasicContainer>
     </Layout>
@@ -69,6 +86,9 @@ type IBlogStory = IStoryBlokContent & {
    * This is markdown
    */
   body: string;
+  date: string;
+  description?: string;
+  keywords?: string[];
 };
 
 export const getServerSideProps: GetServerSideProps<{

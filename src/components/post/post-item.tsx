@@ -1,7 +1,8 @@
 import type { PostContent } from "@lib/posts";
+import Link from "next/link";
 import React from "react";
 import PostHeader from "./post-header";
-import PostLink from "./post-link";
+import { getPostUrl } from "./post-link";
 
 type Props = {
   post: Readonly<PostContent>;
@@ -13,17 +14,15 @@ export default function PostItem({ post }: Props) {
 
       {post.description && post.image ? (
         <div className="">
-          <PostLink post={post}>
-            <a>
-              <img
-                className={
-                  "mx-auto mb-3 max-h-[40vh] w-[90%] rounded object-cover"
-                }
-                src={post.image}
-                alt={post.title}
-              />
-            </a>
-          </PostLink>
+          <Link href={getPostUrl(post)}>
+            <img
+              className={
+                "mx-auto mb-3 max-h-[40vh] w-[90%] rounded object-cover"
+              }
+              src={post.image}
+              alt={post.title}
+            />{" "}
+          </Link>
 
           <div className="prose max-w-none">
             <p>{post.description}</p>
