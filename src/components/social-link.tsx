@@ -10,24 +10,22 @@ export type SocialLinkProps = {
 
 const SocialLink: React.FC<SocialLinkProps> = (props) => {
   return (
-    <Link
+    (<Link
       href={`${
         props.service === "facebook"
           ? "https://facebook.com"
           : "https://instagram.com"
       }/${props.handle}`}
-    >
-      <a
-        target={"_blank"}
-        className={`${
-          props.service === "instagram" ? "instagram-link" : "facebook-link"
-        } px-3`}
-      >
-        <FontAwesomeIcon
-          icon={props.service === "facebook" ? faFacebook : faInstagram}
-        />
-      </a>
-    </Link>
+      target={"_blank"}
+      className={`${
+        props.service === "instagram" ? "instagram-link" : "facebook-link"
+      } px-3`}>
+
+      <FontAwesomeIcon
+        icon={props.service === "facebook" ? faFacebook : faInstagram}
+      />
+
+    </Link>)
   );
 };
 

@@ -24,12 +24,10 @@ export default function InstagramTagList({ posts, tag, pagination }: Props) {
       <div className="mt-3 flex items-center justify-between">
         <div className=" flex items-center gap-3 text-2xl">
           <Link href="/instagram/tags">
-            <a>
-              <FontAwesomeIcon
-                icon={faTag}
-                className={"text-dark rounded bg-_bsInfo px-3 py-1 text-white"}
-              />
-            </a>
+            <FontAwesomeIcon
+              icon={faTag}
+              className={"text-dark rounded bg-_bsInfo px-3 py-1 text-white"}
+            />
           </Link>
           {":"}
           <h1 className="font-thin">{tag.name}</h1>

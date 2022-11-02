@@ -16,8 +16,10 @@ const InstagramTagLink: React.FC<InstagramMaterialLinkProps> = (props) => {
   if (!tag) return null;
   const tagname = getTag(tag);
   return (
-    <Link href={`/instagram/tags/${tag.toLowerCase()}`}>
-      <a className={props.className || "blog-link"}>{tagname?.name || tag}</a>
+    <Link
+      href={`/instagram/tags/${tag.toLowerCase()}`}
+      className={props.className || "blog-link"}>
+      {tagname?.name || tag}
     </Link>
   );
 };

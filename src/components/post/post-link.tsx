@@ -11,7 +11,7 @@ const PostLink: React.FC<React.PropsWithChildren<PostLinkProps>> = ({
   children,
 }) => {
   const url = `/posts/${post.slug}`;
-  return <Link href={url}>{children}</Link>;
+  return <Link href={url} legacyBehavior>{children}</Link>;
 };
 
 export default PostLink;

@@ -21,5 +21,4 @@ module.exports = {
     loader: "cloudinary",
     path: "https://res.cloudinary.com/stoneawesome/image/upload/",
   },
-  experimental: { images: { allowFutureImage: true } },
 };

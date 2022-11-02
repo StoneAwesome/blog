@@ -1,6 +1,6 @@
 import type { StoredInstagramImage } from "@lib/instagram";
 import * as React from "react";
-import NextImage from "next/future/image";
+import NextImage from "next/image";
 import {
   buildInstagramThumbnailBlurImage,
   buildSquareThumbnailImage,

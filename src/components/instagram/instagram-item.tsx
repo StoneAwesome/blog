@@ -12,15 +12,15 @@ export default function InstagramItem({ post }: Props) {
   const data = post.post;
 
   return (
-    <Link href={url}>
-      <a className="relative">
-        <InstagramImage
-          alt={post.title}
-          instagramId={data.id}
-          image={data.primaryMedia}
-          hasMultipleImages={data?.images?.length > 1}
-        />
-      </a>
-    </Link>
+    (<Link href={url} className="relative">
+
+      <InstagramImage
+        alt={post.title}
+        instagramId={data.id}
+        image={data.primaryMedia}
+        hasMultipleImages={data?.images?.length > 1}
+      />
+
+    </Link>)
   );
 }

@@ -55,7 +55,7 @@ const LinkSpecial: React.FC<React.PropsWithChildren<{ href: string }>> = ({
   href,
   children,
 }) => (
-  <Link href={href}>
-    <a className={LINK_SPECIAL_CLASS}>{children}</a>
+  <Link href={href} className={LINK_SPECIAL_CLASS}>
+    {children}
   </Link>
 );
