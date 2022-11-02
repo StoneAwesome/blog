@@ -16,12 +16,7 @@ const StoryBlockImage: React.FC<StoryBlockImageProps> = (props) => {
   );
 
   return src && isStoryBlokImage ? (
-    <>
-      <StoryBlokImgWrapper src={src} alt={props.alt} title={props.title} />
-      {/* <pre>
-        <code>{JSON.stringify(props.title, null, 2)}</code>
-      </pre> */}
-    </>
+    <StoryBlokImgWrapper src={src} alt={props.alt} title={props.title} />
   ) : (
     <DefaultImgWrapper {...props} />
   );
@@ -119,33 +114,33 @@ interface ItemProps {
 }
 const ItemWrapper: React.FC<ItemProps> = (i) => {
   return (
-    <figure>
-      <Item
-        key={i.url}
-        original={i.url}
-        width={i.width}
-        height={i.height}
-        thumbnail={i.url}
-        caption={i.title}
-        cropped
-      >
-        {({ ref, open }) => (
+    <Item
+      key={i.url}
+      original={i.url}
+      width={i.width}
+      height={i.height}
+      thumbnail={i.url}
+      caption={i.title}
+      cropped
+    >
+      {({ ref, open }) => (
+        <figure ref={ref as any} data-mdr={true}>
           <img
             src={i.thumb}
-            alt={i.alt || "Image for Blog Post"}
+            alt={i.alt}
             width={i.thumbWidth}
             height={i.thumbHeight}
-            placeholder={"blur"}
-            ref={ref as any}
             className={
               "mx-auto max-h-[40vh] w-[90%] cursor-pointer rounded object-cover shadow transition-shadow duration-300 hover:shadow-lg hover:shadow-_bsInfo/50"
             }
             onClick={open}
           />
-        )}
-      </Item>
-      {i.title && <figcaption className="text-center">{i.title}</figcaption>}
-    </figure>
+          {i.title && (
+            <figcaption className="text-center">{i.title}</figcaption>
+          )}
+        </figure>
+      )}
+    </Item>
   );
 };
 

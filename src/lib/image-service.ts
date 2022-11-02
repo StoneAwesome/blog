@@ -75,7 +75,7 @@ export function createFacebookOGGraphImage(imageId: string) {
 export async function getImageDimensionsFromImageUrl(
   imgUrl: string
 ): Promise<{ height: number; width: number }> {
-  if (!process.browser) {
+  if (typeof window === undefined) {
     return { height: 0, width: 0 };
   }
 

@@ -5,72 +5,20 @@ import hydrate from "next-mdx-remote/hydrate";
 import type { MdxRemote } from "next-mdx-remote/types";
 import React, { useEffect } from "react";
 import { addUtmParamsToUrl, UtmProps } from "./uri";
-import { Item } from "react-photoswipe-gallery";
-import Link from "next/link";
 import SocialLink from "@components/social-link";
+import MDXImage from "@components/mdx/mdx-image";
 
 export const BlogImage: React.FC<any> = (props) => {
   if (props.title !== undefined) {
     return (
-      <figure className={"figure"}>
+      <figure>
         <MDXImage {...props} />
-        <figcaption className={"figure-caption"}>{props.title}</figcaption>
+        <figcaption className={"text-center"}>{props.title}</figcaption>
       </figure>
     );
   } else {
     return <MDXImage {...props} />;
   }
-};
-
-const MDXImage: React.FC<
-  React.DetailedHTMLProps<
-    React.ImgHTMLAttributes<HTMLImageElement>,
-    HTMLImageElement
-  >
-> = (props) => {
-  const [dimensions, set_dimensions] = React.useState<{
-    height: number;
-    width: number;
-  }>();
-
-  if (dimensions) {
-    return (
-      <Item
-        original={props.src}
-        thumbnail={props.src}
-        width={dimensions.width}
-        height={dimensions.height}
-        caption={props.title}
-        cropped
-      >
-        {({ ref, open }) => (
-          <>
-            <img
-              ref={ref as React.MutableRefObject<HTMLImageElement>}
-              {...props}
-              className={
-                "mx-auto max-h-[40vh] w-[90%] cursor-pointer rounded object-cover "
-              }
-              onClick={open}
-            />
-          </>
-        )}
-      </Item>
-    );
-  }
-
-  return (
-    <img
-      {...props}
-      onLoad={(i) => {
-        set_dimensions({
-          height: i.currentTarget.naturalHeight,
-          width: i.currentTarget.naturalWidth,
-        });
-      }}
-      className={"max-h-[40vh] w-full rounded object-cover"}
-    />
-  );
 };
 
 const MDXLink: React.FC<
@@ -118,14 +66,14 @@ const MDXLink: React.FC<
   );
 };
 
-export const MDX_Components = {
+export const MDX_Components: MdxRemote.Components = {
   InstagramEmbed,
   YouTube,
   TwitterTweetEmbed,
   img: BlogImage,
   a: MDXLink,
   SocialLink,
-};
+} as any;
 export function hydrateSource(source: MdxRemote.Source) {
   return hydrate(source, { components: MDX_Components });
 }

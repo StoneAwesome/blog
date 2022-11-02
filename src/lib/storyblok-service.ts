@@ -63,7 +63,6 @@ async function grabStoryWithOptions<T extends IStoryBlokContent>(
         ? `&resolve_relations=${options.resolve_relations.join(",")})}`
         : ""
     }`;
-    console.log("Grabbing story from: ", url);
     const result = await fetch(url).then((r) => {
       if (r.status !== 200) {
         return null;

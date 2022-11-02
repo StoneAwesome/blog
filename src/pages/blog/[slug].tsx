@@ -4,9 +4,7 @@ import {
   grabStory,
   IStoryBlockStory,
   IStoryBlokContent,
-  IStoryBlokStoryResponse,
 } from "@lib/storyblok-service";
-import MarkdownRenderer from "@components/markdown-renderer";
 import BasicContainer from "@components/basic/basic-container";
 import { Gallery } from "react-photoswipe-gallery";
 import "photoswipe/dist/photoswipe.css";
@@ -15,8 +13,12 @@ import BasicMeta from "@components/meta/basic-meta";
 import JsonLdMeta from "@components/meta/json-ld-meta";
 import OpenGraphMeta from "@components/meta/open-graph-meta";
 import TwitterCardMeta from "@components/meta/twitter-card-meta";
-import { parse, parseISO } from "date-fns";
+import { parse } from "date-fns";
 import { GenericPostHeader } from "@components/post/post-header";
+
+import renderToString from "next-mdx-remote/render-to-string";
+import { hydrateSource, MDX_Components } from "@lib/mdx-helper";
+import { MdxRemote } from "next-mdx-remote/types";
 
 const BlogPage: React.FC<
   InferGetServerSidePropsType<typeof getServerSideProps>
@@ -30,6 +32,7 @@ const BlogPage: React.FC<
 
   const publishDate = parse(date, "yyyy-MM-dd H:mm", new Date());
 
+  const content = hydrateSource(props.mdx);
   return (
     <Layout>
       <BasicMeta
@@ -65,7 +68,7 @@ const BlogPage: React.FC<
 
           <div className="prose max-w-none [&>p>figure>img]:mb-0">
             <Gallery withCaption withDownloadButton>
-              <MarkdownRenderer markdown={props.story.content.body} />
+              {content}
             </Gallery>
           </div>
           <div>
@@ -93,6 +96,7 @@ type IBlogStory = IStoryBlokContent & {
 
 export const getServerSideProps: GetServerSideProps<{
   story: IStoryBlockStory<IBlogStory>;
+  mdx: MdxRemote.Source;
   slug: string;
 }> = async (ctx) => {
   const slug = ctx.params?.["slug"] as string;
@@ -108,9 +112,13 @@ export const getServerSideProps: GetServerSideProps<{
     return {
       notFound: true,
     };
+
+  const mdx = await renderToString(val.story.content.body, MDX_Components);
+
   return {
     props: {
       story: val?.story,
+      mdx,
       slug,
     },
   };
