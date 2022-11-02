@@ -54,15 +54,17 @@ async function grabStoryWithOptions<T extends IStoryBlokContent>(
   }
 ): Promise<IStoryBlokStoryResponse<T> | null> {
   try {
-    const result = await fetch(
-      `https://api.storyblok.com/v2/${slug}?version=${options.version}&token=${
-        process.env.NEXT_PUBLIC_STORYBLOK_READONLY_KEY
-      }${options.find_by ? "&find_by=uuid" : ""}${
-        options.resolve_relations
-          ? `&resolve_relations=${options.resolve_relations.join(",")})}`
-          : ""
-      }`
-    ).then((r) => {
+    const url = `https://api.storyblok.com/v2/${slug}?version=${
+      options.version
+    }&token=${process.env.NEXT_PUBLIC_STORYBLOK_READONLY_KEY}${
+      options.find_by ? "&find_by=uuid" : ""
+    }${
+      options.resolve_relations
+        ? `&resolve_relations=${options.resolve_relations.join(",")})}`
+        : ""
+    }`;
+    console.log("Grabbing story from: ", url);
+    const result = await fetch(url).then((r) => {
       if (r.status !== 200) {
         return null;
       }

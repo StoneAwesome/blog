@@ -17,7 +17,7 @@ module.exports = {
     return config;
   },
   images: {
-    domains: ["res.cloudinary.com"],
+    domains: ["res.cloudinary.com", "a.storyblok.com"],
     loader: "cloudinary",
     path: "https://res.cloudinary.com/stoneawesome/image/upload/",
   },
