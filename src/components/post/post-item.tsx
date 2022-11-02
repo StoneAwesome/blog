@@ -13,7 +13,7 @@ export default function PostItem({ post, hideDescription }: Props) {
     <div className="">
       <PostHeader post={post} />
 
-      {post.content.primary_image.id && (
+      {post.content.primary_image?.id && (
         <div className="">
           <Link href={`/blog/${post.slug}`}>
             <StoryBlokImg

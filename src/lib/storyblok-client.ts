@@ -29,7 +29,14 @@ export interface IStoryBlockStory<
   translated_slugs: null;
 }
 
-export interface IStoriesResponse<TContentType extends IStoryBlokContent> {
+interface IStoriesCollectionInterface {
+  total: number;
+  per_page: number;
+  page: number;
+}
+
+export interface IStoriesResponse<TContentType extends IStoryBlokContent>
+  extends IStoriesCollectionInterface {
   stories: IStoryBlockStory<TContentType>[];
 }
 
@@ -68,7 +75,7 @@ export type IBlogStory = IStoryBlokContent & {
 
 export type IBlogStoryMeta = IStoryBlockStory<TypeSafeOmit<IBlogStory, "body">>;
 
-interface IStoryBlokLinksResponse {
+interface IStoryBlokLinksResponse extends IStoriesCollectionInterface {
   links: { [key: string]: IStoryBlokLink };
 }
 
@@ -92,7 +99,25 @@ type IRequestOptions = {
   resolve_relations?: string[];
   excluding_fields?: string[];
   by_uuids?: string[];
+  page?: number;
+  per_page?: number;
+  starts_with?: "blog" | "material";
 };
+
+function buildSafeJoin(options: IRequestOptions) {
+  return (
+    x: JustParticularKeys<
+      IRequestOptions,
+      string[] | string | number | undefined
+    >
+  ) => (x ? safeJoin(x, options[x]) : "");
+}
+
+function safeJoin(key: string, value: string[] | undefined | number | string) {
+  if (!value) return "";
+  const qsV = Array.isArray(value) ? value.join(",") : value;
+  return `&${key}=${qsV}`;
+}
 
 class StoryBlokClientClass {
   constructor(
@@ -132,18 +157,32 @@ class StoryBlokClientClass {
     return links;
   }
 
-  async grabStoryBlokBlogMeta(
-    uuids: string[],
-    isDraft = false
-  ): Promise<IBlogStoryMeta[]> {
+  async grabStoryBlokBlogPageCount(isDraft = false) {
+    const result = await this.executeCall<IStoriesResponse<IBlogStory>>(
+      "cdn/stories/",
+      {
+        isDraft: isDraft,
+        per_page: 1,
+        excluding_fields: ["body"],
+        starts_with: "blog",
+      }
+    );
+    return result?.total || 0;
+  }
+
+  async grabStoryBlokBlogMeta(page: number, perPage: number, isDraft = false) {
     const result = await this.executeCall<IStoriesResponse<IBlogStory>>(
       "cdn/stories",
       {
         excluding_fields: ["body"],
-        by_uuids: uuids,
+        page: page,
+        per_page: perPage,
+        isDraft: isDraft,
+        starts_with: "blog",
       }
     );
-    return result?.stories || [];
+
+    return result;
   }
 
   private async grabStoryBlokLinks(isDraft = false) {
@@ -187,37 +226,40 @@ class StoryBlokClientClass {
       | IStoryBlokStoryResponse<any>
       | IStoryBlokLinksResponse
       | IStoriesResponse<any>
-  >(slug: string, options: IRequestOptions): Promise<T | null> {
+  >(
+    slug: string,
+    options: IRequestOptions
+  ): Promise<(T & IStoriesCollectionInterface) | null> {
     try {
       const sj = buildSafeJoin(options);
+      let total = 0,
+        per_page = 0,
+        page = 0;
       const url = `https://api.storyblok.com/v2/${slug}?version=${
         options.isDraft ? "draft" : "published"
       }&token=${this.token}${options.find_by ? "&find_by=uuid" : ""}${sj(
         "resolve_relations"
-      )}${sj("excluding_fields")}${sj("by_uuids")}`;
+      )}${sj("excluding_fields")}${sj("by_uuids")}${sj("starts_with")}${sj(
+        "per_page"
+      )}${sj("page")}`;
       const result = await fetch(url).then((r) => {
         if (r.status !== 200) {
           return null;
         }
+        total = parseInt(r.headers.get("total") || "0");
+        per_page = parseInt(r.headers.get("per_page") || "0");
+        page = parseInt(r.headers.get("page") || "0");
+
         return r.json();
       });
 
-      return !result ? null : result;
+      return !result ? null : { ...result, total, per_page, page };
     } catch (e) {
       console.log(e);
     }
 
     return null;
   }
-}
-
-function buildSafeJoin(options: IRequestOptions) {
-  return (x: JustParticularKeys<IRequestOptions, string[] | undefined>) =>
-    x ? safeJoin(x, options[x]) : "";
-}
-
-function safeJoin(key: string, value: string[] | undefined) {
-  return value && value.length > 0 ? `&${key}=${value.join(",")}` : "";
 }
 
 const StoryBlokClient = new StoryBlokClientClass();

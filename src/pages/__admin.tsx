@@ -1,6 +1,5 @@
 import Script from "next/script";
 import * as React from "react";
-import Article from "@components/admin/previews/post-preview";
 import InstagramSelector, {
   INSTAGRAM_POST_SELECTED_EVENT,
 } from "@components/admin/instagram-selector";
@@ -33,7 +32,6 @@ const AdminPage: React.FC<AdminPageProps> = (props) => {
         }
       }
 
-      CMS.registerPreviewTemplate("posts", Article);
       CMS.registerPreviewTemplate("instagram", InstagramPreview);
       CMS.registerWidget("instagram", InstagramSelector);
       CMS.registerWidget("instagram_id", InstagramIdWidget);
@@ -42,7 +40,9 @@ const AdminPage: React.FC<AdminPageProps> = (props) => {
 
   return (
     <div>
-      <Script src={"https://identity.netlify.com/v1/netlify-identity-widget.js"} />
+      <Script
+        src={"https://identity.netlify.com/v1/netlify-identity-widget.js"}
+      />
     </div>
   );
 };
@@ -56,10 +56,18 @@ const InstagramIdWidget: React.FC<CmsWidgetControlProps<string>> = (props) => {
 
     document.addEventListener(INSTAGRAM_POST_SELECTED_EVENT, listener as any);
 
-    return () => document.removeEventListener(INSTAGRAM_POST_SELECTED_EVENT, listener as any);
+    return () =>
+      document.removeEventListener(
+        INSTAGRAM_POST_SELECTED_EVENT,
+        listener as any
+      );
   });
 
-  return <span className="bg-_bsPrimary text-white rounded px-2 ">{props.value}</span>;
+  return (
+    <span className="rounded bg-_bsPrimary px-2 text-white ">
+      {props.value}
+    </span>
+  );
 };
 
 export default AdminPage;

@@ -1,28 +1,23 @@
 import React from "react";
-import { PostContent } from "@lib/posts";
 import PostItem from "./post-item";
-import TagLink from "@components/post/tag-link";
 import Pagination from "@components/basic/pagination";
-import { TagContent } from "@lib/tags";
 import BasicContainer from "@components/basic/basic-container";
+import { IBlogStoryMeta } from "@lib/storyblok-client";
 
 type Props = {
-  posts: PostContent[];
-  tags: TagContent[];
+  posts: IBlogStoryMeta[];
   pagination: {
     current: number;
     pages: number;
   };
 };
-export default function PostList({ posts, tags, pagination }: Props) {
+export default function PostList({ posts, pagination }: Props) {
   return (
     <BasicContainer>
       <div className={"my-5"}>
-        <div className={"mb-5"}>
-          {posts.map((it, i) => (
-            <div key={i}>
-              <PostItem post={it} />
-            </div>
+        <div className={"mb-5 flex flex-col"}>
+          {posts.map((p) => (
+            <PostItem post={p} key={p.id} />
           ))}
         </div>
         {pagination.pages > 0 && (
@@ -30,19 +25,12 @@ export default function PostList({ posts, tags, pagination }: Props) {
             current={pagination.current}
             pages={pagination.pages}
             link={{
-              href: (page) => (page === 1 ? "/posts" : "/posts/page/[page]"),
-              as: (page) => (page === 1 ? "" : "/posts/page/" + page),
+              href: (page) => (page === 1 ? "/blog" : "/blog/page/[page]"),
+              as: (page) => (page === 1 ? "" : "/blog/page/" + page),
             }}
           />
         )}
       </div>
-      {/* <div className={"flex flex-wrap gap-3 mt-3"}>
-        {tags.map((it, i) => (
-          <div key={i} className={"prose"}>
-            <TagLink tag={it} />
-          </div>
-        ))}
-      </div> */}
     </BasicContainer>
   );
 }

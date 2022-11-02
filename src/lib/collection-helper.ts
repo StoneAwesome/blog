@@ -190,17 +190,27 @@ export class CollectionHelper<T extends ICollectionBase> {
   getStaticPathsForPages() {
     const result: GetStaticPaths = async () => {
       const totalPages = await this.countPosts();
-
-      const pages = Math.ceil(totalPages / this.pageSize);
-      const paths = Array.from(Array(pages - 1).keys()).map((it) => ({
-        params: { page: (it + 2).toString() },
-      }));
-      return {
-        paths: paths,
-        fallback: false,
-      };
+      return CollectionHelper.GetPagePathsFromTotal(totalPages, this.pageSize);
     };
     return result;
+  }
+
+  static GetPagePathsFromTotal(total: number, size: number) {
+    const pages = Math.ceil(total / size);
+    const paths = Array.from(Array(pages - 1).keys()).map((it) => ({
+      params: { page: (it + 2).toString() },
+    }));
+    return {
+      paths: paths,
+      fallback: false,
+    };
+  }
+
+  static GetTotalPageCount(totalItems: number, pageSize: number) {
+    return Math.max(
+      this.GetPagePathsFromTotal(totalItems, pageSize).paths.length + 1,
+      1
+    );
   }
 
   getStaticPropsForItem(rts: RTS): GetStaticProps<ICollectionSource<T>> {

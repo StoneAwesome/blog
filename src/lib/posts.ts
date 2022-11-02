@@ -12,7 +12,7 @@ export interface PostContent extends ICollectionBase {
   sourceSnippetString?: string;
 }
 
-const postHelper = new CollectionHelper<PostContent>("content/posts");
+const postHelper = new CollectionHelper<PostContent>("content/instagram");
 
 export const fetchPostContent = () => postHelper.fetchCollectionContent();
 
@@ -30,3 +30,5 @@ export const createPostItemPaths = () =>
   postHelper.getStaticPathsForItems("posts");
 export const getStaticPropsForItem = (rts: RTS) =>
   postHelper.getStaticPropsForItem(rts);
+
+export const BLOG_POST_PAGE_SIZE = 10;
