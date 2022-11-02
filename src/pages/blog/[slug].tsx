@@ -13,14 +13,15 @@ import JsonLdMeta from "@components/meta/json-ld-meta";
 import OpenGraphMeta from "@components/meta/open-graph-meta";
 import TwitterCardMeta from "@components/meta/twitter-card-meta";
 import { parse } from "date-fns";
-import { GenericPostHeader } from "@components/post/post-header";
+import PostHeader from "@components/post/post-header";
 import renderToString from "next-mdx-remote/render-to-string";
 import { hydrateSource, MDX_Components } from "@lib/mdx-helper";
 import { MdxRemote } from "next-mdx-remote/types";
 import StoryBlokClient, {
+  IBlogStory,
   IStoryBlockStory,
-  IStoryBlokContent,
 } from "@lib/storyblok-client";
+import PostItem from "@components/post/post-item";
 
 const BlogPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (
   props
@@ -62,11 +63,7 @@ const BlogPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (
       />
       <BasicContainer>
         <article>
-          <GenericPostHeader
-            url={`/blog/${slug}`}
-            title={title}
-            date={publishDate}
-          />
+          <PostItem post={props.story} hideDescription />
 
           <div className="prose max-w-none [&>p>figure>img]:mb-0">
             <Gallery withCaption withDownloadButton>
@@ -77,18 +74,6 @@ const BlogPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (
       </BasicContainer>
     </Layout>
   );
-};
-
-type IBlogStory = IStoryBlokContent & {
-  title: string;
-  subtitle: string;
-  /**
-   * This is markdown
-   */
-  body: string;
-  date: string;
-  description?: string;
-  keywords?: string[];
 };
 
 type PathQuery = {

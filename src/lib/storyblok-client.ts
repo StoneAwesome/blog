@@ -29,6 +29,10 @@ export interface IStoryBlockStory<
   translated_slugs: null;
 }
 
+export interface IStoriesResponse<TContentType extends IStoryBlokContent> {
+  stories: IStoryBlockStory<TContentType>[];
+}
+
 export interface IStoryBlokStoryResponse<
   TContentType extends IStoryBlokContent
 > {
@@ -38,9 +42,20 @@ export interface IStoryBlokStoryResponse<
   links: number[];
 }
 
-type IBlogStory = IStoryBlokContent & {
+export interface IStoryBlokAssetMeta {
+  id: number | null;
+  alt: null | string;
+  name: string;
+  focus: null | string;
+  title: null | string;
+  filename: string;
+  copyright: null | string;
+  fieldtype: string;
+  is_external_url?: boolean;
+}
+
+export type IBlogStory = IStoryBlokContent & {
   title: string;
-  subtitle: string;
   /**
    * This is markdown
    */
@@ -48,7 +63,10 @@ type IBlogStory = IStoryBlokContent & {
   date: string;
   description?: string;
   keywords?: string[];
+  primary_image: IStoryBlokAssetMeta;
 };
+
+export type IBlogStoryMeta = IStoryBlockStory<TypeSafeOmit<IBlogStory, "body">>;
 
 interface IStoryBlokLinksResponse {
   links: { [key: string]: IStoryBlokLink };
@@ -67,6 +85,14 @@ export interface IStoryBlokLink {
   is_startpage: boolean;
   real_path: string;
 }
+
+type IRequestOptions = {
+  isDraft?: boolean;
+  find_by?: "uuid";
+  resolve_relations?: string[];
+  excluding_fields?: string[];
+  by_uuids?: string[];
+};
 
 class StoryBlokClientClass {
   constructor(
@@ -106,6 +132,20 @@ class StoryBlokClientClass {
     return links;
   }
 
+  async grabStoryBlokBlogMeta(
+    uuids: string[],
+    isDraft = false
+  ): Promise<IBlogStoryMeta[]> {
+    const result = await this.executeCall<IStoriesResponse<IBlogStory>>(
+      "cdn/stories",
+      {
+        excluding_fields: ["body"],
+        by_uuids: uuids,
+      }
+    );
+    return result?.stories || [];
+  }
+
   private async grabStoryBlokLinks(isDraft = false) {
     const links = await this.executeCall<IStoryBlokLinksResponse>(`cdn/links`, {
       isDraft: isDraft,
@@ -115,11 +155,7 @@ class StoryBlokClientClass {
 
   private async grabStory<T extends IStoryBlokContent>(
     slug: string,
-    options: {
-      isDraft?: boolean;
-      find_by?: "uuid";
-      resolve_relations?: string[];
-    }
+    options: IRequestOptions
   ): Promise<IStoryBlokStoryResponse<T> | null> {
     const data = await this.executeCall<IStoryBlokStoryResponse<T>>(
       slug,
@@ -147,23 +183,18 @@ class StoryBlokClientClass {
   }
 
   private async executeCall<
-    T extends IStoryBlokStoryResponse<any> | IStoryBlokLinksResponse
-  >(
-    slug: string,
-    options: {
-      isDraft?: boolean;
-      find_by?: "uuid";
-      resolve_relations?: string[];
-    }
-  ): Promise<T | null> {
+    T extends
+      | IStoryBlokStoryResponse<any>
+      | IStoryBlokLinksResponse
+      | IStoriesResponse<any>
+  >(slug: string, options: IRequestOptions): Promise<T | null> {
     try {
+      const sj = buildSafeJoin(options);
       const url = `https://api.storyblok.com/v2/${slug}?version=${
         options.isDraft ? "draft" : "published"
-      }&token=${this.token}${options.find_by ? "&find_by=uuid" : ""}${
-        options.resolve_relations
-          ? `&resolve_relations=${options.resolve_relations.join(",")})}`
-          : ""
-      }`;
+      }&token=${this.token}${options.find_by ? "&find_by=uuid" : ""}${sj(
+        "resolve_relations"
+      )}${sj("excluding_fields")}${sj("by_uuids")}`;
       const result = await fetch(url).then((r) => {
         if (r.status !== 200) {
           return null;
@@ -178,6 +209,15 @@ class StoryBlokClientClass {
 
     return null;
   }
+}
+
+function buildSafeJoin(options: IRequestOptions) {
+  return (x: JustParticularKeys<IRequestOptions, string[] | undefined>) =>
+    x ? safeJoin(x, options[x]) : "";
+}
+
+function safeJoin(key: string, value: string[] | undefined) {
+  return value && value.length > 0 ? `&${key}=${value.join(",")}` : "";
 }
 
 const StoryBlokClient = new StoryBlokClientClass();

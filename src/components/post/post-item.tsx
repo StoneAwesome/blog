@@ -1,32 +1,34 @@
-import type { PostContent } from "@lib/posts";
+import { StoryBlokImg } from "@components/storyblok/storyblok-image";
+import { IBlogStoryMeta } from "@lib/storyblok-client";
 import Link from "next/link";
 import React from "react";
 import PostHeader from "./post-header";
-import { getPostUrl } from "./post-link";
 
 type Props = {
-  post: Readonly<PostContent>;
+  post: Readonly<IBlogStoryMeta>;
+  hideDescription?: boolean;
 };
-export default function PostItem({ post }: Props) {
+export default function PostItem({ post, hideDescription }: Props) {
   return (
     <div className="">
       <PostHeader post={post} />
 
-      {post.description && post.image ? (
+      {post.content.primary_image.id && (
         <div className="">
-          <Link href={getPostUrl(post)}>
-            <img
+          <Link href={`/blog/${post.slug}`}>
+            <StoryBlokImg
+              img={post.content.primary_image}
               className={
                 "mx-auto mb-3 max-h-[40vh] w-[90%] rounded object-cover"
               }
-              src={post.image}
-              alt={post.title}
-            />{" "}
+            />
           </Link>
+        </div>
+      )}
 
-          <div className="prose max-w-none">
-            <p>{post.description}</p>
-          </div>
+      {post.content.description && !hideDescription ? (
+        <div className="prose max-w-none">
+          <p>{post.content.description}</p>
         </div>
       ) : null}
     </div>

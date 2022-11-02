@@ -20,3 +20,7 @@ declare module "*.yml" {
 
 type StringKey<T> = Extract<keyof T, string>;
 type IDictionary<T> = Record<string, T>;
+type TypeSafeOmit<T, K extends keyof T> = Omit<T, K>;
+type JustParticularKeys<T, TType> = {
+  [P in keyof T]: T[P] extends TType ? P : never;
+}[keyof T];

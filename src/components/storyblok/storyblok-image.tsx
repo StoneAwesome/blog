@@ -2,6 +2,7 @@ import * as React from "react";
 import NextImage from "next/image";
 import { Item } from "react-photoswipe-gallery";
 import { useImageDimensions } from "@hooks/use-image";
+import { IStoryBlokAssetMeta } from "@lib/storyblok-client";
 
 export type StoryBlockImageProps = React.DetailedHTMLProps<
   React.ImgHTMLAttributes<HTMLImageElement>,
@@ -37,13 +38,10 @@ function getHWInRange(width: number, height: number, range: number = 1000) {
   };
 }
 
-const StoryBlokImgWrapper: React.FC<{
-  src: string;
-  alt?: string;
-  title?: string;
-}> = (props) => {
-  const i = React.useMemo(() => {
-    const match = /\/(\d+)x(\d+)\//gm.exec(props.src);
+function useStoryBlokImageDetails(src: string | undefined) {
+  return React.useMemo(() => {
+    if (!src) return null;
+    const match = /\/(\d+)x(\d+)\//gm.exec(src);
 
     if (match) {
       const width = parseInt(match[1]);
@@ -52,9 +50,9 @@ const StoryBlokImgWrapper: React.FC<{
         width,
         height
       );
-      const thumb = `${props.src}/m/${thumbWidth}x${thumbHeight}`;
+      const thumb = `${src}/m/${thumbWidth}x${thumbHeight}`;
       return {
-        url: props.src,
+        url: src,
         thumb: thumb,
         thumbHeight,
         thumbWidth,
@@ -63,16 +61,42 @@ const StoryBlokImgWrapper: React.FC<{
       };
     }
     return {
-      url: props.src,
-      thumb: props.src,
+      url: src,
+      thumb: src,
       width: undefined,
       height: undefined,
       thumbHeight: undefined,
       thumbWidth: undefined,
     };
-  }, [props]);
+  }, [src]);
+}
+
+const StoryBlokImgWrapper: React.FC<{
+  src: string;
+  alt?: string;
+  title?: string;
+}> = (props) => {
+  const i = useStoryBlokImageDetails(props.src);
+
+  if (!i) return null;
 
   return <ItemWrapper {...i} alt={props.alt} title={props.title} />;
+};
+
+export const StoryBlokImg: React.FC<{
+  img: IStoryBlokAssetMeta;
+  className?: string;
+}> = (props) => {
+  const i = useStoryBlokImageDetails(props.img.filename);
+  if (!i) return null;
+  return (
+    <ImageDetails
+      {...i}
+      className={props.className}
+      title={props.img.title || undefined}
+      alt={props.img.alt || undefined}
+    />
+  );
 };
 
 const DefaultImgWrapper: React.FC<StoryBlockImageProps> = (props) => {
@@ -125,16 +149,14 @@ const ItemWrapper: React.FC<ItemProps> = (i) => {
     >
       {({ ref, open }) => (
         <figure ref={ref as any} data-mdr={true}>
-          <img
-            src={i.thumb}
-            alt={i.alt}
-            width={i.thumbWidth}
-            height={i.thumbHeight}
+          <ImageDetails
+            {...i}
+            onClick={open}
             className={
               "mx-auto max-h-[40vh] w-[90%] cursor-pointer rounded object-cover shadow transition-shadow duration-300 hover:shadow-lg hover:shadow-_bsInfo/50"
             }
-            onClick={open}
           />
+
           {i.title && (
             <figcaption className="text-center">{i.title}</figcaption>
           )}
@@ -143,5 +165,21 @@ const ItemWrapper: React.FC<ItemProps> = (i) => {
     </Item>
   );
 };
+
+const ImageDetails: React.FC<
+  ItemProps & {
+    className?: string;
+    onClick?: React.MouseEventHandler<HTMLImageElement> | undefined;
+  }
+> = (i) => (
+  <img
+    src={i.thumb}
+    alt={i.alt}
+    width={i.thumbWidth}
+    height={i.thumbHeight}
+    className={i.className}
+    onClick={i.onClick}
+  />
+);
 
 export default StoryBlockImage;

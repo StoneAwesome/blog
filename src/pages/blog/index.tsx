@@ -8,9 +8,10 @@ import TwitterCardMeta from "@components/meta/twitter-card-meta";
 import BasicContainer from "@components/basic/basic-container";
 import Pagination from "@components/basic/pagination";
 import StoryBlokClient from "@lib/storyblok-client";
+import PostItem from "@components/post/post-item";
 
 export type BlogIndexPageProps = {
-  links: Awaited<ReturnType<typeof StoryBlokClient.grabStroyBlokBlogLinks>>;
+  posts: Awaited<ReturnType<typeof StoryBlokClient.grabStoryBlokBlogMeta>>;
 };
 
 const BlogIndexPage: React.FC<BlogIndexPageProps> = (props) => {
@@ -27,11 +28,9 @@ const BlogIndexPage: React.FC<BlogIndexPageProps> = (props) => {
       <TwitterCardMeta url={url} title={title} />
       <BasicContainer>
         <div className={"my-5"}>
-          <div className={"mb-5"}>
-            {props.links.map((l) => (
-              <Link key={l.slug} href={l.slug}>
-                {l.name}
-              </Link>
+          <div className={"mb-5 flex flex-col"}>
+            {props.posts.map((l) => (
+              <PostItem post={l} key={l.id} />
             ))}
 
             {/* {posts.map((it, i) => (
@@ -61,9 +60,14 @@ export const getServerSideProps: GetServerSideProps<
 > = async (ctx) => {
   const links = await StoryBlokClient.grabStroyBlokBlogLinks(true);
 
+  const posts = await StoryBlokClient.grabStoryBlokBlogMeta(
+    links.map((l) => l.uuid),
+    true
+  );
+
   return {
     props: {
-      links: links,
+      posts: posts,
     },
   };
 };

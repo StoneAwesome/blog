@@ -1,23 +1,15 @@
 import Link from "next/link";
-import config from "@lib/config";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
-import { useRouter } from "next/router";
 import React from "react";
-import { faPlus } from "@fortawesome/pro-thin-svg-icons";
 import Search from "./basic/search";
-
-const LINK_CLASSNAME = "bg- nav-link text-primary mx-2";
-const LINK_STYLE: React.CSSProperties = {
-  textDecoration: "underline var(--bs-info)",
-};
 
 export default function NavHeader() {
   return (
     <>
       <div className="bottom-shadow pt-5 pb-3 text-center">
         <div className="container mx-auto flex flex-col items-center">
-          <a href="/" aria-label="StoneAwesome">
+          <Link href="/" aria-label="StoneAwesome">
             <img
               src={"/logo/logo-horizontal.svg"}
               className={"max-w-[50vw]"}
@@ -25,7 +17,7 @@ export default function NavHeader() {
               height={111.574}
               width={906.667}
             />
-          </a>
+          </Link>
           {/* <p className="lead  mt-4 text-center">{config.site_description}</p> */}
         </div>
       </div>
@@ -36,7 +28,7 @@ export default function NavHeader() {
             {"Inspiration"}
           </LinkSpecial>
 
-          <LinkSpecial href="/posts">{"Blog"}</LinkSpecial>
+          <LinkSpecial href="/blog">{"Blog"}</LinkSpecial>
           <Search />
 
           {/* <LinkSpecial href="/posts">
