@@ -97,15 +97,11 @@ export const getServerSideProps: GetServerSideProps<{
 }> = async (ctx) => {
   const slug = ctx.params?.["slug"] as string;
 
-  console.log("Here");
-
   if (!slug) {
     return {
       notFound: true,
     };
   }
-
-  console.log("SLug", slug);
   const val = await grabStory<IBlogStory>(`cdn/stories/blog/${slug}`, true);
 
   if (!val?.story)
