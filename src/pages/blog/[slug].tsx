@@ -22,6 +22,7 @@ import StoryBlokClient, {
   IStoryBlockStory,
 } from "@lib/storyblok-client";
 import PostItem from "@components/post/post-item";
+import Designer from "@components/post/post-designer";
 
 const BlogPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (
   props
@@ -68,6 +69,7 @@ const BlogPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (
           <div className="prose max-w-none [&>p>figure>img]:mb-0">
             <Gallery withCaption withDownloadButton>
               {content}
+              <Designer designer={props.story.content.designer} />
             </Gallery>
           </div>
         </article>

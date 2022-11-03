@@ -61,6 +61,18 @@ export interface IStoryBlokAssetMeta {
   is_external_url?: boolean;
 }
 
+export interface IDesigner extends IStoryBlokContent {
+  name: string;
+  instagram_id?: string;
+  facebook_id?: string;
+  website?: {
+    id: string;
+    url: string;
+    linktype: string;
+    fieldtype: string;
+    cached_url: string;
+  };
+}
 export type IBlogStory = IStoryBlokContent & {
   title: string;
   /**
@@ -71,9 +83,12 @@ export type IBlogStory = IStoryBlokContent & {
   description?: string;
   keywords?: string[];
   primary_image: IStoryBlokAssetMeta;
+  designer?: IDesigner;
 };
 
-export type IBlogStoryMeta = IStoryBlockStory<TypeSafeOmit<IBlogStory, "body">>;
+export type IBlogStoryMeta = IStoryBlockStory<
+  TypeSafeOmit<IBlogStory, "body" | "designer">
+>;
 
 interface IStoryBlokLinksResponse extends IStoriesCollectionInterface {
   links: { [key: string]: IStoryBlokLink };
@@ -142,6 +157,7 @@ class StoryBlokClientClass {
   grabBlogStory(slug: string, isDraft: boolean = false) {
     return this.grabStory<IBlogStory>(`cdn/stories/blog/${slug}`, {
       isDraft: isDraft,
+      resolve_relations: ["blogpost.designer"],
     });
   }
 
@@ -212,7 +228,9 @@ class StoryBlokClientClass {
           const storyForProp = data.rels?.find((r: any) => r.uuid === id);
 
           if (storyForProp) {
-            data.story.content[prop] = JSON.parse(JSON.stringify(storyForProp));
+            data.story.content[prop] = JSON.parse(
+              JSON.stringify(storyForProp.content)
+            );
           }
         }
       });

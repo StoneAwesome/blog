@@ -21,13 +21,7 @@ export const BlogImage: React.FC<any> = (props) => {
   }
 };
 
-const MDXLink: React.FC<
-  React.DetailedHTMLProps<
-    React.AnchorHTMLAttributes<HTMLAnchorElement>,
-    HTMLAnchorElement
-  >
-> = (props) => {
-  const { children, href, ...rest } = props;
+export function useLinkUtm(href: string | undefined) {
   const [utmProps, set_utmProps] = React.useState<Partial<UtmProps>>({
     utm_source: "StoneAwesome",
     utm_medium: "web",
@@ -42,7 +36,6 @@ const MDXLink: React.FC<
     }
   }, []);
 
-  //-- For outgoing Urls, make sure we tag them with our UTM codes.
   const url = React.useMemo(
     () =>
       href && !/(stoneawesome\.com|localhost)/i.exec(href)
@@ -50,6 +43,18 @@ const MDXLink: React.FC<
         : href,
     [href, utmProps]
   );
+
+  return url || "";
+}
+
+const MDXLink: React.FC<
+  React.DetailedHTMLProps<
+    React.AnchorHTMLAttributes<HTMLAnchorElement>,
+    HTMLAnchorElement
+  >
+> = (props) => {
+  const { children, href, ...rest } = props;
+  const url = useLinkUtm(href);
 
   // if (!url && typeof children === "string" && children?.indexOf("##") === 0) {
   //   return (
