@@ -4,7 +4,7 @@ import OpenGraphMeta from "@components/meta/open-graph-meta";
 import TwitterCardMeta from "@components/meta/twitter-card-meta";
 import PostList from "@components/post/post-list";
 import { CollectionHelper } from "@lib/collection-helper";
-import { BLOG_POST_PAGE_SIZE } from "@lib/posts";
+import { BLOG_POST_PAGE_SIZE, getStaticPathsForBlogPosts } from "@lib/posts";
 import StoryBlokClient, { IBlogStoryMeta } from "@lib/storyblok-client";
 import type { GetStaticProps, GetStaticPaths } from "next";
 
@@ -65,13 +65,9 @@ export const getStaticProps: GetStaticProps<Props, ParamsProps> = async (
 };
 
 export const getStaticPaths: GetStaticPaths<ParamsProps> = async (ctx) => {
-  const totalPosts = await StoryBlokClient.grabStoryBlokBlogPageCount(true);
-  const props = CollectionHelper.GetPagePathsFromTotal(
-    totalPosts,
-    BLOG_POST_PAGE_SIZE
-  );
+  const paths = await getStaticPathsForBlogPosts();
   return {
-    paths: props.paths,
+    paths: paths,
     fallback: "blocking",
   };
 };

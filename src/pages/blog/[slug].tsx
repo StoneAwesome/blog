@@ -13,7 +13,6 @@ import JsonLdMeta from "@components/meta/json-ld-meta";
 import OpenGraphMeta from "@components/meta/open-graph-meta";
 import TwitterCardMeta from "@components/meta/twitter-card-meta";
 import { parse } from "date-fns";
-import PostHeader from "@components/post/post-header";
 import renderToString from "next-mdx-remote/render-to-string";
 import { hydrateSource, MDX_Components } from "@lib/mdx-helper";
 import { MdxRemote } from "next-mdx-remote/types";

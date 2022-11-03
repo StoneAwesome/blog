@@ -1,9 +1,5 @@
 import * as React from "react";
-import type {
-  GetStaticProps,
-  GetStaticPaths,
-  InferGetStaticPropsType,
-} from "next";
+import type { GetStaticProps } from "next";
 import Layout from "@components/main-layout";
 import BasicMeta from "@components/meta/basic-meta";
 import OpenGraphMeta from "@components/meta/open-graph-meta";
@@ -33,17 +29,6 @@ const BlogIndexPage: React.FC<BlogIndexPageProps> = (props) => {
       <PostList pagination={props.pages} posts={props.posts?.stories || []} />
     </Layout>
   );
-};
-
-export const getStaticPaths: GetStaticPaths = () => {
-  return {
-    paths: [
-      {
-        params: {},
-      },
-    ],
-    fallback: false,
-  };
 };
 
 export const getStaticProps: GetStaticProps<BlogIndexPageProps> = async (

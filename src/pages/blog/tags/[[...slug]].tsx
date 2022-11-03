@@ -4,7 +4,10 @@ import BasicMeta from "@components/meta/basic-meta";
 import OpenGraphMeta from "@components/meta/open-graph-meta";
 import TwitterCardMeta from "@components/meta/twitter-card-meta";
 import TagPostList from "@components/post/tag-post-list";
-import { BLOG_POST_PAGE_SIZE } from "@lib/posts";
+import {
+  BLOG_POST_PAGE_SIZE,
+  getStaticPathsForBlogPostsByTag,
+} from "@lib/posts";
 import StoryBlokClient, { IBlogStoryMeta } from "@lib/storyblok-client";
 import { CollectionHelper } from "@lib/collection-helper";
 
@@ -60,29 +63,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const allTags = await StoryBlokClient.getTags(true);
-  console.log("Paths", allTags);
-  const result =
-    allTags?.tags
-      ?.map((t) => {
-        const pages = CollectionHelper.GetPagePathsFromTotal(
-          t.taggings_count,
-          BLOG_POST_PAGE_SIZE
-        );
-        return [
-          ...pages.paths.map((p) => ({
-            params: {
-              slug: [t.name, p.params.page],
-            },
-          })),
-          {
-            params: {
-              slug: [t.name],
-            },
-          },
-        ];
-      })
-      .flatMap((p) => p) || [];
+  const result = await getStaticPathsForBlogPostsByTag();
 
   return {
     paths: result,
