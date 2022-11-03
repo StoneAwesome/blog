@@ -58,7 +58,7 @@ const revalidateBlogPages = async (slug: string, res: NextApiResponse) => {
   );
 
   const allPagesToRevalidate = [
-    slug, //-- Revalidate the page causing the revalidate
+    `/${slug}`, //-- Revalidate the page causing the revalidate
     "/blog", //-- Revalidate the main blog page
     ...blogPageSlugs, //-- Revalidate the dynamic pages for blog (as we might've just added or removed a story)
     ...tagPageSlugs, //-- Revalidate the dynamic pages for blog tags
