@@ -294,7 +294,7 @@ class StoryBlokClientClass {
       )}${sj("excluding_fields")}${sj("by_uuids")}${sj("starts_with")}${sj(
         "per_page"
       )}${sj("page")}${sj("with_tag")}`;
-      console.log("URL", url);
+
       const result = await fetch(url).then((r) => {
         if (r.status !== 200) {
           return null;
