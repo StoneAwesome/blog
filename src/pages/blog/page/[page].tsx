@@ -1,3 +1,5 @@
+import BasicContainer from "@components/basic/basic-container";
+import Pagination from "@components/basic/pagination";
 import Layout from "@components/main-layout";
 import BasicMeta from "@components/meta/basic-meta";
 import OpenGraphMeta from "@components/meta/open-graph-meta";
@@ -24,7 +26,16 @@ export default function Page({ posts, pagination, page }: Props) {
       <BasicMeta url={url} title={title} />
       <OpenGraphMeta url={url} title={title} />
       <TwitterCardMeta url={url} title={title} />
-      <PostList posts={posts} pagination={pagination} />
+      <BasicContainer>
+        <PostList posts={posts} />
+        <Pagination
+          {...pagination}
+          link={{
+            href: (page) => (page === 1 ? "/blog" : "/blog/page/[page]"),
+            as: (page) => (page === 1 ? "" : "/blog/page/" + page),
+          }}
+        />
+      </BasicContainer>
     </Layout>
   );
 }

@@ -23,6 +23,7 @@ import StoryBlokClient, {
 import PostItem from "@components/post/post-item";
 import Designer from "@components/post/post-designer";
 import PostTags from "@components/post/post-tags";
+import PostHeader from "@components/post/post-header";
 
 const BlogPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (
   props
@@ -64,7 +65,7 @@ const BlogPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (
       />
       <BasicContainer>
         <article>
-          <PostItem post={props.story} hideDescription hideImage />
+          <PostHeader post={props.story} />
 
           <div className="prose max-w-none [&>p>figure>img]:mb-0">
             <Gallery withCaption withDownloadButton>

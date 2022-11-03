@@ -12,7 +12,7 @@ type Props = {
 export default function PostItem({ post, hideDescription, hideImage }: Props) {
   return (
     <div className="">
-      <PostHeader post={post} />
+      {/* <PostHeader post={post} />
 
       {!hideImage && post.content.primary_image?.id && (
         <div className="">
@@ -25,13 +25,64 @@ export default function PostItem({ post, hideDescription, hideImage }: Props) {
             />
           </Link>
         </div>
-      )}
+      )} */}
 
-      {post.content.description && !hideDescription ? (
-        <div className="prose max-w-none">
-          <p>{post.content.description}</p>
+      <div
+        key={post.content.title}
+        className="flex flex-col overflow-hidden rounded-lg shadow-lg"
+      >
+        <div className="flex-shrink-0">
+          <Link href={`/blog/${post.slug}`}>
+            <StoryBlokImg
+              img={post.content.primary_image}
+              className="h-48 w-full object-cover"
+            />
+          </Link>
         </div>
-      ) : null}
+        <div className="flex flex-1 flex-col justify-between bg-white p-6">
+          <div className="flex-1">
+            {/* <p className="text-sm font-medium text-indigo-600">
+              <a href={post.category.href} className="hover:underline">
+                {post.category.name}
+              </a>
+            </p> */}
+            <Link href={`/blog/${post.slug}`} className="mt-2 block">
+              <p className="text-xl font-semibold text-gray-900">
+                {post.content.title}
+              </p>
+              {post.content.description && (
+                <p className="mt-3 text-base text-gray-500">
+                  {post.content.description}
+                </p>
+              )}
+            </Link>
+          </div>
+          {/* <div className="mt-6 flex items-center">
+            <div className="flex-shrink-0">
+              <a href={post.author.href}>
+                <span className="sr-only">{post.author.name}</span>
+                <img
+                  className="h-10 w-10 rounded-full"
+                  src={post.author.imageUrl}
+                  alt=""
+                />
+              </a>
+            </div>
+            <div className="ml-3">
+              <p className="text-sm font-medium text-gray-900">
+                <a href={post.author.href} className="hover:underline">
+                  {post.author.name}
+                </a>
+              </p>
+              <div className="flex space-x-1 text-sm text-gray-500">
+                <time dateTime={post.datetime}>{post.date}</time>
+                <span aria-hidden="true">&middot;</span>
+                <span>{post.readingTime} read</span>
+              </div>
+            </div>
+          </div> */}
+        </div>
+      </div>
     </div>
   );
 }

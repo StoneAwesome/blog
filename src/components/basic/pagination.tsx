@@ -20,6 +20,7 @@ export default function Pagination({ current, pages, link }: Props) {
   //const pagination = generatePagination(current, pages);
   const nextPage = current + 1;
   const prevPage = current - 1;
+  if (pages <= 0) return null;
   return (
     //   <div className={"pagination justify-content-center"}>
     //   {pagination.map((it, i) => (
@@ -41,34 +42,32 @@ export default function Pagination({ current, pages, link }: Props) {
     //     </div>
     //   ))}
     // </div>
-    <div className="flex flex-col">
+    <div className="my-5 flex flex-col">
       <div className={"flex flex-row gap-5 "}>
         {current >= pages ? null : (
-          (<Link
+          <Link
             href={link.href(nextPage)}
             as={link.as(nextPage)}
-            className={`flex-grow rounded-sm py-1 text-center bg-_bsPrimary hover:bg-_bsPrimary/90 active:ring-_bsPrimary active:ring-offset-2 active:bg-_bsPrimary active:ring-1 text-white ${
+            className={`flex-grow rounded-sm bg-_bsPrimary py-1 text-center text-white hover:bg-_bsPrimary/90 active:bg-_bsPrimary active:ring-1 active:ring-_bsPrimary active:ring-offset-2 ${
               current >= pages ? "disabled" : ""
             }`}
-            title={"Older"}>
-
+            title={"Older"}
+          >
             {<FontAwesomeIcon icon={faLongArrowLeft} fixedWidth />}
-
-          </Link>)
+          </Link>
         )}
 
         {current <= 1 ? null : (
-          (<Link
+          <Link
             href={link.href(prevPage)}
             as={link.as(prevPage)}
-            className={`flex-grow rounded-sm py-1 text-center bg-_bsPrimary hover:bg-_bsPrimary/90 active:ring-_bsPrimary active:ring-offset-2 active:bg-_bsPrimary active:ring-1 text-white ${
+            className={`flex-grow rounded-sm bg-_bsPrimary py-1 text-center text-white hover:bg-_bsPrimary/90 active:bg-_bsPrimary active:ring-1 active:ring-_bsPrimary active:ring-offset-2 ${
               current <= 1 ? "disabled" : ""
             }`}
-            title={"Newer"}>
-
+            title={"Newer"}
+          >
             {<FontAwesomeIcon icon={faLongArrowRight} fixedWidth />}
-
-          </Link>)
+          </Link>
         )}
       </div>
       {/* <small className="align-self-center text-muted">{current}</small> */}

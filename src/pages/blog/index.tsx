@@ -8,6 +8,8 @@ import StoryBlokClient from "@lib/storyblok-client";
 import PostList from "@components/post/post-list";
 import { BLOG_POST_PAGE_SIZE } from "@lib/posts";
 import { CollectionHelper } from "@lib/collection-helper";
+import BasicContainer from "@components/basic/basic-container";
+import Pagination from "@components/basic/pagination";
 
 export type BlogIndexPageProps = {
   posts: Awaited<ReturnType<typeof StoryBlokClient.grabStoryBlokBlogMeta>>;
@@ -26,7 +28,24 @@ const BlogIndexPage: React.FC<BlogIndexPageProps> = (props) => {
       <BasicMeta url={"/blog"} title={"StoneAwesome Blog"} />
       <OpenGraphMeta url={url} title={title} />
       <TwitterCardMeta url={url} title={title} />
-      <PostList pagination={props.pages} posts={props.posts?.stories || []} />
+      <BasicContainer>
+        {/* <div className="my-5 text-center">
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            StoneAweome Blog
+          </h2>
+          <p className="mx-auto mt-3 max-w-2xl text-xl text-gray-500 sm:mt-4">
+            {"Collections and information from around the Stone & Tile world."}
+          </p>
+        </div> */}
+        <PostList posts={props.posts?.stories || []} />
+        <Pagination
+          {...props.pages}
+          link={{
+            href: (page) => (page === 1 ? "/blog" : "/blog/page/[page]"),
+            as: (page) => (page === 1 ? "" : "/blog/page/" + page),
+          }}
+        />
+      </BasicContainer>
     </Layout>
   );
 };

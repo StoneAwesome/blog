@@ -1,7 +1,7 @@
 import { CollectionHelper } from "./collection-helper";
 import StoryBlokClient from "./storyblok-client";
 
-export const BLOG_POST_PAGE_SIZE = 10;
+export const BLOG_POST_PAGE_SIZE = 1;
 
 export const getStaticPathsForBlogPosts = async () => {
   const totalPosts = await StoryBlokClient.grabStoryBlokBlogPageCount();

@@ -5,6 +5,7 @@ import BasicContainer from "@components/basic/basic-container";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTag } from "@fortawesome/pro-solid-svg-icons";
 import { IBlogStoryMeta } from "@lib/storyblok-client";
+import PostList from "./post-list";
 
 type Props = {
   posts: IBlogStoryMeta[];
@@ -25,13 +26,8 @@ export default function TagPostList({ posts, tag, pagination }: Props) {
         {":"}
         <h1 className="font-thin">{tag}</h1>
       </div>
-      <div>
-        {posts.map((it, i) => (
-          <div key={i}>
-            <PostItem post={it} />
-          </div>
-        ))}
-      </div>
+      <PostList posts={posts} />
+
       <Pagination
         current={pagination.current}
         pages={pagination.pages}
