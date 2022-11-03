@@ -1,5 +1,9 @@
 import * as React from "react";
-import type { GetServerSideProps } from "next";
+import type {
+  GetStaticProps,
+  GetStaticPaths,
+  InferGetStaticPropsType,
+} from "next";
 import Layout from "@components/main-layout";
 import BasicMeta from "@components/meta/basic-meta";
 import OpenGraphMeta from "@components/meta/open-graph-meta";
@@ -31,9 +35,20 @@ const BlogIndexPage: React.FC<BlogIndexPageProps> = (props) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<
-  BlogIndexPageProps
-> = async (ctx) => {
+export const getStaticPaths: GetStaticPaths = () => {
+  return {
+    paths: [
+      {
+        params: {},
+      },
+    ],
+    fallback: false,
+  };
+};
+
+export const getStaticProps: GetStaticProps<BlogIndexPageProps> = async (
+  ctx
+) => {
   const posts = await StoryBlokClient.grabStoryBlokBlogMeta(
     1,
     BLOG_POST_PAGE_SIZE,
