@@ -2,7 +2,6 @@ import { StoryBlokImg } from "@components/storyblok/storyblok-image";
 import { IBlogStoryMeta } from "@lib/storyblok-client";
 import Link from "next/link";
 import React from "react";
-import PostHeader from "./post-header";
 
 type Props = {
   post: Readonly<IBlogStoryMeta>;
