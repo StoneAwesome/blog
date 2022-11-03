@@ -17,7 +17,9 @@ const PostTags: React.FC<PostTagsProps> = (props) => {
         className={"text-dark rounded bg-_bsInfo px-3 py-1 text-white"}
       />
       {props.post.tag_list.map((t) => (
-        <Link href={`/blog/tags/${t}`}>{"#" + t}</Link>
+        <Link href={`/blog/tags/${t}`} key={t}>
+          {"#" + t}
+        </Link>
       ))}
     </div>
   );
