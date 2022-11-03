@@ -17,7 +17,7 @@ type Props = {
   };
 };
 export default function Page({ posts, pagination, page }: Props) {
-  const url = `/posts/page/${page}`;
+  const url = `/blog/page/${page}`;
   const title = "All posts";
   return (
     <Layout>

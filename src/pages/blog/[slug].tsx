@@ -47,17 +47,17 @@ const BlogPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (
         description={description}
       />
       <TwitterCardMeta
-        url={`/posts/${slug}`}
+        url={`/blog/${slug}`}
         title={title}
         description={description}
       />
       <OpenGraphMeta
-        url={`/posts/${slug}`}
+        url={`/blog/${slug}`}
         title={title}
         description={description}
       />
       <JsonLdMeta
-        url={`/posts/${slug}`}
+        url={`/blog/${slug}`}
         title={title}
         keywords={keywords}
         date={publishDate}
