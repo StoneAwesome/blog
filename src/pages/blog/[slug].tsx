@@ -85,7 +85,7 @@ type PathQuery = {
   slug: string;
 };
 export const getStaticPaths: GetStaticPaths<PathQuery> = async (ctx) => {
-  const links = await StoryBlokClient.grabStroyBlokBlogLinks(true);
+  const links = await StoryBlokClient.grabStroyBlokBlogLinks();
   return {
     paths: links.map((l) => ({
       params: {
@@ -111,7 +111,7 @@ export const getStaticProps: GetStaticProps<
       notFound: true,
     };
   }
-  const result = await StoryBlokClient.grabBlogStory(slug, true);
+  const result = await StoryBlokClient.grabBlogStory(slug);
 
   if (!result?.story)
     return {

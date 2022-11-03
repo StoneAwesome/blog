@@ -41,8 +41,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   const posts = await StoryBlokClient.grabBlogStoriesByTag(
     slug,
     pageNum,
-    BLOG_POST_PAGE_SIZE,
-    true
+    BLOG_POST_PAGE_SIZE
   );
   const pages = CollectionHelper.GetTotalPageCount(
     posts?.total || 1,

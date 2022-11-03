@@ -144,58 +144,51 @@ function safeJoin(key: string, value: string[] | undefined | number | string) {
 
 class StoryBlokClientClass {
   constructor(
-    private token: string = process.env.NEXT_PUBLIC_STORYBLOK_READONLY_KEY
+    private token: string = process.env.NEXT_PUBLIC_STORYBLOK_READONLY_KEY,
+    private isDraft: boolean = !!process.env.NEXT_PUBLIC_STORYBLOK_IS_DRAFT
   ) {}
 
-  grabStoryBlockByUUID<T extends IStoryBlokContent>(
-    uuid: string,
-    isDraft = false
-  ) {
+  grabStoryBlockByUUID<T extends IStoryBlokContent>(uuid: string) {
     return this.grabStory<T>(`cdn/stories/${uuid}`, {
-      isDraft: isDraft,
+      isDraft: this.isDraft,
       find_by: "uuid",
     });
   }
 
-  grabStoryBlockByID<T extends IStoryBlokContent>(id: number, isDraft = false) {
+  grabStoryBlockByID<T extends IStoryBlokContent>(id: number) {
     return this.grabStory<T>(`cdn/stories/${id}`, {
-      isDraft: isDraft,
+      isDraft: this.isDraft,
     });
   }
-  grabBlogStory(slug: string, isDraft: boolean = false) {
+  grabBlogStory(slug: string) {
     return this.grabStory<IBlogStory>(`cdn/stories/blog/${slug}`, {
-      isDraft: isDraft,
+      isDraft: this.isDraft,
       resolve_relations: ["blogpost.designer"],
     });
   }
-  async grabBlogStoriesByTag(
-    tag: string,
-    page: number,
-    pageSize: number,
-    isDraft: boolean = false
-  ) {
+  async grabBlogStoriesByTag(tag: string, page: number, pageSize: number) {
     const result = await this.executeCall<IStoriesResponse<IBlogStory>>(
       "cdn/stories",
       {
         page: page,
         per_page: pageSize,
         with_tag: [tag],
-        isDraft: isDraft,
+        isDraft: this.isDraft,
       }
     );
     return result;
   }
-  async getTags(isDraft = false) {
+  async getTags() {
     const result = await this.executeCall<ITagsResponse>("cdn/tags", {
       starts_with: "blog",
-      isDraft: isDraft,
+      isDraft: this.isDraft,
     });
 
     return result;
   }
 
-  async grabStroyBlokBlogLinks(isDraft = false) {
-    const data = await this.grabStoryBlokLinks(isDraft);
+  async grabStroyBlokBlogLinks() {
+    const data = await this.grabStoryBlokLinks();
 
     if (null === data) return [];
 
@@ -206,11 +199,11 @@ class StoryBlokClientClass {
     return links;
   }
 
-  async grabStoryBlokBlogPageCount(isDraft = false) {
+  async grabStoryBlokBlogPageCount() {
     const result = await this.executeCall<IStoriesResponse<IBlogStory>>(
       "cdn/stories/",
       {
-        isDraft: isDraft,
+        isDraft: this.isDraft,
         per_page: 1,
         excluding_fields: ["body"],
         starts_with: "blog",
@@ -219,14 +212,14 @@ class StoryBlokClientClass {
     return result?.total || 0;
   }
 
-  async grabStoryBlokBlogMeta(page: number, perPage: number, isDraft = false) {
+  async grabStoryBlokBlogMeta(page: number, perPage: number) {
     const result = await this.executeCall<IStoriesResponse<IBlogStory>>(
       "cdn/stories",
       {
         excluding_fields: ["body"],
         page: page,
         per_page: perPage,
-        isDraft: isDraft,
+        isDraft: this.isDraft,
         starts_with: "blog",
       }
     );
@@ -234,9 +227,9 @@ class StoryBlokClientClass {
     return result;
   }
 
-  private async grabStoryBlokLinks(isDraft = false) {
+  private async grabStoryBlokLinks() {
     const links = await this.executeCall<IStoryBlokLinksResponse>(`cdn/links`, {
-      isDraft: isDraft,
+      isDraft: this.isDraft,
     });
     return links;
   }

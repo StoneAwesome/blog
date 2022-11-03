@@ -26,7 +26,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const body = req.body as IBodyType;
 
   if (verifySignature(body, req.headers["webhook-signature"])) {
-    const story = await StoryBlokClient.grabStoryBlockByID(body.story_id, true);
+    const story = await StoryBlokClient.grabStoryBlockByID(body.story_id);
     const slug = story?.story.full_slug;
 
     if (slug) {

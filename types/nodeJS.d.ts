@@ -34,5 +34,7 @@ declare namespace NodeJS {
      * Webhook Secret @see https://app.storyblok.com/#/me/spaces/158448/settings?tab=webhooks
      */
     STORYBLOK_WEBHOOK_SECRET: string;
+
+    NEXT_PUBLIC_STORYBLOK_IS_DRAFT: boolean;
   }
 }

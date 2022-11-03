@@ -36,13 +36,13 @@ export const getStaticProps: GetStaticProps<BlogIndexPageProps> = async (
 ) => {
   const posts = await StoryBlokClient.grabStoryBlokBlogMeta(
     1,
-    BLOG_POST_PAGE_SIZE,
-    true
+    BLOG_POST_PAGE_SIZE
   );
   const totalPage = CollectionHelper.GetTotalPageCount(
     posts?.total || 1,
     BLOG_POST_PAGE_SIZE
   );
+  posts?.total;
 
   return {
     props: {

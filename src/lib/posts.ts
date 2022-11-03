@@ -4,7 +4,7 @@ import StoryBlokClient from "./storyblok-client";
 export const BLOG_POST_PAGE_SIZE = 10;
 
 export const getStaticPathsForBlogPosts = async () => {
-  const totalPosts = await StoryBlokClient.grabStoryBlokBlogPageCount(true);
+  const totalPosts = await StoryBlokClient.grabStoryBlokBlogPageCount();
   const props = CollectionHelper.GetPagePathsFromTotal(
     totalPosts,
     BLOG_POST_PAGE_SIZE
@@ -13,7 +13,7 @@ export const getStaticPathsForBlogPosts = async () => {
 };
 
 export const getStaticPathsForBlogPostsByTag = async () => {
-  const allTags = await StoryBlokClient.getTags(true);
+  const allTags = await StoryBlokClient.getTags();
 
   const result =
     allTags?.tags
