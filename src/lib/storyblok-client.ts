@@ -40,6 +40,13 @@ export interface IStoriesResponse<TContentType extends IStoryBlokContent>
   stories: IStoryBlockStory<TContentType>[];
 }
 
+export interface ITagsResponse extends IStoriesCollectionInterface {
+  tags: {
+    name: string;
+    taggings_count: number;
+  }[];
+}
+
 export interface IStoryBlokStoryResponse<
   TContentType extends IStoryBlokContent
 > {
@@ -116,6 +123,7 @@ type IRequestOptions = {
   by_uuids?: string[];
   page?: number;
   per_page?: number;
+  with_tag?: string[];
   starts_with?: "blog" | "material";
 };
 
@@ -159,6 +167,31 @@ class StoryBlokClientClass {
       isDraft: isDraft,
       resolve_relations: ["blogpost.designer"],
     });
+  }
+  async grabBlogStoriesByTag(
+    tag: string,
+    page: number,
+    pageSize: number,
+    isDraft: boolean = false
+  ) {
+    const result = await this.executeCall<IStoriesResponse<IBlogStory>>(
+      "cdn/stories",
+      {
+        page: page,
+        per_page: pageSize,
+        with_tag: [tag],
+        isDraft: isDraft,
+      }
+    );
+    return result;
+  }
+  async getTags(isDraft = false) {
+    const result = await this.executeCall<ITagsResponse>("cdn/tags", {
+      starts_with: "blog",
+      isDraft: isDraft,
+    });
+
+    return result;
   }
 
   async grabStroyBlokBlogLinks(isDraft = false) {
@@ -244,6 +277,7 @@ class StoryBlokClientClass {
       | IStoryBlokStoryResponse<any>
       | IStoryBlokLinksResponse
       | IStoriesResponse<any>
+      | ITagsResponse
   >(
     slug: string,
     options: IRequestOptions
@@ -259,7 +293,8 @@ class StoryBlokClientClass {
         "resolve_relations"
       )}${sj("excluding_fields")}${sj("by_uuids")}${sj("starts_with")}${sj(
         "per_page"
-      )}${sj("page")}`;
+      )}${sj("page")}${sj("with_tag")}`;
+      console.log("URL", url);
       const result = await fetch(url).then((r) => {
         if (r.status !== 200) {
           return null;

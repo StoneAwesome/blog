@@ -4,23 +4,22 @@ import BasicMeta from "@components/meta/basic-meta";
 import OpenGraphMeta from "@components/meta/open-graph-meta";
 import TwitterCardMeta from "@components/meta/twitter-card-meta";
 import TagPostList from "@components/post/tag-post-list";
-import config from "@lib/config";
-import { countPosts, listPostContent, PostContent } from "@lib/posts";
-import { getTag, listTags, TagContent } from "@lib/tags";
-import { IBlogStoryMeta } from "@lib/storyblok-client";
+import { BLOG_POST_PAGE_SIZE } from "@lib/posts";
+import StoryBlokClient, { IBlogStoryMeta } from "@lib/storyblok-client";
+import { CollectionHelper } from "@lib/collection-helper";
 
 type Props = {
   posts: IBlogStoryMeta[];
-  tag: TagContent;
-  page?: string;
+  tag: string;
+  page?: string | null;
   pagination: {
     current: number;
     pages: number;
   };
 };
 export default function Index({ posts, tag, pagination, page }: Props) {
-  const url = `/blog/tags/${tag.name}` + (page ? `/${page}` : "");
-  const title = `Stone inspiration that contains ${tag.name} stones`;
+  const url = `/blog/tags/${tag}` + (page ? `/${page}` : "");
+  const title = `Stone inspiration that contains ${tag} stones`;
   return (
     <Layout>
       <BasicMeta url={url} title={title} />
@@ -31,57 +30,62 @@ export default function Index({ posts, tag, pagination, page }: Props) {
   );
 }
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   const queries = params?.slug as string[];
   const [slug, page] = [queries[0], queries[1]];
-  const posts = await listPostContent(
-    page ? parseInt(page as string) : 1,
-    config.posts_per_page,
-    slug
+
+  const pageNum = parseInt(page) || 1;
+  const posts = await StoryBlokClient.grabBlogStoriesByTag(
+    slug,
+    pageNum,
+    BLOG_POST_PAGE_SIZE,
+    true
   );
-  const tag = getTag(slug);
-  const pagination = {
-    current: page ? parseInt(page as string) : 1,
-    pages: Math.ceil((await countPosts(slug)) / config.posts_per_page),
-  };
-  const props: {
-    posts: PostContent[];
-    tag: TagContent;
-    pagination: { current: number; pages: number };
-    page?: string;
-  } = { posts, tag, pagination };
-  if (page) {
-    props.page = page;
-  }
+  const pages = CollectionHelper.GetTotalPageCount(
+    posts?.total || 1,
+    BLOG_POST_PAGE_SIZE
+  );
+
   return {
-    props,
+    props: {
+      pagination: {
+        current: pageNum,
+        pages: pages,
+      },
+      posts: posts?.stories || [],
+      tag: slug,
+      page: page || null,
+    },
   };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const allTags = listTags();
-
-  const pathsForTag = await Promise.all(
-    allTags.map(async (tag) => {
-      const pages = Math.ceil(
-        (await countPosts(tag.slug)) / config.posts_per_page
-      );
-      return Array.from(Array(pages).keys()).map((page) =>
-        page === 0
-          ? {
-              params: { slug: [tag.slug] },
-            }
-          : {
-              params: { slug: [tag.slug, (page + 1).toString()] },
-            }
-      );
-    })
-  );
-
-  const paths = pathsForTag.flatMap((i) => i);
+  const allTags = await StoryBlokClient.getTags(true);
+  console.log("Paths", allTags);
+  const result =
+    allTags?.tags
+      ?.map((t) => {
+        const pages = CollectionHelper.GetPagePathsFromTotal(
+          t.taggings_count,
+          BLOG_POST_PAGE_SIZE
+        );
+        return [
+          ...pages.paths.map((p) => ({
+            params: {
+              slug: [t.name, p.params.page],
+            },
+          })),
+          {
+            params: {
+              slug: [t.name],
+            },
+          },
+        ];
+      })
+      .flatMap((p) => p) || [];
 
   return {
-    paths: paths,
+    paths: result,
     fallback: false,
   };
 };
