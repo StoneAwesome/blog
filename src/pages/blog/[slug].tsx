@@ -20,44 +20,62 @@ import StoryBlokClient, {
   IBlogStory,
   IStoryBlockStory,
 } from "@lib/storyblok-client";
-import PostItem from "@components/post/post-item";
 import Designer from "@components/post/post-designer";
 import PostTags from "@components/post/post-tags";
 import PostHeader from "@components/post/post-header";
+import useStoryBlokLive, { IsInStoryBlok } from "@hooks/use-storyblok";
+
+async function fetchMDX(value: string) {
+  const res = await fetch("/api/hydrate", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ content: value }),
+  });
+  const val = await res.json();
+  return val.mdxSource;
+}
 
 const BlogPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (
   props
 ) => {
+  const { slug } = props;
+
+  const story = useStoryBlokLive(props.story);
+
   const {
-    slug,
-    story: {
-      content: { title, date, keywords, description },
-    },
-  } = props;
+    content: { title, date, keywords, description, body },
+  } = story;
+
+  const [mdx, set_mdx] = React.useState(props.mdx);
+
+  const articleBodyNode = hydrateSource(mdx);
+
+  React.useEffect(() => {
+    if (IsInStoryBlok()) {
+      try {
+        fetchMDX(body).then(set_mdx);
+      } catch {}
+    }
+  }, [body]);
 
   const publishDate = parse(date, "yyyy-MM-dd H:mm", new Date());
 
-  const content = hydrateSource(props.mdx);
+  const url = `/blog/${slug}`;
+
   return (
     <Layout>
       <BasicMeta
-        url={`/blog/${props.slug}`}
+        url={url}
         title={title}
         keywords={keywords}
         description={description}
       />
-      <TwitterCardMeta
-        url={`/blog/${slug}`}
-        title={title}
-        description={description}
-      />
-      <OpenGraphMeta
-        url={`/blog/${slug}`}
-        title={title}
-        description={description}
-      />
+      <TwitterCardMeta url={url} title={title} description={description} />
+      <OpenGraphMeta url={url} title={title} description={description} />
       <JsonLdMeta
-        url={`/blog/${slug}`}
+        url={url}
         title={title}
         keywords={keywords}
         date={publishDate}
@@ -65,11 +83,10 @@ const BlogPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (
       />
       <BasicContainer>
         <article>
-          <PostHeader post={props.story} />
-
+          <PostHeader post={story} />
           <div className="prose max-w-none [&>p>figure>img]:mb-0">
             <Gallery withCaption withDownloadButton>
-              {content}
+              {articleBodyNode}
               <div className="flex flex-col gap-3">
                 <Designer designer={props.story.content.designer} />
                 <PostTags post={props.story} />
