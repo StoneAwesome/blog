@@ -22,11 +22,6 @@ export default function useStoryBlokLive<TContent extends IStoryBlokContent>(
 
       // live update the story on input events
       window.storyblok.on("input", (event) => {
-        console.log("Event", {
-          eventUID: event?.story?.content._uid,
-          storyID: story.uuid,
-          storyCTI: story.content._uid,
-        });
         if (event?.story?.content._uid === story.content?._uid) {
           event.story.content = window.storyblok.addComments(
             event.story.content,
