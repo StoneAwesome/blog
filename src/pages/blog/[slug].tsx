@@ -24,6 +24,7 @@ import Designer from "@components/post/post-designer";
 import PostTags from "@components/post/post-tags";
 import PostHeader from "@components/post/post-header";
 import useStoryBlokLive, { IsInStoryBlok } from "@hooks/use-storyblok";
+import { getOgImage } from "@lib/storyblok-img-service";
 
 async function fetchMDX(value: string) {
   const res = await fetch("/api/hydrate", {
@@ -45,7 +46,7 @@ const BlogPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (
   const story = useStoryBlokLive(props.story);
 
   const {
-    content: { title, date, keywords, description, body },
+    content: { title, date, keywords, description, body, primary_image },
   } = story;
 
   const [mdx, set_mdx] = React.useState(props.mdx);
@@ -73,13 +74,19 @@ const BlogPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (
         description={description}
       />
       <TwitterCardMeta url={url} title={title} description={description} />
-      <OpenGraphMeta url={url} title={title} description={description} />
+      <OpenGraphMeta
+        url={url}
+        title={title}
+        description={description}
+        image={getOgImage(primary_image?.filename)}
+      />
       <JsonLdMeta
         url={url}
         title={title}
         keywords={keywords}
         date={publishDate}
         description={description}
+        image={getOgImage(primary_image?.filename)}
       />
       <BasicContainer>
         <article>

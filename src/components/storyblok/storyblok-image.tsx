@@ -1,8 +1,11 @@
 import * as React from "react";
-import NextImage from "next/image";
 import { Item } from "react-photoswipe-gallery";
 import { useImageDimensions } from "@hooks/use-image";
 import { IStoryBlokAssetMeta } from "@lib/storyblok-client";
+import {
+  getStoryBlokImageDimensions,
+  transformStoryBlockImageUrl,
+} from "@lib/storyblok-img-service";
 
 export type StoryBlockImageProps = React.DetailedHTMLProps<
   React.ImgHTMLAttributes<HTMLImageElement>,
@@ -41,25 +44,26 @@ function getHWInRange(width: number, height: number, range: number = 1000) {
 function useStoryBlokImageDetails(src: string | undefined) {
   return React.useMemo(() => {
     if (!src) return null;
-    const match = /\/(\d+)x(\d+)\//gm.exec(src);
-
-    if (match) {
-      const width = parseInt(match[1]);
-      const height = parseInt(match[2]);
+    const details = getStoryBlokImageDimensions(src);
+    if (details) {
       const { width: thumbWidth, height: thumbHeight } = getHWInRange(
-        width,
-        height
+        details.width,
+        details.height
       );
-      const thumb = `${src}/m/${thumbWidth}x${thumbHeight}`;
+      const thumb = transformStoryBlockImageUrl(src, {
+        width: thumbWidth,
+        height: thumbHeight,
+      });
       return {
         url: src,
         thumb: thumb,
         thumbHeight,
         thumbWidth,
-        width,
-        height,
+        width: details.width,
+        height: details.height,
       };
     }
+
     return {
       url: src,
       thumb: src,
