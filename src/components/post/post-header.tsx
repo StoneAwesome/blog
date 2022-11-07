@@ -1,11 +1,12 @@
 import DateView from "@components/basic/date-view";
-import { IBlogStoryMeta } from "@lib/storyblok-client";
+import { IBlogStoryMeta } from "@lib/storyblok/storyblok-blog-client";
+import type { IStoryBlockStory } from "@lib/storyblok/storyblok-client-base";
 import { parse } from "date-fns";
 import Link from "next/link";
 import * as React from "react";
 
 export type PostHeaderProps = {
-  post: Readonly<IBlogStoryMeta>;
+  post: Readonly<IStoryBlockStory<IBlogStoryMeta>>;
 };
 
 const PostHeader: React.FC<PostHeaderProps> = ({ post }) => {

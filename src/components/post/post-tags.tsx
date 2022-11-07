@@ -1,11 +1,12 @@
 import { faTags } from "@fortawesome/pro-duotone-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { IBlogStoryMeta } from "@lib/storyblok-client";
+import { IBlogStoryMeta } from "@lib/storyblok/storyblok-blog-client";
+import type { IStoryBlockStory } from "@lib/storyblok/storyblok-client-base";
 import Link from "next/link";
 import * as React from "react";
 
 export type PostTagsProps = {
-  post: IBlogStoryMeta;
+  post: IStoryBlockStory<IBlogStoryMeta>;
 };
 
 const PostTags: React.FC<PostTagsProps> = (props) => {

@@ -1,5 +1,5 @@
 import { CollectionHelper } from "./collection-helper";
-import StoryBlokClient from "./storyblok-client";
+import StoryBlokClient from "./storyblok/storyblok-blog-client";
 
 export const BLOG_POST_PAGE_SIZE = 12;
 

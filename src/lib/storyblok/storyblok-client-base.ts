@@ -29,24 +29,6 @@ export interface IStoryBlockStory<
   translated_slugs: null;
 }
 
-interface IStoriesCollectionInterface {
-  total: number;
-  per_page: number;
-  page: number;
-}
-
-export interface IStoriesResponse<TContentType extends IStoryBlokContent>
-  extends IStoriesCollectionInterface {
-  stories: IStoryBlockStory<TContentType>[];
-}
-
-export interface ITagsResponse extends IStoriesCollectionInterface {
-  tags: {
-    name: string;
-    taggings_count: number;
-  }[];
-}
-
 export interface IStoryBlokStoryResponse<
   TContentType extends IStoryBlokContent
 > {
@@ -56,49 +38,10 @@ export interface IStoryBlokStoryResponse<
   links: number[];
 }
 
-export interface IStoryBlokAssetMeta {
-  id: number | null;
-  alt: null | string;
-  name: string;
-  focus: null | string;
-  title: null | string;
-  filename: string;
-  copyright: null | string;
-  fieldtype: string;
-  is_external_url?: boolean;
-}
-
-export interface IDesigner extends IStoryBlokContent {
-  name: string;
-  instagram_id?: string;
-  facebook_id?: string;
-  website?: {
-    id: string;
-    url: string;
-    linktype: string;
-    fieldtype: string;
-    cached_url: string;
-  };
-}
-export type IBlogStory = IStoryBlokContent & {
-  title: string;
-  /**
-   * This is markdown
-   */
-  body: string;
-  date: string;
-  description?: string;
-  keywords?: string[];
-  primary_image: IStoryBlokAssetMeta;
-  designer?: IDesigner;
-};
-
-export type IBlogStoryMeta = IStoryBlockStory<
-  TypeSafeOmit<IBlogStory, "body" | "designer">
->;
-
-interface IStoryBlokLinksResponse extends IStoriesCollectionInterface {
-  links: { [key: string]: IStoryBlokLink };
+export interface IStoriesCollectionInterface {
+  total: number;
+  per_page: number;
+  page: number;
 }
 
 export interface IStoryBlokLink {
@@ -114,6 +57,32 @@ export interface IStoryBlokLink {
   is_startpage: boolean;
   real_path: string;
 }
+interface IStoryBlokLinksResponse extends IStoriesCollectionInterface {
+  links: { [key: string]: IStoryBlokLink };
+}
+export interface IStoriesResponse<TContentType extends IStoryBlokContent>
+  extends IStoriesCollectionInterface {
+  stories: IStoryBlockStory<TContentType>[];
+}
+
+export interface ITagsResponse extends IStoriesCollectionInterface {
+  tags: {
+    name: string;
+    taggings_count: number;
+  }[];
+}
+
+export interface IStoryBlokAssetMeta {
+  id: number | null;
+  alt: null | string;
+  name: string;
+  focus: null | string;
+  title: null | string;
+  filename: string;
+  copyright: null | string;
+  fieldtype: string;
+  is_external_url?: boolean;
+}
 
 type IRequestOptions = {
   isDraft?: boolean;
@@ -124,7 +93,8 @@ type IRequestOptions = {
   page?: number;
   per_page?: number;
   with_tag?: string[];
-  starts_with?: "blog" | "material";
+  is_startpage?: 0 | 1;
+  starts_with?: "blog" | "material/";
 };
 
 function buildSafeJoin(options: IRequestOptions) {
@@ -142,103 +112,34 @@ function safeJoin(key: string, value: string[] | undefined | number | string) {
   return `&${key}=${qsV}`;
 }
 
-class StoryBlokClientClass {
+abstract class StoryBlokClientBaseClass<TContent extends IStoryBlokContent> {
   constructor(
     private token: string = process.env.NEXT_PUBLIC_STORYBLOK_READONLY_KEY,
     private isDraft: boolean = !!process.env.NEXT_PUBLIC_STORYBLOK_IS_DRAFT
   ) {}
 
-  grabStoryBlockByUUID<T extends IStoryBlokContent>(uuid: string) {
-    return this.grabStory<T>(`cdn/stories/${uuid}`, {
-      isDraft: this.isDraft,
-      find_by: "uuid",
-    });
-  }
-
-  grabStoryBlockByID<T extends IStoryBlokContent>(id: number) {
-    return this.grabStory<T>(`cdn/stories/${id}`, {
-      isDraft: this.isDraft,
-    });
-  }
-  grabBlogStory(slug: string) {
-    return this.grabStory<IBlogStory>(`cdn/stories/blog/${slug}`, {
-      isDraft: this.isDraft,
-      resolve_relations: ["blogpost.designer"],
-    });
-  }
-  async grabBlogStoriesByTag(tag: string, page: number, pageSize: number) {
-    const result = await this.executeCall<IStoriesResponse<IBlogStory>>(
-      "cdn/stories",
-      {
-        page: page,
-        per_page: pageSize,
-        with_tag: [tag],
-        isDraft: this.isDraft,
-      }
-    );
-    return result;
-  }
-  async getTags() {
-    const result = await this.executeCall<ITagsResponse>("cdn/tags", {
-      starts_with: "blog",
-      isDraft: this.isDraft,
-    });
-
-    return result;
-  }
-
-  async grabStroyBlokBlogLinks() {
-    const data = await this.grabStoryBlokLinks();
-
-    if (null === data) return [];
-
-    const links = Object.keys(data.links)
-      .map((l) => data.links[l])
-      .filter((l) => l.slug.match(/^blog\//gi));
-
-    return links;
-  }
-
-  async grabStoryBlokBlogPageCount() {
-    const result = await this.executeCall<IStoriesResponse<IBlogStory>>(
-      "cdn/stories/",
-      {
-        isDraft: this.isDraft,
-        per_page: 1,
-        excluding_fields: ["body"],
-        starts_with: "blog",
-      }
-    );
-    return result?.total || 0;
-  }
-
-  async grabStoryBlokBlogMeta(page: number, perPage: number) {
-    const result = await this.executeCall<IStoriesResponse<IBlogStory>>(
-      "cdn/stories",
-      {
-        excluding_fields: ["body"],
-        page: page,
-        per_page: perPage,
-        isDraft: this.isDraft,
-        starts_with: "blog",
-      }
-    );
-
-    return result;
-  }
-
-  private async grabStoryBlokLinks() {
+  protected async grabStoryBlokLinks(options?: IRequestOptions) {
     const links = await this.executeCall<IStoryBlokLinksResponse>(`cdn/links`, {
       isDraft: this.isDraft,
+      ...options,
     });
     return links;
   }
 
-  private async grabStory<T extends IStoryBlokContent>(
+  async grabBlogStoriesByTag(tag: string, page: number, pageSize: number) {
+    const result = await this.grabStories({
+      page: page,
+      per_page: pageSize,
+      with_tag: [tag],
+    });
+    return result;
+  }
+
+  private async grabStory(
     slug: string,
     options: IRequestOptions
-  ): Promise<IStoryBlokStoryResponse<T> | null> {
-    const data = await this.executeCall<IStoryBlokStoryResponse<T>>(
+  ): Promise<IStoryBlokStoryResponse<TContent> | null> {
+    const data = await this.executeCall<IStoryBlokStoryResponse<TContent>>(
       slug,
       options
     );
@@ -247,7 +148,7 @@ class StoryBlokClientClass {
 
     if (options.resolve_relations) {
       options.resolve_relations.map((r) => {
-        const prop = r.split(".")[1] as keyof T;
+        const prop = r.split(".")[1] as keyof TContent;
 
         if (prop && data?.story?.content?.[prop]) {
           const id = data.story.content[prop];
@@ -265,7 +166,17 @@ class StoryBlokClientClass {
     return data;
   }
 
-  private async executeCall<
+  protected async grabStories(options: IRequestOptions) {
+    return this.executeCall<IStoriesResponse<TContent>>("cdn/stories", options);
+  }
+
+  protected async grabTags(options: IRequestOptions) {
+    const result = await this.executeCall<ITagsResponse>("cdn/tags", options);
+
+    return result;
+  }
+
+  protected async executeCall<
     T extends
       | IStoryBlokStoryResponse<any>
       | IStoryBlokLinksResponse
@@ -276,7 +187,11 @@ class StoryBlokClientClass {
     options: IRequestOptions
   ): Promise<(T & IStoriesCollectionInterface) | null> {
     try {
+      if (undefined === options.isDraft) {
+        options.isDraft = this.isDraft;
+      }
       const sj = buildSafeJoin(options);
+
       let total = 0,
         per_page = 0,
         page = 0;
@@ -285,8 +200,8 @@ class StoryBlokClientClass {
       }&token=${this.token}${options.find_by ? "&find_by=uuid" : ""}${sj(
         "resolve_relations"
       )}${sj("excluding_fields")}${sj("by_uuids")}${sj("starts_with")}${sj(
-        "per_page"
-      )}${sj("page")}${sj("with_tag")}`;
+        "is_startpage"
+      )}${sj("per_page")}${sj("page")}${sj("with_tag")}`;
 
       const result = await fetch(url).then((r) => {
         if (r.status !== 200) {
@@ -306,8 +221,26 @@ class StoryBlokClientClass {
 
     return null;
   }
+
+  grabStoryBlockByUUID(uuid: string) {
+    return this.grabStory(`cdn/stories/${uuid}`, {
+      find_by: "uuid",
+    });
+  }
+
+  grabStoryBlockByID(id: number) {
+    return this.grabStory(`cdn/stories/${id}`, {});
+  }
+  /**
+   *
+   * @param slug Full slug to story. Not should not include a leading /
+   * @returns
+   */
+  grabStoryBlockBySlug(slug: string, resolve_relations?: string[]) {
+    return this.grabStory(`cdn/stories/${slug}`, {
+      resolve_relations: resolve_relations,
+    });
+  }
 }
 
-const StoryBlokClient = new StoryBlokClientClass();
-
-export default StoryBlokClient;
+export default StoryBlokClientBaseClass;

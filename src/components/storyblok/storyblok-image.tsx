@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Item } from "react-photoswipe-gallery";
 import { useImageDimensions } from "@hooks/use-image";
-import { IStoryBlokAssetMeta } from "@lib/storyblok-client";
+import { IStoryBlokAssetMeta } from "@lib/storyblok/storyblok-client-base";
 import {
   getStoryBlokImageDimensions,
   transformStoryBlockImageUrl,
@@ -91,7 +91,7 @@ export const StoryBlokImg: React.FC<{
   img: IStoryBlokAssetMeta;
   className?: string;
 }> = (props) => {
-  const i = useStoryBlokImageDetails(props.img.filename);
+  const i = useStoryBlokImageDetails(props.img?.filename);
   if (!i) return null;
   return (
     <ImageDetails

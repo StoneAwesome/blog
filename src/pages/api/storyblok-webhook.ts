@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import crypto from "crypto";
-import StoryBlokClient from "@lib/storyblok-client";
+import StoryBlokClient from "@lib/storyblok/storyblok-blog-client";
 import {
   getStaticPathsForBlogPosts,
   getStaticPathsForBlogPostsByTag,

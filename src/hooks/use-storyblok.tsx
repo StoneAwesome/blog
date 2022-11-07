@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { IStoryBlockStory, IStoryBlokContent } from "@lib/storyblok-client";
+import {
+  IStoryBlockStory,
+  IStoryBlokContent,
+} from "@lib/storyblok/storyblok-client-base";
+//-- needed for window.storyblok
+import type { StoryblokBridgeV2 } from "@storyblok/react";
 
 export const IsInStoryBlok = () => !!window.storyblok;
 export default function useStoryBlokLive<TContent extends IStoryBlokContent>(

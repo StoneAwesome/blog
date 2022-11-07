@@ -1,9 +1,10 @@
 import React from "react";
 import PostItem from "./post-item";
-import { IBlogStoryMeta } from "@lib/storyblok-client";
+import { IBlogStoryMeta } from "@lib/storyblok/storyblok-blog-client";
+import { IStoryBlockStory } from "@lib/storyblok/storyblok-client-base";
 
 type Props = {
-  posts: IBlogStoryMeta[];
+  posts: IStoryBlockStory<IBlogStoryMeta>[];
 };
 export default function PostList({ posts }: Props) {
   return (

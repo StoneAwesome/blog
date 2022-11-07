@@ -1,6 +1,6 @@
 import SocialLink from "@components/social-link";
 import { useLinkUtm } from "@lib/mdx-helper";
-import { IDesigner } from "@lib/storyblok-client";
+import { IDesigner } from "@lib/storyblok/storyblok-blog-client";
 import Link from "next/link";
 import * as React from "react";
 

@@ -1,14 +1,15 @@
 import React from "react";
-import PostItem from "./post-item";
 import Pagination from "../basic/pagination";
 import BasicContainer from "@components/basic/basic-container";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTag } from "@fortawesome/pro-solid-svg-icons";
-import { IBlogStoryMeta } from "@lib/storyblok-client";
+import { IBlogStoryMeta } from "@lib/storyblok/storyblok-blog-client";
+import { IStoryBlockStory } from "@lib/storyblok/storyblok-client-base";
+
 import PostList from "./post-list";
 
 type Props = {
-  posts: IBlogStoryMeta[];
+  posts: IStoryBlockStory<IBlogStoryMeta>[];
   tag: string;
   pagination: {
     current: number;

@@ -8,11 +8,14 @@ import {
   BLOG_POST_PAGE_SIZE,
   getStaticPathsForBlogPostsByTag,
 } from "@lib/posts";
-import StoryBlokClient, { IBlogStoryMeta } from "@lib/storyblok-client";
+import StoryBlokClient, {
+  IBlogStoryMeta,
+} from "@lib/storyblok/storyblok-blog-client";
 import { CollectionHelper } from "@lib/collection-helper";
+import { IStoryBlockStory } from "@lib/storyblok/storyblok-client-base";
 
 type Props = {
-  posts: IBlogStoryMeta[];
+  posts: IStoryBlockStory<IBlogStoryMeta>[];
   tag: string;
   page?: string | null;
   pagination: {

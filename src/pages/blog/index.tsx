@@ -4,7 +4,7 @@ import Layout from "@components/main-layout";
 import BasicMeta from "@components/meta/basic-meta";
 import OpenGraphMeta from "@components/meta/open-graph-meta";
 import TwitterCardMeta from "@components/meta/twitter-card-meta";
-import StoryBlokClient from "@lib/storyblok-client";
+import StoryBlokClient from "@lib/storyblok/storyblok-blog-client";
 import PostList from "@components/post/post-list";
 import { BLOG_POST_PAGE_SIZE } from "@lib/posts";
 import { CollectionHelper } from "@lib/collection-helper";
@@ -12,7 +12,7 @@ import BasicContainer from "@components/basic/basic-container";
 import Pagination from "@components/basic/pagination";
 
 export type BlogIndexPageProps = {
-  posts: Awaited<ReturnType<typeof StoryBlokClient.grabStoryBlokBlogMeta>>;
+  posts: Awaited<ReturnType<typeof StoryBlokClient.grabBlogMeta>>;
   pages: {
     current: number;
     pages: number;
@@ -53,10 +53,7 @@ const BlogIndexPage: React.FC<BlogIndexPageProps> = (props) => {
 export const getStaticProps: GetStaticProps<BlogIndexPageProps> = async (
   ctx
 ) => {
-  const posts = await StoryBlokClient.grabStoryBlokBlogMeta(
-    1,
-    BLOG_POST_PAGE_SIZE
-  );
+  const posts = await StoryBlokClient.grabBlogMeta(1, BLOG_POST_PAGE_SIZE);
   const totalPage = CollectionHelper.GetTotalPageCount(
     posts?.total || 1,
     BLOG_POST_PAGE_SIZE

@@ -1,10 +1,11 @@
 import { StoryBlokImg } from "@components/storyblok/storyblok-image";
-import { IBlogStoryMeta } from "@lib/storyblok-client";
+import { IBlogStoryMeta } from "@lib/storyblok/storyblok-blog-client";
+import type { IStoryBlockStory } from "@lib/storyblok/storyblok-client-base";
 import Link from "next/link";
 import React from "react";
 
 type Props = {
-  post: Readonly<IBlogStoryMeta>;
+  post: Readonly<IStoryBlockStory<IBlogStoryMeta>>;
   hideDescription?: boolean;
   hideImage?: boolean;
 };

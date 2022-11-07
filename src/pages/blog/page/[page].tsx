@@ -7,11 +7,14 @@ import TwitterCardMeta from "@components/meta/twitter-card-meta";
 import PostList from "@components/post/post-list";
 import { CollectionHelper } from "@lib/collection-helper";
 import { BLOG_POST_PAGE_SIZE, getStaticPathsForBlogPosts } from "@lib/posts";
-import StoryBlokClient, { IBlogStoryMeta } from "@lib/storyblok-client";
+import StoryBlokClient, {
+  IBlogStoryMeta,
+} from "@lib/storyblok/storyblok-blog-client";
 import type { GetStaticProps, GetStaticPaths } from "next";
+import { IStoryBlockStory } from "@lib/storyblok/storyblok-client-base";
 
 type Props = {
-  posts: IBlogStoryMeta[];
+  posts: IStoryBlockStory<IBlogStoryMeta>[];
   page: number;
   pagination: {
     current: number;
@@ -54,7 +57,7 @@ export const getStaticProps: GetStaticProps<Props, ParamsProps> = async (
     };
   const pageNum = parseInt(page);
 
-  const posts = await StoryBlokClient.grabStoryBlokBlogMeta(
+  const posts = await StoryBlokClient.grabBlogMeta(
     pageNum,
     BLOG_POST_PAGE_SIZE
   );

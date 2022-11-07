@@ -18,8 +18,8 @@ import { hydrateSource, MDX_Components } from "@lib/mdx-helper";
 import { MdxRemote } from "next-mdx-remote/types";
 import StoryBlokClient, {
   IBlogStory,
-  IStoryBlockStory,
-} from "@lib/storyblok-client";
+} from "@lib/storyblok/storyblok-blog-client";
+import type { IStoryBlockStory } from "@lib/storyblok/storyblok-client-base";
 import Designer from "@components/post/post-designer";
 import PostTags from "@components/post/post-tags";
 import PostHeader from "@components/post/post-header";

@@ -1,4 +1,4 @@
-import { IStoryBlokAssetMeta } from "./storyblok-client";
+import { IStoryBlokAssetMeta } from "./storyblok/storyblok-client-base";
 
 export function getStoryBlokImageDimensions(src: string) {
   if (!src) return null;
