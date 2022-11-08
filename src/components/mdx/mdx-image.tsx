@@ -1,20 +1,7 @@
+import { getHWInRange } from "@lib/image-service";
 import React from "react";
 import { Item } from "react-photoswipe-gallery";
 
-function getHWInRange(width: number, height: number, range: number = 1000) {
-  if (width < range) {
-    return {
-      width,
-      height,
-    };
-  }
-
-  const multiplier = range / width;
-  return {
-    width: range,
-    height: Math.floor(multiplier * height),
-  };
-}
 const IMG_CLASS_NAME =
   "mx-auto max-h-[40vh] w-[90%] cursor-pointer rounded object-cover shadow transition-shadow duration-300 hover:shadow-lg hover:shadow-_bsInfo/50";
 
@@ -60,7 +47,7 @@ type ImgProps = React.DetailedHTMLProps<
   HTMLImageElement
 >;
 
-const MDXImage: React.FC<ImgProps> = (props) => {
+const CDNImage: React.FC<ImgProps> = (props) => {
   const imgInfo = React.useMemo<
     (ItemProps & { hasKnownDimensions?: boolean }) | null
   >(() => {
@@ -72,7 +59,8 @@ const MDXImage: React.FC<ImgProps> = (props) => {
       const height = parseInt(match[2]);
       const { width: thumbWidth, height: thumbHeight } = getHWInRange(
         width,
-        height
+        height,
+        871 //-- Magic value but this is the max with of a blog image
       );
       const thumb = `${props.src}/m/${thumbWidth}x${thumbHeight}`;
       return {
@@ -140,4 +128,4 @@ const NonCDNImg: React.FC<ImgProps> = (props) => {
   );
 };
 
-export default MDXImage;
+export default CDNImage;

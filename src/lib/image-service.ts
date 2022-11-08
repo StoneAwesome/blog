@@ -119,3 +119,18 @@ export function blobToDataURL(blob: Blob) {
 
   return promise;
 }
+
+export function getHWInRange(width: number, height: number, range: number) {
+  if (width < range) {
+    return {
+      width,
+      height,
+    };
+  }
+
+  const multiplier = range / width;
+  return {
+    width: range,
+    height: Math.floor(multiplier * height),
+  };
+}

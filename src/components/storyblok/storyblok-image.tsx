@@ -6,11 +6,17 @@ import {
   getStoryBlokImageDimensions,
   transformStoryBlockImageUrl,
 } from "@lib/storyblok-img-service";
+import { getHWInRange } from "@lib/image-service";
 
 export type StoryBlockImageProps = React.DetailedHTMLProps<
   React.ImgHTMLAttributes<HTMLImageElement>,
   HTMLImageElement
-> & {};
+> & {
+  /**
+   * @default 1000
+   */
+  maxWidthThumbnail?: number;
+};
 
 const StoryBlockImage: React.FC<StoryBlockImageProps> = (props) => {
   const src = props.src;
@@ -26,36 +32,26 @@ const StoryBlockImage: React.FC<StoryBlockImageProps> = (props) => {
   );
 };
 
-function getHWInRange(width: number, height: number, range: number = 1000) {
-  if (width < range) {
-    return {
-      width,
-      height,
-    };
-  }
-
-  const multiplier = range / width;
-  return {
-    width: range,
-    height: Math.floor(multiplier * height),
-  };
-}
-
-function useStoryBlokImageDetails(src: string | undefined) {
+function useStoryBlokImageDetails(
+  src: string | undefined,
+  maxWidthThumbnail: number = 1000
+) {
   return React.useMemo(() => {
     if (!src) return null;
     const details = getStoryBlokImageDimensions(src);
     if (details) {
       const { width: thumbWidth, height: thumbHeight } = getHWInRange(
         details.width,
-        details.height
+        details.height,
+        maxWidthThumbnail
       );
+
       const thumb = transformStoryBlockImageUrl(src, {
         width: thumbWidth,
         height: thumbHeight,
       });
       return {
-        url: src,
+        url: src + "/m/",
         thumb: thumb,
         thumbHeight,
         thumbWidth,
@@ -112,7 +108,8 @@ const DefaultImgWrapper: React.FC<StoryBlockImageProps> = (props) => {
     const { width, height } = dim;
     const { width: thumbWidth, height: thumbHeight } = getHWInRange(
       width,
-      height
+      height,
+      props.maxWidthThumbnail || 1000
     );
 
     return {

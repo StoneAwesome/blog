@@ -6,18 +6,18 @@ import type { MdxRemote } from "next-mdx-remote/types";
 import React, { useEffect } from "react";
 import { addUtmParamsToUrl, UtmProps } from "./uri";
 import SocialLink from "@components/social-link";
-import MDXImage from "@components/mdx/mdx-image";
+import CDNImage from "@components/mdx/mdx-image";
 
 export const BlogImage: React.FC<any> = (props) => {
   if (props.title !== undefined) {
     return (
       <figure>
-        <MDXImage {...props} />
+        <CDNImage {...props} />
         <figcaption className={"text-center"}>{props.title}</figcaption>
       </figure>
     );
   } else {
-    return <MDXImage {...props} />;
+    return <CDNImage {...props} />;
   }
 };
 
@@ -76,6 +76,9 @@ export const MDX_Components: MdxRemote.Components = {
   YouTube,
   TwitterTweetEmbed,
   img: BlogImage,
+  // p: (props: any) => {
+  //   return <p>{props}</p>;
+  // },
   a: MDXLink,
   SocialLink,
 } as any;
