@@ -4,7 +4,11 @@
 
 @layer components {
   .blog-link {
-    @apply rounded-t border-b border-_bsInfo bg-_bsPrimary/10 px-1 text-_bsDark no-underline transition-colors hover:bg-_bsPrimary/20 active:bg-_bsPrimary active:text-white;
+    @apply rounded-t border-b border-_bsInfo bg-_bsPrimary/10 px-1 text-_bsDark no-underline transition-all hover:bg-_bsPrimary/20 active:bg-_bsPrimary active:text-white;
+  }
+
+  .blog-link:not(.btn) {
+    @apply px-1 hover:px-2;
   }
 }
 

@@ -21,27 +21,36 @@ module.exports = {
   theme: {
     extend: {
       colors: themeColors,
-      typography: {
+      typography: (theme) => ({
         DEFAULT: {
           css: {
             a: {
               color: themeColors._bsDark,
               background: "#e7ebee",
-              borderTopLeftRadius: "0.25rem",
-              borderTopRightRadius: "0.25rem",
-              paddingLeft: "0.25rem",
-              paddingRight: "0.25rem",
+              borderTopLeftRadius: theme("borderRadius.DEFAULT"),
+              borderTopRightRadius: theme("borderRadius.DEFAULT"),
+              paddingLeft: theme("spacing.2"),
+              paddingRight: theme("spacing.2"),
               fontWeight: "normal",
               textDecoration: "none",
-              borderBottom: `solid 1px ${themeColors._bsInfo}`,
+              borderBottom: `solid ${theme("borderWidth.DEFAULT")} ${theme(
+                "colors._bsInfo"
+              )}`,
+              transitionProperty: "all",
+              transitionTimingFunction: theme(
+                "transitionTimingFunction.DEFAULT"
+              ),
+              transitionDuration: theme("transitionDuration.DEFAULT"),
               "&:hover": {
                 background: "#ced7de",
+                paddingLeft: theme("spacing.3"),
+                paddingRight: theme("spacing.3"),
                 color: themeColors._bsDark,
               },
             },
           },
         },
-      },
+      }),
     },
   },
   plugins: [require("@tailwindcss/typography")],

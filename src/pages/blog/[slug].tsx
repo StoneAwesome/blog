@@ -89,9 +89,9 @@ const BlogPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (
         image={getOgImage(primary_image?.filename)}
       />
       <BasicContainer>
-        <article>
+        <article className="px-3">
           <PostHeader post={story} />
-          <div className="prose max-w-none [&>p>figure>img]:mb-0">
+          <div className="prose max-w-none [&>p>figure>img]:mb-0 ">
             <Gallery withCaption withDownloadButton>
               {articleBodyNode}
               <div className="flex flex-col gap-3">
