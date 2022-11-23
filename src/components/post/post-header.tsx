@@ -14,7 +14,7 @@ const PostHeader: React.FC<PostHeaderProps> = ({ post }) => {
   const publishDate = parse(post.content.date, "yyyy-MM-dd H:mm", new Date());
   const url = `/blog/${post.slug}`;
   return (
-    <header className={"mt-5 mb-3 grid grid-cols-2"}>
+    <header className={"mt-5 mb-3 grid grid-flow-row"}>
       <Link
         href={url}
         className={"col-span-2 text-2xl text-_bsPrimary md:col-span-1"}
